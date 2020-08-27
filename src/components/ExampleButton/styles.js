@@ -14,4 +14,9 @@ export const Button = styled.button`
     border-color: #cd3a6a;
     color: #cd3a6a;
   }
+
+  &:active {
+    border-color: #ab0838;
+    color: #ab0838;
+  }
 `;

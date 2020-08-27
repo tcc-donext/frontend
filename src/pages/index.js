@@ -1,11 +1,13 @@
 import React from 'react';
-import ExampleButton from '../components/ExampleButton';
+import ExampleButton from 'components/ExampleButton';
+
+import { Container } from 'styles/pages/index';
 
 export default function Home() {
   return (
-    <div style={{ justifyContent: 'center', alignItems: 'center' }}>
+    <Container>
       <h1>Hello World!</h1>
-      <ExampleButton>{'Navegar'}</ExampleButton>
-    </div>
+      <ExampleButton>Um Botão exemplo!</ExampleButton>
+    </Container>
   );
 }
