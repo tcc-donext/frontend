@@ -1,4 +1,3 @@
-import React from 'react';
 import ExampleButton from 'components/ExampleButton';
 
 import { Container } from 'styles/pages/index';
