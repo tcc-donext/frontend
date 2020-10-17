@@ -10,5 +10,14 @@ export default createGlobalStyle`
   body {
     font: 400 16px Roboto, sans-serif;
     background-color: #FFF;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html, body {
+    height: 100%;
+  }
+  
+  button {
+    cursor: pointer;
   }
 `;
