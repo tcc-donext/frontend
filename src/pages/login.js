@@ -1,13 +1,13 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-import Title from 'components/Title';
+import Header from 'components/Header';
 
 const Login = () => {
   return (
     <>
-      <header>
-        <Title>Logar</Title>
-      </header>
+      <Header>
+        <h1>Logar</h1>
+      </Header>
     </>
   );
 };
