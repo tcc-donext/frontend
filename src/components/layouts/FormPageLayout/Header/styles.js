@@ -7,14 +7,14 @@ const StyledHeader = styled.header`
   h1 {
     display: inline-flex;
     color: #3f3d56;
-    font-size: 350%;
+    font-size: 3.55em;
     font-weight: normal;
   }
 
   img {
     height: 79px;
-    margin-top: -3.2%;
-    margin-right: -0.8%;
+    margin-top: -5vh;
+    margin-right: -0.75vw;
   }
 `;
 

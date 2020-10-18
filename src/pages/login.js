@@ -7,7 +7,7 @@ const Login = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%'
+        flex: 1
       }}
     >
       <h1>Página Login</h1>
