@@ -5,6 +5,7 @@ export default createGlobalStyle`
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: Roboto, sans-serif;
   }
 
   body {
@@ -14,8 +15,8 @@ export default createGlobalStyle`
   }
 
   html, body {
-    height: 100%;
-    width:100%;
+    height: 100vh;
+    width:100vw;
   }
   
   button {

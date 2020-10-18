@@ -3,9 +3,11 @@ import PageLayout from 'components/layouts/PageLayout';
 
 function MyApp({ Component, pageProps }) {
   const Layout = Component.layout || PageLayout;
+  const layoutConfig = Component.getLayoutConfig || {};
+
   return (
     <>
-      <Layout>
+      <Layout config={layoutConfig}>
         <Component {...pageProps} />
       </Layout>
       <GlobalStyle />

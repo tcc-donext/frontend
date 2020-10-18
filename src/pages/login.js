@@ -1,17 +1,29 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-import Header from 'components/Header';
-
 const Login = () => {
   return (
-    <>
-      <Header>
-        <h1>Logar</h1>
-      </Header>
-    </>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%'
+      }}
+    >
+      <h1>Página Login</h1>
+    </div>
   );
 };
 
 Login.layout = FormPageLayout;
+Login.getLayoutConfig = {
+  header: {
+    title: 'Logar',
+    logo: true
+  },
+  footer: {
+    back: true
+  }
+};
 
 export default Login;

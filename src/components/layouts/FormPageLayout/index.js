@@ -1,5 +1,14 @@
 import { Container } from './styles';
 
-export default function FormPageLayout({ children }) {
-  return <Container>{children}</Container>;
+import Header from './Header';
+import Footer from './Footer';
+
+export default function FormPageLayout({ config, children }) {
+  return (
+    <Container>
+      {config.header && <Header {...config.header} />}
+      {children}
+      {config.footer && <Footer {...config.footer} />}
+    </Container>
+  );
 }
