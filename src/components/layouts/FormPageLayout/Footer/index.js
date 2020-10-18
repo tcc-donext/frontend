@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import Button from '../../Button';
+import Button from '../../../Button';
 
 const Container = styled.div`
   display: flex;
