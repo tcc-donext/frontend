@@ -15,6 +15,14 @@ const StyledButton = styled.button`
 
   width: ${props => props.width || '6vw'};
   height: ${props => props.height || '4.75vh'};
+
+  &:hover {
+    background-color: #dc61cc;
+  }
+
+  &:active {
+    background-color: #d952c7;
+  }
 `;
 
 export default StyledButton;
