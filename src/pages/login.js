@@ -1,17 +1,20 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
+import { Container, Image } from 'styles/pages/login';
+
 const Login = () => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1
-      }}
-    >
-      <h1>Página Login</h1>
-    </div>
+    <Container>
+      <div>
+        <h1>Página Login</h1>
+      </div>
+      <aside>
+        <Image
+          src="/images/tela_login.png"
+          alt="Desenho decorativo para a página"
+        />
+      </aside>
+    </Container>
   );
 };
 
