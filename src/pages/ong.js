@@ -7,12 +7,28 @@ const ongPage = () => {
   return (
     <Container>
       <div id="ong">
-        <img src="https://picsum.photos/500" />
-        <h1>Instituto TAMAR</h1>
-      </div>
-      <div id="ong-info">
-        <Input label="Endereço" value="Salvador, BA" disabled />
-        <Input label="Email" value="institutotamar@tamar.com" disabled />
+        <div id="ong-image">
+          <img src="https://picsum.photos/300" />
+          <h1>Instituto TAMAR</h1>
+        </div>
+        <div id="ong-info">
+          <Input
+            label="Endereço"
+            labelProps={{ fontSize: '1.8em' }}
+            value="Salvador, BA"
+            width="30vw"
+            fontSize="1.5em"
+            disabled
+          />
+          <Input
+            label="Email"
+            labelProps={{ fontSize: '1.8em' }}
+            value="institutotamar@tamar.com"
+            width="30vw"
+            fontSize="1.5em"
+            disabled
+          />
+        </div>
       </div>
       <div id="campaigns">
         <Table>
