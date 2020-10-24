@@ -1,17 +1,25 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-import { Container, Table, Campaign } from 'styles/pages/ong';
+import {
+  Container,
+  OngSection,
+  OngImageContainer,
+  OngInfoContainer,
+  CampaignSubtitle,
+  Table,
+  Campaign
+} from 'styles/pages/ong';
 import Input from 'components/Input';
 
 const ongPage = () => {
   return (
     <Container>
-      <div id="ong">
-        <div id="ong-image">
+      <OngSection>
+        <OngImageContainer>
           <img src="https://picsum.photos/300" />
           <h1>Instituto TAMAR</h1>
-        </div>
-        <div id="ong-info">
+        </OngImageContainer>
+        <OngInfoContainer>
           <Input
             label="Endereço"
             labelProps={{ fontSize: '1.8em' }}
@@ -28,8 +36,9 @@ const ongPage = () => {
             fontSize="1.5em"
             disabled
           />
-        </div>
-      </div>
+        </OngInfoContainer>
+      </OngSection>
+      <CampaignSubtitle>Campanhas ativas! (2/10)</CampaignSubtitle>
       <div id="campaigns">
         <Table>
           <Campaign />
