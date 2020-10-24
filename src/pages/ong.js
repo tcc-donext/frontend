@@ -6,10 +6,37 @@ import {
   OngImageContainer,
   OngInfoContainer,
   CampaignSubtitle,
+  CampaignContainer,
   Table,
   Campaign
 } from 'styles/pages/ong';
 import Input from 'components/Input';
+
+import Scrollbar from 'react-scrollbars-custom';
+
+const campaignsData = [
+  {
+    imageURL: 'https://picsum.photos/300',
+    title: 'Tobias! ASMA',
+    total_value: 150,
+    target_value: 300,
+    donors: 7
+  },
+  {
+    imageURL: 'https://picsum.photos/300',
+    title: 'Tobias! ASMA',
+    total_value: 150,
+    target_value: 300,
+    donors: 7
+  },
+  {
+    imageURL: 'https://picsum.photos/300',
+    title: 'Tobias! ASMA',
+    total_value: 150,
+    target_value: 300,
+    donors: 7
+  }
+];
 
 const ongPage = () => {
   return (
@@ -38,12 +65,36 @@ const ongPage = () => {
           />
         </OngInfoContainer>
       </OngSection>
-      <CampaignSubtitle>Campanhas ativas! (2/10)</CampaignSubtitle>
-      <div id="campaigns">
+      <CampaignSubtitle>
+        Campanhas ativas! <span>(3/10)</span>
+      </CampaignSubtitle>
+      <CampaignContainer>
         <Table>
-          <Campaign />
+          <thead>
+            <tr>
+              <th>Título</th>
+              <th>Arrecadação</th>
+              <th>Doadores</th>
+            </tr>
+          </thead>
+          <tbody>
+            <Scrollbar disableTrackYWidthCompensation noScrollX>
+              {campaignsData.map((campaign, i) => (
+                <>
+                  <tr class="spacer"></tr>
+                  <Campaign key={i}>
+                    <td>{campaign.title}</td>
+                    <td>
+                      R$ {campaign.total_value}/{campaign.target_value}
+                    </td>
+                    <td>{campaign.donors}</td>
+                  </Campaign>
+                </>
+              ))}
+            </Scrollbar>
+          </tbody>
         </Table>
-      </div>
+      </CampaignContainer>
     </Container>
   );
 };

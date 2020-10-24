@@ -48,9 +48,68 @@ export const OngInfoContainer = styled.div`
 `;
 
 export const CampaignSubtitle = styled.h2`
+  font-size: 1.85em;
   font-weight: normal;
+  color: #2f2e41;
+
+  margin-top: 6vh;
+  margin-left: 7vw;
+
+  span {
+    font-size: 0.75em;
+    font-weight: 300;
+  }
 `;
 
-export const Table = styled.table``;
+export const CampaignContainer = styled.div`
+  display: flex;
+  flex: 1;
+  margin-top: 3.5vh;
+`;
 
-export const Campaign = styled.tr``;
+export const Table = styled.table`
+  width: 100%;
+  border: 0;
+  margin-left: -2.5vw;
+  border-collapse: collapse;
+
+  font-size: 1.6em;
+  text-align: center;
+
+  tbody {
+    display: block;
+    height: 22vh;
+    overflow: auto;
+  }
+  thead,
+  tbody,
+  tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* even columns width , fix width of table too*/
+  }
+  th {
+    font-weight: 300;
+    color: #4e4d5d;
+  }
+
+  .spacer {
+    height: 10px;
+  }
+`;
+
+export const Campaign = styled.tr`
+  background-color: #ebebeb;
+  line-height: 10vh;
+  border-radius: 2em 3pt 3pt 2em;
+
+  td {
+    color: #39384a;
+    margin-left: -5vw;
+  }
+
+  img {
+    border-radius: 50%;
+    height: 10vh;
+  }
+`;
