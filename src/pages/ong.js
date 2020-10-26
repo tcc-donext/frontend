@@ -66,7 +66,7 @@ const ongPage = () => {
         </OngInfoContainer>
       </OngSection>
       <CampaignSubtitle>
-        Campanhas ativas! <span>(3/10)</span>
+        Campanhas ativas! <span>({campaignsData.length}/10)</span>
       </CampaignSubtitle>
       <CampaignContainer>
         <Table>
