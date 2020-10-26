@@ -8,15 +8,15 @@ export const StyledInput = styled.input`
   outline: none;
   background-color: #ebebeb;
 
-  padding: 2.5% 5% 2.5% 4%;
-  font-size: 1.25em;
+  padding: ${props => props.padding || '2.5% 5% 2.5% 4%'};
+  font-size: ${props => props.fontSize || '1.25em'};
   color: #403e4d;
 `;
 
 export const StyledLabel = styled.label`
   display: block;
   color: #5c5a6f;
-  font-size: 1.625em;
+  font-size: ${props => props.fontSize || '1.625em'};
   font-weight: 300;
   padding-bottom: 1vh;
   padding-left: 1%;
