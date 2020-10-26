@@ -63,12 +63,13 @@ export const CampaignSubtitle = styled.h2`
 
 export const CampaignContainer = styled.div`
   display: flex;
+  justify-content: center;
   flex: 1;
   margin-top: 3.5vh;
 `;
 
 export const Table = styled.table`
-  width: 100%;
+  width: 95%;
   border: 0;
   margin-left: -2.5vw;
   border-collapse: collapse;
@@ -101,7 +102,7 @@ export const Table = styled.table`
 export const Campaign = styled.tr`
   background-color: #ebebeb;
   line-height: 10vh;
-  border-radius: 2em 3pt 3pt 2em;
+  border-radius: 4pt; /* 2em 4pt 4pt 2em -> se quiser deixar com a ponta esquerda arredondada */
 
   td {
     color: #39384a;
