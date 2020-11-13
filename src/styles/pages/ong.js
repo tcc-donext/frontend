@@ -77,11 +77,6 @@ export const Table = styled.table`
   font-size: 1.6em;
   text-align: center;
 
-  tbody {
-    display: block;
-    height: 22vh;
-    overflow: auto;
-  }
   thead,
   tbody,
   tr {
@@ -89,6 +84,7 @@ export const Table = styled.table`
     width: 100%;
     table-layout: fixed; /* even columns width , fix width of table too*/
   }
+
   th {
     font-weight: 300;
     color: #4e4d5d;
@@ -96,6 +92,10 @@ export const Table = styled.table`
 
   .spacer {
     height: 10px;
+  }
+
+  thead {
+    margin-bottom: 10px;
   }
 `;
 

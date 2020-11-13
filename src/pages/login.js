@@ -1,4 +1,3 @@
-import { StyledInput } from 'components/Input/styles';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
 

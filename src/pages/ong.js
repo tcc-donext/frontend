@@ -12,9 +12,16 @@ import {
 } from 'styles/pages/ong';
 import Input from 'components/Input';
 
-import Scrollbar from 'react-scrollbars-custom';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
 const campaignsData = [
+  {
+    imageURL: 'https://picsum.photos/300',
+    title: 'Tobias! ASMA',
+    total_value: 150,
+    target_value: 300,
+    donors: 7
+  },
   {
     imageURL: 'https://picsum.photos/300',
     title: 'Tobias! ASMA',
@@ -78,20 +85,20 @@ const ongPage = () => {
             </tr>
           </thead>
           <tbody>
-            <Scrollbar disableTrackYWidthCompensation noScrollX>
+            <OverlayScrollbarsComponent style={{ maxHeight: '22vh' }}>
               {campaignsData.map((campaign, i) => (
-                <>
-                  <tr class="spacer"></tr>
-                  <Campaign key={i}>
+                <div key={i}>
+                  {i !== 0 && <tr className="spacer"></tr>}
+                  <Campaign>
                     <td>{campaign.title}</td>
                     <td>
                       R$ {campaign.total_value}/{campaign.target_value}
                     </td>
                     <td>{campaign.donors}</td>
                   </Campaign>
-                </>
+                </div>
               ))}
-            </Scrollbar>
+            </OverlayScrollbarsComponent>
           </tbody>
         </Table>
       </CampaignContainer>
