@@ -30,7 +30,7 @@ const Home = () => {
               <a onClick={() => {setCurrentPage(3)}}>Contato</a>
             </li>
             <li>
-              <Button>Logar</Button>
+              <Button inverted height="6vh">Logar</Button>
             </li>
           </ul>
         </Header>

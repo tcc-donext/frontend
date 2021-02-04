@@ -22,5 +22,9 @@ export const Header = styled.header`
     width: auto;
     margin-top: -10vh;
   }
+
+  button {
+    margin-top: -1vh;
+  }
 `;
 export const Footer = styled.footer``;
