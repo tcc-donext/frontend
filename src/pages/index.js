@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PageLayout from 'components/layouts/PageLayout';
 
 import PageScroller from 'react-page-scroller';
@@ -5,25 +6,28 @@ import { Header, HeaderAnchor, Footer } from 'styles/pages/index';
 import Button from 'components/Button';
 
 const Home = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
   return (
-    <PageScroller>
+    <PageScroller pageOnChange={setCurrentPage} customPageNumber={currentPage}>
       <section className="welcome">
         <Header>
+          {/* prettier-ignore */}
           <ul>
             <li>
               <img src="/images/logo.png" alt="Logo DoNext" />
             </li>
             <li>
-              <HeaderAnchor>O que é?</HeaderAnchor>
+              <a onClick={() => {setCurrentPage(1)}}>O que é?</a>
             </li>
             <li>
-              <HeaderAnchor>Motivação</HeaderAnchor>
+              <a onClick={() => {setCurrentPage(2)}}>Motivação</a>
             </li>
             <li>
-              <HeaderAnchor>Quem Somos</HeaderAnchor>
+              <a onClick={() => {setCurrentPage(3)}}>Quem somos</a>
             </li>
             <li>
-              <HeaderAnchor>Contato</HeaderAnchor>
+              <a onClick={() => {setCurrentPage(3)}}>Contato</a>
             </li>
             <li>
               <Button>Logar</Button>
