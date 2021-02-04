@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PageLayout from 'components/layouts/PageLayout';
 
 import PageScroller from 'react-page-scroller';
-import { Header, HeaderAnchor, Footer } from 'styles/pages/index';
+import { Header, Footer } from 'styles/pages/index';
 import Button from 'components/Button';
 
 const Home = () => {
