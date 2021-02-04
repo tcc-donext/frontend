@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StyledButton = styled.button`
   display: flex;
@@ -8,8 +8,21 @@ const StyledButton = styled.button`
   outline: none;
   border: none;
   border-radius: 3pt;
-  background-color: #e37fd6;
-  color: #fff;
+
+  ${({ inverted }) =>
+    inverted &&
+    css`
+      border: 2pt solid #e37fd6;
+    `};
+
+  background-color: ${({ inverted }) => {
+    return inverted ? '#fff' : '#e37fd6';
+  }};
+
+  color: ${({ inverted }) => {
+    return inverted ? '#e37fd6' : '#fff';
+  }};
+
   font-size: ${props => props.fontSize || '1.2em'};
   font-weight: 300;
 
@@ -17,7 +30,10 @@ const StyledButton = styled.button`
   height: ${props => props.height || '4.75vh'};
 
   &:hover {
-    background-color: #dc61cc;
+    background-color: ${({ inverted }) => {
+      return inverted ? '#e37fd6' : '#dc61cc';
+    }};
+    color: #fff;
   }
 
   &:active {
