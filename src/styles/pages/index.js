@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  padding-top: 12vh;
-  padding-left: 2vw;
+  padding-top: 6%;
 
   ul {
     display: flex;
@@ -11,10 +10,14 @@ export const Header = styled.header`
     list-style: none;
   }
 
-  li > a {
+  a {
     font-size: 2em;
     font-weight: 300;
     cursor: pointer;
+  }
+
+  a:hover {
+    color: #555;
   }
 
   img {
@@ -25,6 +28,16 @@ export const Header = styled.header`
 
   button {
     margin-top: -1vh;
+  }
+
+  button > a {
+    text-decoration: none;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  button > a:hover {
+    color: inherit;
   }
 `;
 export const Footer = styled.footer``;

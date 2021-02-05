@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import PageLayout from 'components/layouts/PageLayout';
+import React, { useState } from 'react';
 
 import PageScroller from 'react-page-scroller';
 import { Header, Footer } from 'styles/pages/index';
@@ -9,7 +8,11 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
-    <PageScroller pageOnChange={setCurrentPage} customPageNumber={currentPage}>
+    <PageScroller
+      pageOnChange={setCurrentPage}
+      customPageNumber={currentPage}
+      renderAllPagesOnFirstRender
+    >
       <section className="welcome">
         <Header>
           {/* prettier-ignore */}
@@ -30,7 +33,7 @@ const Home = () => {
               <a onClick={() => {setCurrentPage(3)}}>Contato</a>
             </li>
             <li>
-              <Button inverted height="6vh">Logar</Button>
+              <Button inverted height="6vh" fontSize="1.5em"><a href="/login">Logar</a></Button>
             </li>
           </ul>
         </Header>
@@ -44,7 +47,5 @@ const Home = () => {
     </PageScroller>
   );
 };
-
-Home.layout = PageLayout;
 
 export default Home;
