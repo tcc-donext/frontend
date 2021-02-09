@@ -1,7 +1,8 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-
-import Input from 'components/Input';
+import React, { useState } from 'react'
+import Modal from 'react-modal';
+import CampaignInfo from 'components/CampaignInfo/index';
 import { Container, 
   ImgContainer, 
   Card, 
@@ -48,7 +49,28 @@ const campaignsData = [
   }
 ];
 
+const ModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '100px',
+    left: '140px',
+    right: '140px',
+    bottom: '100px',
+    backgroundColor: '#f6f6f6',
+    zIndex: '5'
+  }
+};
+
 const GerenciarCampanha = () => {
+  const [modalIsOpen,setIsOpen] = useState(false);
+
+  function closeModal(){
+    setIsOpen(false)
+  }
+
+  function OpenModal(){
+    setIsOpen(true)
+  }
   return (
     <Container>
       <ImgContainer size="3vw">
@@ -108,7 +130,8 @@ const GerenciarCampanha = () => {
             </tr>
           </thead>
           <tbody>
-            <OverlayScrollbarsComponent style={{ maxHeight: '22vh' }}>
+            <OverlayScrollbarsComponent style={{ maxHeight: '22vh'}}
+            options={{ scrollbars: { visibility: 'hidden' } }}>
               {campaignsData.map((campaign, i) => (
                 <div key={i}>
                   {i !== 0 && <tr className="spacer"></tr>}
@@ -126,7 +149,7 @@ const GerenciarCampanha = () => {
         </Table>
       </CampaignContainer>
       <AddCampaingContainer>
-        <AddCampaing>
+        <AddCampaing onClick={OpenModal}>
           <ImgContainerCenterColumn>
             <img 
             src="/images/plus.png"
@@ -135,7 +158,15 @@ const GerenciarCampanha = () => {
           </ImgContainerCenterColumn>        
         </AddCampaing>
       </AddCampaingContainer>
+      <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      style={ModalStyles}
+      >
+        <CampaignInfo />
+      </Modal>
     </Container>
+
   )
 }
 GerenciarCampanha.layout = FormPageLayout;
