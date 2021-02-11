@@ -6,7 +6,8 @@ import {
   Footer,
   WelcomeContainer,
   SignupForm,
-  WhatContainer
+  SectionsContainer,
+  MotivationContainer
 } from 'styles/pages/index';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -72,7 +73,7 @@ const Home = () => {
         </WelcomeContainer>
       </section>
       <section className="what">
-        <WhatContainer>
+        <SectionsContainer background="#fbfbfb">
           <h1>O que é?</h1>
           <img
             src="images/heart.png"
@@ -85,12 +86,59 @@ const Home = () => {
             nisl. Maecenas faucibus leo metus, vitae laoreet ante dapibus vel.
             Mauris tincidunt tincidunt diam, et cursus justo volutpat a.
           </p>
-        </WhatContainer>
+        </SectionsContainer>
       </section>
-      <section className="motivation">Motivação</section>
+      <section className="motivation">
+        <SectionsContainer imgHeight="50vh">
+          <h1>Motivação</h1>
+          <div className="sideby right">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a
+              ante nisi. In ullamcorper iaculis nisi, in ullamcorper dui gravida
+              ut. Pellentesque quis quam sed nisi molestie tempus. Nulla blandit
+              diam libero, non viverra risus semper eget. Etiam dignissim varius
+              velit, at tristique orci tincidunt sed. Curabitur luctus sit amet
+              purus ut ultricies. Donec ac feugiat arcu, at congue urna. Duis
+              fermentum laoreet nulla vel dapibus.
+            </p>
+            <img
+              src="images/cadastro_ong.png"
+              alt="Imagem ilustrativa para a seção de 'O que é?'"
+            />
+          </div>
+        </SectionsContainer>
+      </section>
       <section className="who">
-        Quem somos
-        <Footer>Contato</Footer>
+        <SectionsContainer background="#fbfbfb" height="80vh">
+          <h1>Quem somos</h1>
+          <div className="sideby left">
+            <img
+              src="images/cadastro_usuario.png"
+              alt="Imagem ilustrativa para a seção de 'O que é?'"
+            />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a
+              ante nisi. In ullamcorper iaculis nisi, in ullamcorper dui gravida
+              ut. Pellentesque quis quam sed nisi molestie tempus. Nulla blandit
+              diam libero, non viverra risus semper eget. Etiam dignissim varius
+              velit, at tristique orci tincidunt sed. Curabitur luctus sit amet
+              purus ut ultricies. Donec ac feugiat arcu, at congue urna. Duis
+              fermentum laoreet nulla vel dapibus.
+            </p>
+          </div>
+        </SectionsContainer>
+        <Footer>
+          <p>
+            Dúvidas?
+            <br />
+            Envie-nos um e-mail
+            <br />
+            <a href="mailto:contato@donext.com">contato@donext.com</a>
+          </p>
+          <span>
+            <p>Desenvolvido por equipe Donext © 2020</p>
+          </span>
+        </Footer>
       </section>
     </PageScroller>
   );

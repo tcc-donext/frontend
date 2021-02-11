@@ -82,16 +82,16 @@ export const SignupForm = styled.div`
   }
 `;
 
-export const WhatContainer = styled.div`
+export const SectionsContainer = styled.div`
   display: flex;
   flex: 1;
-  height: 100vh;
+  height: ${props => props.height || '100vh'};
   padding-left: 10vw;
   padding-right: 10vw;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: #fbfbfb;
+  background-color: ${props => props.background || '#FFF'};
 
   h1 {
     font-size: 3.5em;
@@ -106,9 +106,51 @@ export const WhatContainer = styled.div`
   }
 
   img {
-    height: 40vh;
+    height: ${props => props.imgHeight || '40vh'};
     width: auto;
+  }
+
+  .sideby {
+    display: grid;
+    grid-column-gap: 10vw;
+    margin-top: -10vh;
+
+    img {
+      margin-top: -5vh;
+    }
+  }
+
+  .right {
+    grid-template-columns: 1.5fr 0.5fr;
+  }
+
+  .left {
+    grid-template-columns: 0.5fr 1.5fr;
   }
 `;
 
-export const Footer = styled.footer``;
+export const Footer = styled.footer`
+  height: 20vh;
+  background-color: #2f2e41;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  text-align: center;
+
+  p {
+    color: #fbfbfb;
+    font-size: 1.6em;
+    font-weight: 300;
+
+    a {
+      text-decoration: underline;
+      color: inherit;
+    }
+  }
+
+  span {
+    p {
+      font-size: 1.25em;
+    }
+  }
+`;
