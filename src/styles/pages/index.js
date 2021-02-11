@@ -114,10 +114,6 @@ export const SectionsContainer = styled.div`
     display: grid;
     grid-column-gap: 10vw;
     margin-top: -10vh;
-
-    img {
-      margin-top: -5vh;
-    }
   }
 
   .right {

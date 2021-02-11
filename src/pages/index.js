@@ -76,7 +76,7 @@ const Home = () => {
         <SectionsContainer background="#fbfbfb">
           <h1>O que é?</h1>
           <img
-            src="images/heart.png"
+            src="images/whatis.svg"
             alt="Imagem ilustrativa para a seção de 'O que é?'"
           />
           <p>
@@ -89,7 +89,7 @@ const Home = () => {
         </SectionsContainer>
       </section>
       <section className="motivation">
-        <SectionsContainer imgHeight="50vh">
+        <SectionsContainer>
           <h1>Motivação</h1>
           <div className="sideby right">
             <p>
@@ -102,18 +102,18 @@ const Home = () => {
               fermentum laoreet nulla vel dapibus.
             </p>
             <img
-              src="images/cadastro_ong.png"
+              src="images/motivation.svg"
               alt="Imagem ilustrativa para a seção de 'O que é?'"
             />
           </div>
         </SectionsContainer>
       </section>
       <section className="who">
-        <SectionsContainer background="#fbfbfb" height="80vh">
+        <SectionsContainer background="#fbfbfb" height="80vh" imgHeight="45vh">
           <h1>Quem somos</h1>
           <div className="sideby left">
             <img
-              src="images/cadastro_usuario.png"
+              src="images/whois.svg"
               alt="Imagem ilustrativa para a seção de 'O que é?'"
             />
             <p>
