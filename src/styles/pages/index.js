@@ -40,4 +40,46 @@ export const Header = styled.header`
     color: inherit;
   }
 `;
+
+export const WelcomeContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  align-items: center;
+
+  .explain,
+  .signupForm {
+    display: inline-block;
+  }
+
+  .explain {
+    color: #5c5a6f;
+    width: 45vw;
+    font-size: 2.25em;
+    font-weight: 300;
+    margin-top: -5vh;
+  }
+`;
+
+export const SignupForm = styled.div`
+  padding: 1.5% 2%;
+  background-color: #fafafa;
+  border-radius: 2%;
+
+  .input {
+    padding-bottom: 2vh;
+  }
+
+  p {
+    padding-top: 15px;
+    font-size: 1.2em;
+    color: #5c5a6f;
+
+    a {
+      color: #656478;
+    }
+  }
+`;
+
 export const Footer = styled.footer``;
