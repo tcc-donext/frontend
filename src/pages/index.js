@@ -5,7 +5,8 @@ import {
   Header,
   Footer,
   WelcomeContainer,
-  SignupForm
+  SignupForm,
+  WhatContainer
 } from 'styles/pages/index';
 import Input from 'components/Input';
 import Button from 'components/Button';
@@ -70,7 +71,22 @@ const Home = () => {
           </SignupForm>
         </WelcomeContainer>
       </section>
-      <section className="what">O que é</section>
+      <section className="what">
+        <WhatContainer>
+          <h1>O que é?</h1>
+          <img
+            src="images/heart.png"
+            alt="Imagem ilustrativa para a seção de 'O que é?'"
+          />
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
+            magna nec dui vulputate, id interdum lorem eleifend. Donec ac
+            vestibulum odio. Sed mi massa, varius eu neque et, porttitor semper
+            nisl. Maecenas faucibus leo metus, vitae laoreet ante dapibus vel.
+            Mauris tincidunt tincidunt diam, et cursus justo volutpat a.
+          </p>
+        </WhatContainer>
+      </section>
       <section className="motivation">Motivação</section>
       <section className="who">
         Quem somos

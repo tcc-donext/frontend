@@ -82,4 +82,33 @@ export const SignupForm = styled.div`
   }
 `;
 
+export const WhatContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  padding-left: 10vw;
+  padding-right: 10vw;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #fbfbfb;
+
+  h1 {
+    font-size: 3.5em;
+    font-weight: 400;
+    color: #3f3d56;
+  }
+
+  p {
+    font-size: 2.25em;
+    font-weight: 300;
+    color: #2f2e3b;
+  }
+
+  img {
+    height: 40vh;
+    width: auto;
+  }
+`;
+
 export const Footer = styled.footer``;
