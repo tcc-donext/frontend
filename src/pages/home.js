@@ -4,10 +4,13 @@ import { useAuth } from 'contexts/auth';
 import {
   Container,
   Header,
-  Main,
   ProfilePicture,
-  Logo
+  Logo,
+  Main,
+  SearchIcon
 } from 'styles/pages/home';
+
+import Input from 'components/Input';
 
 const Home = () => {
   const { signed, user } = useAuth();
@@ -32,7 +35,20 @@ const Home = () => {
         </span>
         <Logo src="/images/logo.png" alt="Logo do DoNext" />
       </Header>
-      <Main></Main>
+      <Main>
+        <Input
+          label="Pesquisar campanhas"
+          padding="2% 5% 2% 4%"
+          width="90vw"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
+        >
+          <SearchIcon />
+        </Input>
+      </Main>
     </Container>
   );
 };

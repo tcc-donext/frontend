@@ -34,4 +34,31 @@ export const Logo = styled.img`
   height: 15vh;
 `;
 
-export const Main = styled.div``;
+export const Main = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+`;
+
+export const SearchIcon = styled.div`
+  color: #403e4d;
+  position: absolute;
+  margin-left: 20px;
+  margin-bottom: -40px;
+  width: 20px;
+  height: 20px;
+  border: solid 2px currentColor;
+  border-radius: 100%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+
+  :before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 8px;
+    height: 10px;
+    width: 2px;
+    background-color: currentColor;
+  }
+`;
