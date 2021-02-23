@@ -1,16 +1,16 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
 
 import { Container, Image, Divider } from 'styles/pages/login';
 import Button from 'components/Button';
 import Input from 'components/Input';
-import AuthContext from './../contexts/auth';
+import { useAuth } from './../contexts/auth';
 
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const { signIn } = useContext(AuthContext);
+  const { signIn } = useAuth();
 
   return (
     <Container>

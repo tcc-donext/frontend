@@ -1,20 +1,15 @@
+import api from './api';
+
 export const login = async (email, password) => {
-  const response = await fetch(`${process.env.SERVER_URL}/login`, {
-    method: 'POST',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify({
+  try {
+    const response = await api.post('/login', {
       des_email: email,
       des_senha: password
-    }),
-    mode: 'cors'
-  });
+    });
 
-  if (!response.ok) {
-    console.log(`Error. ${response.status}`);
-    window.location.href = '/login';
+    return response.data;
+  } catch (err) {
+    console.warn(`Não foi possível fazer o login: ${err}`);
     return null;
   }
-
-  const content = await response.json();
-  return content;
 };

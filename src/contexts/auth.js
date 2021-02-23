@@ -1,5 +1,6 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useContext } from 'react';
 import { login } from 'services/auth';
+import api from 'services/api';
 
 const AuthContext = createContext({});
 
@@ -9,8 +10,10 @@ export const AuthProvider = ({ children }) => {
   async function signIn(email, password) {
     const res = await login(email, password);
 
-    console.log(res);
-    if (res) setUser({ user: res.user, token: res.acessToken });
+    if (!res) return;
+
+    api.defaults.headers.common['Authorization'] = `Bearer ${res.accessToken}`;
+    setUser({ user: res.user });
   }
 
   return (
@@ -20,4 +23,8 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export default AuthContext;
+export function useAuth() {
+  const response = useContext(AuthContext);
+
+  return response;
+}
