@@ -1,6 +1,5 @@
 import { createContext, useState, useContext } from 'react';
 import { login } from 'services/auth';
-import api from 'services/api';
 
 const AuthContext = createContext({});
 
@@ -12,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 
     if (!res) return;
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${res.accessToken}`;
     setUser({ user: res.user });
   }
 
