@@ -9,7 +9,7 @@ export const login = async (email, password) => {
 
     useTokenHeader(response.data.accessToken);
 
-    return response.data.user;
+    return response.data;
   } catch (err) {
     console.warn(`Não foi possível fazer o login. ${err}`);
     return null;
