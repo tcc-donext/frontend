@@ -27,6 +27,20 @@ const refresh = async () => {
   }
 };
 
+export const logout = async () => {
+  api.defaults.headers.common.Authorization = '';
+
+  try {
+    // invalidate refresh token
+    const response = await api.post('/logout');
+
+    if (response.status == 200) return true;
+  } catch (err) {
+    console.err(err);
+    return false;
+  }
+};
+
 const useTokenHeader = token => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
