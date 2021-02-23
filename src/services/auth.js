@@ -43,6 +43,7 @@ export const logout = async () => {
 
 const useTokenHeader = token => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  localStorage.setItem('userToken', token);
 
   setTimeout(refresh, 900000);
 };
