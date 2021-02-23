@@ -44,12 +44,14 @@ const Login = () => {
             LOGAR
           </Button>
           <Divider>ou</Divider>
-          <Button width="100%" height="8vh" fontSize="1.8em">
-            Cadastre-se
-          </Button>
+          <Link href="/usuarioCadastro">
+            <Button width="100%" height="8vh" fontSize="1.8em">
+              Cadastre-se
+            </Button>
+          </Link>
           <p>
             É uma ong?{' '}
-            <Link href="#">
+            <Link href="/ongCadastro">
               <a>Cadastre-se aqui</a>
             </Link>
           </p>
