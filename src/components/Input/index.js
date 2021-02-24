@@ -1,10 +1,13 @@
 import { StyledInput, StyledLabel } from './styles';
 
 const Input = props => {
+  const { children, style, ...propsRest } = props;
+
   return (
-    <div className="input">
+    <div className="input" style={style}>
       <StyledLabel {...props.labelProps}>{props.label}</StyledLabel>
-      <StyledInput {...props} />
+      {children}
+      <StyledInput {...propsRest} />
     </div>
   );
 };
