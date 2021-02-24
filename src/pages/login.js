@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { Container, Image, Divider } from 'styles/pages/login';
 import Button from 'components/Button';
@@ -10,6 +11,7 @@ import { useAuth } from './../contexts/auth';
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const router = useRouter();
   const { signIn } = useAuth();
 
   return (
@@ -19,6 +21,7 @@ const Login = () => {
           label="Email"
           type="email"
           width="29vw"
+          value={email}
           onChange={event => {
             setEmail(event.target.value);
           }}
@@ -27,6 +30,7 @@ const Login = () => {
           label="Senha"
           type="password"
           width="29vw"
+          value={password}
           onChange={event => {
             setPassword(event.target.value);
           }}
@@ -36,9 +40,14 @@ const Login = () => {
             width="100%"
             height="8vh"
             fontSize="1.8em"
-            onClick={event => {
+            onClick={async event => {
               event.preventDefault();
-              signIn(email, password);
+              const success = await signIn(email, password);
+              if (success) router.push('/home');
+              else {
+                setEmail('');
+                setPassword('');
+              }
             }}
           >
             LOGAR

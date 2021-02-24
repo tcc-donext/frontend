@@ -14,7 +14,6 @@ import Input from 'components/Input';
 
 const Home = () => {
   const { signed, user } = useAuth();
-  console.log(signed, user);
 
   return (
     <Container>
