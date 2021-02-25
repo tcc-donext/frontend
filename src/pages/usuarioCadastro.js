@@ -21,7 +21,7 @@ const Registrar = () => {
       </form>
       <aside>
         <Image
-          src="/images/register_mountains.png"
+          src="/images/cadastro_usuario.png"
           alt="Desenho decorativo para a página"
         />
       </aside>
