@@ -31,7 +31,11 @@ const PerfilUsuario = () => {
         <h3>Doado para instituições</h3>
       </aside>
       <span className="Desconectar">
-      <Button className="botaoDesconectar" onClick={() => router.back()}><Image className="logoutIco" src="/images/logout.png"
+      <Button className="botaoDesconectar" onClick={async event => {
+              event.preventDefault();
+              const success = await logout();
+              if (success) router.push('/home');
+            }}><Image className="logoutIco" src="/images/logout.png"
           alt="Icone Logout"></Image>Desconectar</Button>
       </span>
       

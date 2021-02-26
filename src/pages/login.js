@@ -44,9 +44,8 @@ const Login = () => {
               event.preventDefault();
               const success = await signIn(email, password);
               if (success) router.push('/home');
-              else {
-                setEmail('');
-                setPassword('');
+              else{
+                router.push('/usuarioCadastro');
               }
             }}
           >
