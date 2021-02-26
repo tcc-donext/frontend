@@ -1,18 +1,43 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
+import api from '../services/api';
+import { useEffect, useState } from 'react';
 
 import { Container, Image, Divider } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+
+
 const PerfilUsuario = () => {
+
+  const [nome, setNome] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [telefone, setTelefone] = useState();
+  const [ddd, setDDD] = useState();
+
+  useEffect(() => {
+    api.defaults.headers.common = {
+      ...api.defaults.headers.common,
+      'Access-Control-Allow-Origin': 'http://localhost:3333/',
+}
+    api.get('/doador/1').then((response) => {
+      setNome(response['nom_doador']);
+      setEmail(response['des_email']);
+      setPassword(response['des_senha']);
+      setTelefone(response['nro_telefone'])
+      setDDD(response['nro_ddd']);
+    })
+  });
+
   return (
     <Container>
       <form>
-        <Input label="Nome" type="text" width="29vw" />
-        <Input label="Telefone" type="text" width="14vw"/>
-        <Input label="Senha" type="password" width="14vw"/>
-        <Input label="Email" type="Email" width="29vw" />
+        <Input label="Nome" type="text"  width="29vw" />
+        <Input label="Telefone" type="text"  width="14vw"/>
+        <Input label="Senha" type="password"  width="14vw"/>
+        <Input label="Email" type="Email"  width="29vw" />
         <div className="buttonsContainer">
           <Button width="100%" height="8vh" fontSize="1.8em">
             Salvar
