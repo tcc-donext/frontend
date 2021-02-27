@@ -11,33 +11,29 @@ import Input from 'components/Input';
 
 const PerfilUsuario = () => {
 
-  const [nome, setNome] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [telefone, setTelefone] = useState();
-  const [ddd, setDDD] = useState();
-
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [ddd, setDDD] = useState('');
+  
   useEffect(() => {
-    api.defaults.headers.common = {
-      ...api.defaults.headers.common,
-      'Access-Control-Allow-Origin': 'http://localhost:3333/',
-}
+
     api.get('/doador/1').then((response) => {
-      setNome(response['nom_doador']);
-      setEmail(response['des_email']);
-      setPassword(response['des_senha']);
-      setTelefone(response['nro_telefone'])
-      setDDD(response['nro_ddd']);
+      const data = response.data[0];
+      setNome(data['nom_doador']);
+      setEmail(data['des_email']);
+      setTelefone(data['nro_telefone'])
+      setDDD(data['nro_ddd']);
+      console.log(data);
     })
-  });
+  }, []);
 
   return (
     <Container>
       <form>
-        <Input label="Nome" type="text"  width="29vw" />
-        <Input label="Telefone" type="text"  width="14vw"/>
-        <Input label="Senha" type="password"  width="14vw"/>
-        <Input label="Email" type="Email"  width="29vw" />
+        <Input label="Nome" type="text"  width="29vw"  onChange={(e) => setNome(e.target.value)} value={nome}  />
+        <Input label="Telefone" type="text"  width="14vw" disabled readOnly value={`(${ddd}) ${telefone}`} />
+        <Input label="Email" type="Email"  width="29vw" disabled readOnly value={email} />
         <div className="buttonsContainer">
           <Button width="100%" height="8vh" fontSize="1.8em">
             Salvar
