@@ -37,7 +37,11 @@ export const Logo = styled.img`
 export const Main = styled.div`
   display: flex;
   flex: 1;
-  justify-content: center;
+  flex-direction: column;
+
+  .input {
+    align-self: center;
+  }
 `;
 
 export const SearchIcon = styled.div`
@@ -60,5 +64,26 @@ export const SearchIcon = styled.div`
     height: 10px;
     width: 2px;
     background-color: currentColor;
+  }
+`;
+
+export const FilterButtonsContainer = styled.div`
+  align-self: center;
+`;
+
+export const FilterButton = styled.button`
+  background-color: #fff;
+  color: #6c6b7e;
+  font-size: 1.5em;
+  font-weight: 300;
+  border: none;
+  border-radius: 2pt;
+  outline: none;
+  padding: 15px;
+  margin: 0px 15px;
+  margin-top: 2vh;
+
+  :active {
+    background-color: #f6f6f6;
   }
 `;
