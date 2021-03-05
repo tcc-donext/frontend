@@ -1,11 +1,23 @@
-import FormPageLayout from 'components/layouts/FormPageLayout';
+import { useState, useEffect } from 'react';
+import { useAuth } from './../contexts/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
+import FormPageLayout from 'components/layouts/FormPageLayout';
 import { Container, Image, ImageCentral } from 'styles/pages/perfilOng.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
 const PerfilOng = () => {
+  const { signed, user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!signed) {
+      router.push('/');
+    }
+  }, []);
+
   return (
     <Container>
       <form>
