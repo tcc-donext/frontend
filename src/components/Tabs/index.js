@@ -33,7 +33,7 @@ const TabsC = props => {
         }
       })}
       </TabsLabel>
-      <TabsForm onSubmit={props.Handle}>
+      <TabsForm>
       {props.children.map((children, index) => {
             if (index == activeTab) {
               return children;
