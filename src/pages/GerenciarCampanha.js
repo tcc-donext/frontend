@@ -1,6 +1,7 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Modal from 'react-modal';
 import CampaignInfo from 'components/CampaignInfo/index';
 import { Container, 
@@ -17,6 +18,7 @@ import { Container,
   AddCampaingContainer,
   ImgContainerCenterColumn} from 'styles/pages/GerenciarCampanha'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import { useAuth } from 'contexts/auth'
 
 const campaignsData = [
   {
@@ -63,6 +65,14 @@ const ModalStyles = {
 
 const GerenciarCampanha = () => {
   const [modalIsOpen,setIsOpen] = useState(false);
+  const { signed, user } = useAuth();
+  const router = useRouter()
+
+  useEffect(() => {
+      if(!signed){
+        router.push('/')
+      }
+  }, []);
 
   function closeModal(){
     setIsOpen(false)

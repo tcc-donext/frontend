@@ -17,10 +17,38 @@ import { Formik, Form } from 'formik';
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
 import moment from 'moment'
+import { useAuth } from 'contexts/auth'
+import api from 'services/api'
+
+
+
+
+const defaultMaskOptions = {
+  prefix: 'R$',
+  suffix: '',
+  includeThousandsSeparator: true,
+  thousandsSeparatorSymbol: '.',
+  allowDecimal: true,
+  decimalSymbol: ',',
+  decimalLimit: 2, 
+  integerLimit: 10, 
+  allowNegative: false,
+  allowLeadingZeroes: false,
+}
+const curruncyStyle = {
+  backgroundColor: '#ebebeb',
+  color: '#403e4d',
+  height: '6.5vh',
+  border: 'none',
+  fontSize: '1.25em',
+  width: '32vw'
+}
 
 const CampaignInfo = props => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const { user } = useAuth();
+  
 
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('/images/ebebeb.jpg');
@@ -50,26 +78,8 @@ const CampaignInfo = props => {
     return <MaskedInput mask={currencyMask} {...inputProps} />
   }
 
-  const defaultMaskOptions = {
-    prefix: 'R$',
-    suffix: '',
-    includeThousandsSeparator: true,
-    thousandsSeparatorSymbol: '.',
-    allowDecimal: true,
-    decimalSymbol: ',',
-    decimalLimit: 2, 
-    integerLimit: 10, 
-    allowNegative: false,
-    allowLeadingZeroes: false,
-  }
-  const curruncyStyle = {
-    backgroundColor: '#ebebeb',
-    color: '#403e4d',
-    height: '6.5vh',
-    border: 'none',
-    fontSize: '1.25em',
-    width: '32vw'
-  }
+  
+
 
 
   return (
@@ -82,8 +92,28 @@ const CampaignInfo = props => {
         dataInicio: '',
         dataFim: '',
       }}
-      render={({ values, errors, touched, handleChange }) => (
-        <Form style={{ height: '99%' }}>
+      onSubmit={ async (values) => {
+
+        const data = {
+          id_ong: user.id,
+          des_titulo: values.nome,
+          des_geral: values.Descricao,
+          cod_categoria: values.categoria,
+          dat_inicio: values.dataInicio,
+          dat_fim: values.dataFim,
+          vlr_objetivo: values.objetivo,
+        }
+          try{
+            const response = await api.post("campanhas", data)
+            console.log(response)
+
+          }catch(err){
+            console.log(err)
+          }
+
+      }}
+      render={({ values, errors, touched, handleChange, handleSubmit }) => (
+        <Form style={{ height: '99%' }} onSubmit={handleSubmit} >
           <Container>
             <FormLayout>
               <InputField>
@@ -150,8 +180,9 @@ const CampaignInfo = props => {
                     dateFormat="dd/MM/yyyy"
                     selected={endDate}
                     onChange={date => {
-                      etEndDate(date)
-                      values.dataFim = date;
+                      var selectedDateStr = moment(date).format('DD.MM.YYYY')
+                      setEndDate(date)
+                      values.dataFim = selectedDateStr;
                     }}
                     placeholderText="fim"
                     customInput={<Input width="15vw" fontSize="1em" />}

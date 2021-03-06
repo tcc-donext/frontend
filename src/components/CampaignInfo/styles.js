@@ -25,6 +25,7 @@ export const InputArea = styled.textarea`
   border: none;
   resize: none;
   width: 32vw;
+  font-size: 24px;
 `;
 export const SelectArea = styled.select`
   background-color: #ebebeb;
@@ -38,6 +39,8 @@ export const SelectArea = styled.select`
 
 export const InputField = styled.div`
   font-size: 24px;
+  display:flex;
+  flex-direction: column;
 `;
 
 export const Row = styled.div`

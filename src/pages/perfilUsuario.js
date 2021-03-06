@@ -1,18 +1,39 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
+import api from '../services/api';
+import { useEffect, useState } from 'react';
 
 import { Container, Image, Divider } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+
+
 const PerfilUsuario = () => {
+
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [ddd, setDDD] = useState('');
+  
+  useEffect(() => {
+
+    api.get('/doador/1').then((response) => {
+      const data = response.data[0];
+      setNome(data['nom_doador']);
+      setEmail(data['des_email']);
+      setTelefone(data['nro_telefone'])
+      setDDD(data['nro_ddd']);
+      console.log(data);
+    })
+  }, []);
+
   return (
     <Container>
       <form>
-        <Input label="Nome" type="text" width="29vw" />
-        <Input label="Telefone" type="text" width="14vw"/>
-        <Input label="Senha" type="password" width="14vw"/>
-        <Input label="Email" type="Email" width="29vw" />
+        <Input label="Nome" type="text"  width="29vw"  onChange={(e) => setNome(e.target.value)} value={nome}  />
+        <Input label="Telefone" type="text"  width="14vw" disabled readOnly value={`(${ddd}) ${telefone}`} />
+        <Input label="Email" type="Email"  width="29vw" disabled readOnly value={email} />
         <div className="buttonsContainer">
           <Button width="100%" height="8vh" fontSize="1.8em">
             Salvar
