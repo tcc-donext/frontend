@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -37,7 +36,6 @@ export const Logo = styled.img`
 
 export const Main = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
 
   .input {
