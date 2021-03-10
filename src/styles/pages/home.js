@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -40,29 +41,6 @@ export const Main = styled.div`
 
   .input {
     align-self: center;
-  }
-`;
-
-export const SearchIcon = styled.div`
-  color: #403e4d;
-  position: absolute;
-  margin-left: 20px;
-  margin-bottom: -40px;
-  width: 20px;
-  height: 20px;
-  border: solid 2px currentColor;
-  border-radius: 100%;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-
-  :before {
-    content: '';
-    position: absolute;
-    top: 18px;
-    left: 8px;
-    height: 10px;
-    width: 2px;
-    background-color: currentColor;
   }
 `;
 

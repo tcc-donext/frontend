@@ -57,9 +57,8 @@ const Home = () => {
             flexDirection: 'column',
             justifyContent: 'center'
           }}
-        >
-          <SearchIcon />
-        </Input>
+          icon="images/search.svg"
+        />
         <FilterButtonsContainer>
           <FilterButton>Animais</FilterButton>
           <FilterButton>Pessoas</FilterButton>
