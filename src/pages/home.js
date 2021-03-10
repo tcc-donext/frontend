@@ -11,7 +11,8 @@ import {
   Main,
   SearchIcon,
   FilterButtonsContainer,
-  FilterButton
+  FilterButton,
+  CampaignsContainer
 } from 'styles/pages/home';
 
 import Input from 'components/Input';
@@ -66,10 +67,12 @@ const Home = () => {
           <FilterButton>Educação</FilterButton>
         </FilterButtonsContainer>
 
-        {campaigns &&
-          campaigns.map((campaign, i) => (
-            <Campaign key={i} campaign={campaign} />
-          ))}
+        <CampaignsContainer>
+          {campaigns &&
+            campaigns.map((campaign, i) => (
+              <Campaign key={i} campaign={campaign} />
+            ))}
+        </CampaignsContainer>
       </Main>
     </Container>
   );

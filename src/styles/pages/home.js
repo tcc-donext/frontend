@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -86,4 +87,16 @@ export const FilterButton = styled.button`
   :active {
     background-color: #f6f6f6;
   }
+`;
+
+export const CampaignsContainer = styled.div`
+  align-self: center;
+  display: grid;
+  grid-template-columns: 28vw 28vw 28vw;
+  grid-template-rows: auto;
+  column-gap: 50px;
+  row-gap: 50px;
+
+  background-color: #fff;
+  padding: 20px 60px;
 `;
