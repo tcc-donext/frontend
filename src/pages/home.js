@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import PageLayout from 'components/layouts/PageLayout';
 import { useAuth } from 'contexts/auth';
+import api from 'services/api';
 
 import {
   Container,
@@ -15,38 +17,15 @@ import {
 import Input from 'components/Input';
 import Campaign from 'components/Campaign';
 
-// temporario: ate a integração com o backend
-const campaigns = [
-  {
-    id_ong: 6,
-    seq_campanha: 1,
-    des_titulo: 'Tobias! ASMA',
-    des_geral:
-      'Ajude o cão Tobias, de 2 semanas de idade, que está com asma e precisando muito de sua ajuda!',
-    cod_categoria: 1,
-    dat_inicio: '2021-03-02T03:00:00.000Z',
-    dat_fim: '2021-06-04T03:00:00.000Z',
-    vlr_objetivo: 'R$ 120.000,00',
-    vlr_arrecadado: 'R$ 40000,00',
-    vlr_pago: 'R$ 0,00'
-  },
-  {
-    id_ong: 6,
-    seq_campanha: 2,
-    des_titulo: 'Tobias! ASMA DENOVO!',
-    des_geral:
-      'Ajude o cão Tobias denovo, de 2 semanas de idade, que está com asma e precisando muito de sua ajuda!',
-    cod_categoria: 1,
-    dat_inicio: '2021-03-02T03:00:00.000Z',
-    dat_fim: '2021-06-04T03:00:00.000Z',
-    vlr_objetivo: 'R$ 120.000,00',
-    vlr_arrecadado: 'R$ 100.000,00',
-    vlr_pago: 'R$ 0,00'
-  }
-];
-
 const Home = () => {
+  const [campaigns, setCampaigns] = useState();
   const { signed, user } = useAuth();
+
+  useEffect(async () => {
+    const campaignsFetch = await api.get('/campanhas');
+
+    setCampaigns(campaignsFetch.data);
+  }, []);
 
   return (
     <Container>
@@ -87,9 +66,10 @@ const Home = () => {
           <FilterButton>Educação</FilterButton>
         </FilterButtonsContainer>
 
-        {campaigns.map((campaign, i) => (
-          <Campaign key={i} campaign={campaign} />
-        ))}
+        {campaigns &&
+          campaigns.map((campaign, i) => (
+            <Campaign key={i} campaign={campaign} />
+          ))}
       </Main>
     </Container>
   );
