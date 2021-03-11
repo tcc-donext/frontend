@@ -19,6 +19,7 @@ import Campaign from 'components/Campaign';
 
 const Home = () => {
   const [campaigns, setCampaigns] = useState();
+  const [stringFilter, setStringFilter] = useState('');
   const [filters, setFilters] = useState({
     animal: false,
     pessoas: false,
@@ -76,20 +77,58 @@ const Home = () => {
             justifyContent: 'center'
           }}
           icon="images/search.svg"
+          value={stringFilter}
+          onChange={event => {
+            setStringFilter(event.target.value);
+          }}
         />
-        
+
         <FilterButtonsContainer>
-          <FilterButton active={filters.animal} onClick={() => {handleFilterClick('animal')}}>Animais</FilterButton>
-          <FilterButton active={filters.pessoas} onClick={() => {handleFilterClick('pessoas')}}>Pessoas</FilterButton>
-          <FilterButton active={filters.natureza} onClick={() => {handleFilterClick('natureza')}}>Natureza</FilterButton>
-          <FilterButton active={filters.educacao} onClick={() => {handleFilterClick('educacao')}}>Educação</FilterButton>
+          <FilterButton
+            active={filters.animal}
+            onClick={() => {
+              handleFilterClick('animal');
+            }}
+          >
+            Animais
+          </FilterButton>
+          <FilterButton
+            active={filters.pessoas}
+            onClick={() => {
+              handleFilterClick('pessoas');
+            }}
+          >
+            Pessoas
+          </FilterButton>
+          <FilterButton
+            active={filters.natureza}
+            onClick={() => {
+              handleFilterClick('natureza');
+            }}
+          >
+            Natureza
+          </FilterButton>
+          <FilterButton
+            active={filters.educacao}
+            onClick={() => {
+              handleFilterClick('educacao');
+            }}
+          >
+            Educação
+          </FilterButton>
         </FilterButtonsContainer>
 
         <CampaignsContainer>
           {campaigns &&
-            campaigns.map((campaign, i) => (
-              <Campaign key={i} campaign={campaign} />
-            ))}
+            campaigns.map((campaign, i) => {
+              console.log(campaign);
+              if (
+                campaign.des_titulo.toLowerCase().includes(stringFilter) ||
+                campaign.des_geral.toLowerCase().includes(stringFilter)
+              ) {
+                return <Campaign key={i} campaign={campaign} />;
+              }
+            })}
         </CampaignsContainer>
       </Main>
     </Container>
