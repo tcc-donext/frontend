@@ -4,6 +4,7 @@ import api from 'services/api';
 import {
   CampaignContainer,
   CampaignImage,
+  CampaignNoImage,
   CampaignTitle,
   OngImage,
   OngNoImage,
@@ -24,11 +25,15 @@ const Campaign = ({ campaign }) => {
 
   return (
     <CampaignContainer>
-      <CampaignImage src={'https://picsum.photos/600'} />
+      {!!campaign.fotos[0] ? (
+        <CampaignImage src={campaign.fotos[0]} />
+      ) : (
+        <CampaignNoImage />
+      )}
       <ContentSection>
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
         <OngSection>
-          {ong?.image_url ? <OngImage src={ong.image_url} /> : <OngNoImage />}
+          {ong?.foto ? <OngImage src={ong.foto} /> : <OngNoImage />}
           {ong && (
             <OngData>
               <p>{ong['nom_ONG']}</p>

@@ -9,7 +9,6 @@ import {
   ProfilePicture,
   Logo,
   Main,
-  SearchIcon,
   FilterButtonsContainer,
   FilterButton,
   CampaignsContainer

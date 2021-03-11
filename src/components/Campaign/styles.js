@@ -13,6 +13,14 @@ export const CampaignImage = styled.img`
   object-fit: cover;
 `;
 
+export const CampaignNoImage = styled.div`
+  height: 38vh;
+  width: 28vw;
+
+  background-color: #7cffcb;
+  background-image: linear-gradient(0, #7cffcb 0%, #74f2ce 74%);
+`;
+
 export const CampaignTitle = styled.h1`
   font-weight: 400;
   color: #403e4d;
