@@ -19,6 +19,13 @@ import Campaign from 'components/Campaign';
 
 const Home = () => {
   const [campaigns, setCampaigns] = useState();
+  const [filters, setFilters] = useState({
+    animal: false,
+    pessoas: false,
+    natureza: false,
+    educacao: false
+  });
+
   const { signed, user } = useAuth();
 
   useEffect(async () => {
@@ -26,6 +33,18 @@ const Home = () => {
 
     setCampaigns(campaignsFetch.data);
   }, []);
+
+  const handleFilterClick = filter => {
+    const newFilter = {
+      animal: false,
+      pessoas: false,
+      natureza: false,
+      educacao: false
+    };
+    newFilter[filter] = !filters[filter];
+
+    setFilters(newFilter);
+  };
 
   return (
     <Container>
@@ -58,11 +77,12 @@ const Home = () => {
           }}
           icon="images/search.svg"
         />
+        
         <FilterButtonsContainer>
-          <FilterButton>Animais</FilterButton>
-          <FilterButton>Pessoas</FilterButton>
-          <FilterButton>Natureza</FilterButton>
-          <FilterButton>Educação</FilterButton>
+          <FilterButton active={filters.animal} onClick={() => {handleFilterClick('animal')}}>Animais</FilterButton>
+          <FilterButton active={filters.pessoas} onClick={() => {handleFilterClick('pessoas')}}>Pessoas</FilterButton>
+          <FilterButton active={filters.natureza} onClick={() => {handleFilterClick('natureza')}}>Natureza</FilterButton>
+          <FilterButton active={filters.educacao} onClick={() => {handleFilterClick('educacao')}}>Educação</FilterButton>
         </FilterButtonsContainer>
 
         <CampaignsContainer>

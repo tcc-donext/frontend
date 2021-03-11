@@ -49,7 +49,7 @@ export const FilterButtonsContainer = styled.div`
 `;
 
 export const FilterButton = styled.button`
-  background-color: #fff;
+  background-color: ${({ active }) => (active ? '#f6f6f6' : '#fff')};
   color: #6c6b7e;
   font-size: 1.5em;
   font-weight: 300;
@@ -59,10 +59,6 @@ export const FilterButton = styled.button`
   padding: 15px;
   margin: 0px 15px;
   margin-top: 2vh;
-
-  :active {
-    background-color: #f6f6f6;
-  }
 `;
 
 export const CampaignsContainer = styled.div`
