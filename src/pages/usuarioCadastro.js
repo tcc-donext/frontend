@@ -11,20 +11,36 @@ import Link from 'next/link';
 import { Container, Image, Divider } from 'styles/pages/usuarioCadastro';
 import Button from 'components/Button';
 import Input from 'components/Input';
+import api from 'services/api';
 
 const Registrar = () => {
 
   const [nome, setNome] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [ddd, setDDD] = useState();
   const [telefone, setTelefone] = useState();
 
   const router = useRouter();
   const { signIn } = useAuth();
+  
+  async function Submit(e){
+    e.preventDefault()
+
+    const data = {
+      nom_doador: nome,
+      des_email: email,
+      nro_ddd: ddd,
+      nro_telefone: telefone,
+      des_senha: password
+    }
+
+    const response = await api.post("doador",data)
+  }
 
   return (
     <Container>
-      <form>
+      <form onSubmit="Submit()">
         <Input 
         label="Nome *" 
         type="text" 
@@ -50,6 +66,15 @@ const Registrar = () => {
         value={password}
         onChange={event => {
           setPassword(event.target.value);
+        }}
+        />
+        <Input 
+        label="DDD *" 
+        type="text" 
+        width="6vw"
+        value={ddd}
+        onChange={event => {
+          setDDD(event.target.value);
         }}
         />
         <Input 
