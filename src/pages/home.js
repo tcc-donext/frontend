@@ -121,10 +121,20 @@ const Home = () => {
         <CampaignsContainer>
           {campaigns &&
             campaigns.map((campaign, i) => {
-              console.log(campaign);
+              const hasFilters =
+                filters.animal ||
+                filters.educacao ||
+                filters.natureza ||
+                filters.pessoas;
+
               if (
-                campaign.des_titulo.toLowerCase().includes(stringFilter) ||
-                campaign.des_geral.toLowerCase().includes(stringFilter)
+                (campaign.des_titulo.toLowerCase().includes(stringFilter) ||
+                  campaign.des_geral.toLowerCase().includes(stringFilter)) &&
+                (!hasFilters ||
+                  (filters.animal && campaign.cod_categoria === 1) ||
+                  (filters.pessoas && campaign.cod_categoria === 2) ||
+                  (filters.natureza && campaign.cod_categoria === 3) ||
+                  (filters.educacao && campaign.cod_categoria === 4))
               ) {
                 return <Campaign key={i} campaign={campaign} />;
               }
