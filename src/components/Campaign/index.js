@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import api from 'services/api';
 
 import {
@@ -19,6 +20,7 @@ const Campaign = ({ campaign }) => {
 
   useEffect(async () => {
     const ongFetch = await api.get(`/ongs/${campaign.id_ong}`);
+    console.log(ongFetch.data[0][0]);
 
     setOng(ongFetch.data[0][0]);
   }, []);
@@ -32,15 +34,17 @@ const Campaign = ({ campaign }) => {
       )}
       <ContentSection>
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
-        <OngSection>
-          {ong?.foto ? <OngImage src={ong.foto} /> : <OngNoImage />}
-          {ong && (
-            <OngData>
-              <p>{ong['nom_ONG']}</p>
-              <span>{`${ong['des_endereco']} - CEP: ${ong['nro_cep']}`}</span>
-            </OngData>
-          )}
-        </OngSection>
+        <Link href={ong ? `/ong/${ong['id_ong']}` : ''}>
+          <OngSection>
+            {ong?.foto ? <OngImage src={ong.foto} /> : <OngNoImage />}
+            {ong && (
+              <OngData>
+                <p>{ong['nom_ONG']}</p>
+                <span>{`${ong['des_endereco']} - CEP: ${ong['nro_cep']}`}</span>
+              </OngData>
+            )}
+          </OngSection>
+        </Link>
         <p
           className="valueLabel"
           style={{ color: '#2f2e41', fontWeight: 'bold', paddingBottom: 5 }}

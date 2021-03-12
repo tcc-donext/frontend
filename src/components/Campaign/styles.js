@@ -64,6 +64,7 @@ export const OngSection = styled.div`
   display: inline-flex;
   align-items: center;
   padding: 15px 0%;
+  cursor: pointer;
 `;
 
 export const ProgressBar = ({ goal, current }) => (
