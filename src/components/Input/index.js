@@ -6,7 +6,6 @@ const Input = props => {
   return (
     <div className="input" style={style}>
       <StyledLabel {...props.labelProps}>{props.label}</StyledLabel>
-      {children}
       <StyledInput {...propsRest} />
     </div>
   );

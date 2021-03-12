@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import PageLayout from 'components/layouts/PageLayout';
 import { useAuth } from 'contexts/auth';
+import api from 'services/api';
 
 import {
   Container,
@@ -7,46 +9,43 @@ import {
   ProfilePicture,
   Logo,
   Main,
-  SearchIcon,
   FilterButtonsContainer,
-  FilterButton
+  FilterButton,
+  CampaignsContainer
 } from 'styles/pages/home';
 
 import Input from 'components/Input';
 import Campaign from 'components/Campaign';
 
-// temporario: ate a integração com o backend
-const campaigns = [
-  {
-    id_ong: 6,
-    seq_campanha: 1,
-    des_titulo: 'Tobias! ASMA',
-    des_geral:
-      'Ajude o cão Tobias, de 2 semanas de idade, que está com asma e precisando muito de sua ajuda!',
-    cod_categoria: 1,
-    dat_inicio: '2021-03-02T03:00:00.000Z',
-    dat_fim: '2021-06-04T03:00:00.000Z',
-    vlr_objetivo: 'R$ 120.000,00',
-    vlr_arrecadado: 'R$ 40000,00',
-    vlr_pago: 'R$ 0,00'
-  },
-  {
-    id_ong: 6,
-    seq_campanha: 2,
-    des_titulo: 'Tobias! ASMA DENOVO!',
-    des_geral:
-      'Ajude o cão Tobias denovo, de 2 semanas de idade, que está com asma e precisando muito de sua ajuda!',
-    cod_categoria: 1,
-    dat_inicio: '2021-03-02T03:00:00.000Z',
-    dat_fim: '2021-06-04T03:00:00.000Z',
-    vlr_objetivo: 'R$ 120.000,00',
-    vlr_arrecadado: 'R$ 100.000,00',
-    vlr_pago: 'R$ 0,00'
-  }
-];
-
 const Home = () => {
+  const [campaigns, setCampaigns] = useState();
+  const [stringFilter, setStringFilter] = useState('');
+  const [filters, setFilters] = useState({
+    animal: false,
+    pessoas: false,
+    natureza: false,
+    educacao: false
+  });
+
   const { signed, user } = useAuth();
+
+  useEffect(async () => {
+    const campaignsFetch = await api.get('/campanhas');
+
+    setCampaigns(campaignsFetch.data);
+  }, []);
+
+  const handleFilterClick = filter => {
+    const newFilter = {
+      animal: false,
+      pessoas: false,
+      natureza: false,
+      educacao: false
+    };
+    newFilter[filter] = !filters[filter];
+
+    setFilters(newFilter);
+  };
 
   return (
     <Container>
@@ -77,19 +76,70 @@ const Home = () => {
             flexDirection: 'column',
             justifyContent: 'center'
           }}
-        >
-          <SearchIcon />
-        </Input>
+          icon="images/search.svg"
+          value={stringFilter}
+          onChange={event => {
+            setStringFilter(event.target.value);
+          }}
+        />
+
         <FilterButtonsContainer>
-          <FilterButton>Animais</FilterButton>
-          <FilterButton>Pessoas</FilterButton>
-          <FilterButton>Natureza</FilterButton>
-          <FilterButton>Educação</FilterButton>
+          <FilterButton
+            active={filters.animal}
+            onClick={() => {
+              handleFilterClick('animal');
+            }}
+          >
+            Animais
+          </FilterButton>
+          <FilterButton
+            active={filters.pessoas}
+            onClick={() => {
+              handleFilterClick('pessoas');
+            }}
+          >
+            Pessoas
+          </FilterButton>
+          <FilterButton
+            active={filters.natureza}
+            onClick={() => {
+              handleFilterClick('natureza');
+            }}
+          >
+            Natureza
+          </FilterButton>
+          <FilterButton
+            active={filters.educacao}
+            onClick={() => {
+              handleFilterClick('educacao');
+            }}
+          >
+            Educação
+          </FilterButton>
         </FilterButtonsContainer>
 
-        {campaigns.map((campaign, i) => (
-          <Campaign key={i} campaign={campaign} />
-        ))}
+        <CampaignsContainer>
+          {campaigns &&
+            campaigns.map((campaign, i) => {
+              const hasFilters =
+                filters.animal ||
+                filters.educacao ||
+                filters.natureza ||
+                filters.pessoas;
+
+              if (
+                (campaign.des_titulo.toLowerCase().includes(stringFilter) ||
+                  campaign.des_geral.toLowerCase().includes(stringFilter)) &&
+                (!hasFilters ||
+                  (filters.animal && campaign.cod_categoria === 1) ||
+                  (filters.pessoas && campaign.cod_categoria === 2) ||
+                  (filters.natureza && campaign.cod_categoria === 3) ||
+                  (filters.educacao && campaign.cod_categoria === 4))
+              ) {
+                return <Campaign key={i} campaign={campaign} />;
+              }
+            })}
+        </CampaignsContainer>
       </Main>
     </Container>
   );

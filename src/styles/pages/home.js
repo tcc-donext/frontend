@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100vw;
   height: 100vh;
+  overflow-x: hidden;
 `;
 
 export const Header = styled.div`
@@ -36,34 +37,10 @@ export const Logo = styled.img`
 
 export const Main = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
 
   .input {
     align-self: center;
-  }
-`;
-
-export const SearchIcon = styled.div`
-  color: #403e4d;
-  position: absolute;
-  margin-left: 20px;
-  margin-bottom: -40px;
-  width: 20px;
-  height: 20px;
-  border: solid 2px currentColor;
-  border-radius: 100%;
-  -webkit-transform: rotate(-45deg);
-  transform: rotate(-45deg);
-
-  :before {
-    content: '';
-    position: absolute;
-    top: 18px;
-    left: 8px;
-    height: 10px;
-    width: 2px;
-    background-color: currentColor;
   }
 `;
 
@@ -72,7 +49,7 @@ export const FilterButtonsContainer = styled.div`
 `;
 
 export const FilterButton = styled.button`
-  background-color: #fff;
+  background-color: ${({ active }) => (active ? '#f6f6f6' : '#fff')};
   color: #6c6b7e;
   font-size: 1.5em;
   font-weight: 300;
@@ -82,8 +59,16 @@ export const FilterButton = styled.button`
   padding: 15px;
   margin: 0px 15px;
   margin-top: 2vh;
+`;
 
-  :active {
-    background-color: #f6f6f6;
-  }
+export const CampaignsContainer = styled.div`
+  align-self: center;
+  display: grid;
+  grid-template-columns: 28vw 28vw 28vw;
+  grid-template-rows: auto;
+  column-gap: 50px;
+  row-gap: 50px;
+
+  background-color: #fff;
+  padding: 20px 60px;
 `;

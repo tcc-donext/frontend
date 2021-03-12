@@ -6,6 +6,10 @@ export const StyledInput = styled.input`
   height: 6.5vh;
   width: ${props => props.width || 'auto'};
   outline: none;
+
+  ${props =>
+    props.icon &&
+    `background: url(${props.icon}) 20px 15px / 40px 40px no-repeat scroll;`}
   background-color: #ebebeb;
 
   padding: ${props => props.padding || '2.5% 5% 2.5% 4%'};
