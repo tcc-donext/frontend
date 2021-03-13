@@ -45,8 +45,8 @@ const curruncyStyle = {
 }
 
 const CampaignInfo = props => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(props.campaign ? new Date(props.campaign.dat_inicio) : null);
+  const [endDate, setEndDate] = useState(props.campaign ? new Date(props.campaign.dat_fim)  : null);
   const { user } = useAuth();
   
 
@@ -85,12 +85,12 @@ const CampaignInfo = props => {
   return (
     <Formik
       initialValues={{
-        nome: '',
-        Descricao: '',
-        categoria: '',
-        objetivo: '',
-        dataInicio: '',
-        dataFim: '',
+        nome: props.campaign ? props.campaign.des_titulo : null,
+        Descricao: props.campaign ? props.campaign.des_geral : null,
+        categoria:  props.campaign ? props.campaign.cod_categoria : null, 
+        objetivo: props.campaign ? props.campaign.vlr_objetivo  : null,
+        dataInicio:  '',
+        dataFim:  '',
       }}
       onSubmit={ async (values) => {
 
@@ -103,13 +103,21 @@ const CampaignInfo = props => {
           dat_fim: values.dataFim,
           vlr_objetivo: values.objetivo,
         }
-          try{
-            const response = await api.post("campanhas", data)
-            console.log(response)
+        const formData = new FormData()
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key])
+        })
+        if(selectedFile){
+          formData.append('image',selectedFile)
+        }
 
-          }catch(err){
-            console.log(err)
-          }
+        try{
+          const response = await api.post("campanhas", formData)
+          console.log(response)
+
+        }catch(err){
+          console.log(err)
+        }
 
       }}
       render={({ values, errors, touched, handleChange, handleSubmit }) => (
@@ -169,7 +177,7 @@ const CampaignInfo = props => {
                     dateFormat="dd/MM/yyyy"
                     selected={startDate}
                     onChange={date => {
-                      var selectedDateStr = moment(date).format('DD.MM.YYYY')
+                      var selectedDateStr = moment(date).format('MM/DD/YYYY')
                       setStartDate(date)
                       values.dataInicio = selectedDateStr;
                     }}
@@ -180,7 +188,8 @@ const CampaignInfo = props => {
                     dateFormat="dd/MM/yyyy"
                     selected={endDate}
                     onChange={date => {
-                      var selectedDateStr = moment(date).format('DD.MM.YYYY')
+                      var selectedDateStr = moment(date).format('MM/DD/YYYY')
+                      console.log(date)
                       setEndDate(date)
                       values.dataFim = selectedDateStr;
                     }}

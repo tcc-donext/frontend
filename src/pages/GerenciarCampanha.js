@@ -19,37 +19,8 @@ import { Container,
   ImgContainerCenterColumn} from 'styles/pages/GerenciarCampanha'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useAuth } from 'contexts/auth'
+import api from 'services/api'
 
-const campaignsData = [
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  }
-];
 
 const ModalStyles = {
   content: {
@@ -65,14 +36,40 @@ const ModalStyles = {
 
 const GerenciarCampanha = () => {
   const [modalIsOpen,setIsOpen] = useState(false);
+  const [modalCampanha,setmodalCampanha] = useState(false);
+  const [currentCampaign,setcurrentCampaign] = useState(null);
+  const [loadedAuth, setLoadedAuth] = useState(false);
+  const [campaignsData, setCampaingsData] = useState([])
   const { signed, user } = useAuth();
   const router = useRouter()
 
+  
+
+  const infCampaigns = async id => {
+    try {
+      const response = await api.get('/campanhas');
+      console.log(response.data)
+      setCampaingsData(response.data)
+    } catch (err) {
+      console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
+    }
+  }
+
   useEffect(() => {
-      if(!signed){
-        router.push('/')
+    if (loadedAuth) {
+      if (!signed) {
+        router.push('/');
+      } else {
+        infCampaigns(user.id);
       }
-  }, []);
+    }
+  }, [loadedAuth]);
+
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
 
   function closeModal(){
     setIsOpen(false)
@@ -81,6 +78,16 @@ const GerenciarCampanha = () => {
   function OpenModal(){
     setIsOpen(true)
   }
+
+  const OpenCampanha = (key) =>{
+    setcurrentCampaign(key)
+    setmodalCampanha(true)
+  }
+
+  const CloseCampanha = () =>{
+    setmodalCampanha(false)
+  } 
+
   return (
     <Container>
       <ImgContainer size="3vw">
@@ -127,6 +134,8 @@ const GerenciarCampanha = () => {
           </TextContainer>
         </Card>
       </CardContainer>
+      {campaignsData ? (
+        <div>
       <CampaignSubtitle>
         Campanhas ativas! <span>({campaignsData.length}/10)</span>
       </CampaignSubtitle>
@@ -145,12 +154,12 @@ const GerenciarCampanha = () => {
               {campaignsData.map((campaign, i) => (
                 <div key={i}>
                   {i !== 0 && <tr className="spacer"></tr>}
-                  <Campaign>
-                    <td>{campaign.title}</td>
+                  <Campaign onClick={() => OpenCampanha(i)}>
+                    <td>{campaign.des_titulo}</td>
                     <td>
-                      R$ {campaign.total_value}/{campaign.target_value}
+                      R$ {campaign.vlr_arrecadado.substring(3,campaign.vlr_arrecadado.length-1)}/{campaign.vlr_objetivo.substring(3,campaign.vlr_objetivo.length-1)}
                     </td>
-                    <td>{campaign.donors}</td>
+                    <td>7</td>
                   </Campaign>
                 </div>
               ))}
@@ -158,6 +167,10 @@ const GerenciarCampanha = () => {
           </tbody>
         </Table>
       </CampaignContainer>
+      </div>
+      )
+
+      : null }
       <AddCampaingContainer>
         <AddCampaing onClick={OpenModal}>
           <ImgContainerCenterColumn>
@@ -173,7 +186,15 @@ const GerenciarCampanha = () => {
       onRequestClose={closeModal}
       style={ModalStyles}
       >
-        <CampaignInfo />
+        <CampaignInfo campaign={null}/>
+      </Modal>
+
+      <Modal
+      isOpen={modalCampanha}
+      onRequestClose={CloseCampanha}
+      style={ModalStyles}
+      >
+        <CampaignInfo campaign={campaignsData[currentCampaign]} />
       </Modal>
     </Container>
 
