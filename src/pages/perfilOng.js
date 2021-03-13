@@ -10,54 +10,112 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 
 const PerfilOng = () => {
-  const { signed, user } = useAuth();
+  const [loadedAuth, setLoadedAuth] = useState(false);
   const [ongData, setOngData] = useState(null);
+  const [ongContatoData, setOngContatoData] = useState(null);
+  const [values, setValues] = useState({
+    nomeONG: '',
+    emailONG: '',
+    telefone: '',
+    endereco: '',
+    CEP: ''
+  });
+
+  const { signed, user } = useAuth();
   const router = useRouter();
 
   const infOng = async id => {
     try {
       const response = await api.get(`/ongs/${id}`);
 
-      setOngData(response.data);
+      setOngData(response.data[0]);
+      setOngContatoData(response.data[1]);
     } catch (err) {
       console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
-      return null;
     }
   };
 
-  useEffect(() => {
-    if (!signed) {
-      router.push('/');
-    }
-    infOng(user.id);
-  }, [ongData]);
+  function handleChange(ev) {
+    setValues({
+      ...values,
+      [ev.target.name]: ev.target.value
+    });
+  }
 
-  const [
-    nom_ong = 'ongData[0].nom_ONG',
-    telefone = 'ongData[1].nro_telefone',
-    email = 'ongData[1].des_email',
-    cep = 'ongData[0].nro_cep',
-    uf = '',
-    endereco = 'ongData[0].des_endereco',
-    foto = 'user.image'
-  ] = [];
+  async function handleSubmit(ev) {
+    ev.preventDefault();
+
+    const data = {
+      nom_ONG: values.nomeONG,
+      des_endereco: values.endereco,
+      nro_cep: values.CEP,
+      des_email: values.emailONG,
+      nro_telefone: values.telefone
+    };
+
+    const response = await api.put('ongs', data);
+
+    console.log(response);
+  }
+
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
+
+  useEffect(() => {
+    if (loadedAuth) {
+      if (!signed) {
+        router.push('/');
+      } else {
+        infOng(user.id);
+      }
+    }
+  }, [loadedAuth]);
 
   return (
     <Container>
-      <form>
-        <Input label="Nome da Ong" type="text" width="13vw" value={nom_ong} />
-        <Input label="Telefone" type="text" width="13vw" value={telefone} />
-        <Input label="Email" type="Email" width="30vw" value={email} />
-        <Input label="CEP" type="numeric" width="13vw" value={cep} />
-        <Input label="UF" type="text" width="13vw" value={uf} />
-        <Input label="Endereço" type="text" width="30vw" value={endereco} />
-        <Input label="Senha" type="password" width="15vw" value="*****" />
-        <div className="buttonsContainer">
-          <Button width="100%" height="8vh" fontSize="1.8em">
-            Salvar
-          </Button>
-        </div>
-      </form>
+      {ongData && ongContatoData ? (
+        <form>
+          <Input
+            label="Nome da Ong"
+            type="text"
+            width="13vw"
+            placeholder={ongData[0].nom_ONG}
+          />
+          <Input label="Senha" type="password" width="13vw" value="*****" />
+          <Input
+            label="Email"
+            type="Email"
+            width="30vw"
+            placeholder={ongContatoData[0].des_email}
+          />
+          <Input
+            label="CEP"
+            type="numeric"
+            width="13vw"
+            placeholder={ongData[0].nro_cep}
+          />
+          <Input
+            label="Telefone"
+            type="text"
+            width="13vw"
+            placeholder={ongContatoData[0].nro_telefone}
+          />
+          <Input
+            label="Endereço"
+            type="text"
+            width="30vw"
+            placeholder={ongData[0].des_endereco}
+          />
+          <div className="buttonsContainer">
+            <Button width="100%" height="8vh" fontSize="1.8em">
+              Salvar
+            </Button>
+          </div>
+        </form>
+      ) : null}
       <div>
         <div className="buttonsImage">
           <Button class="botaoFoto">

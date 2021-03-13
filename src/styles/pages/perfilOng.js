@@ -80,6 +80,7 @@ export const Container = styled.div`
 
   .buttonsContainer {
     width: 18vw;
+    margin-top: 5vw;
   }
 
   p {
@@ -99,7 +100,7 @@ export const Container = styled.div`
 export const ImageCentral = styled.img`
   position: absolute;
   left: 60%;
-  bottom: 15%;
+  bottom: 23%;
   z-index: -1;
   max-height: 100vh;
 `;
