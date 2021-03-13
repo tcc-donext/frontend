@@ -1,7 +1,6 @@
 import { Container, Image, Divider, Tabs, TabsLabel, TabsForm, Row, H1Container, ButtonContainer, HiddenBox, TabChangeButton} from 'styles/pages/ongCadastro';
 import { useState } from 'react'
 import Button from 'components/Button';
-import { Formik, Form } from 'formik';
 
 const TabsC = props => {
   const [activeTab, setactiveTab] = useState(0);
@@ -33,7 +32,7 @@ const TabsC = props => {
         }
       })}
       </TabsLabel>
-      <TabsForm>
+      <TabsForm onSubmit={props.Handle}>
       {props.children.map((children, index) => {
             if (index == activeTab) {
               return children;

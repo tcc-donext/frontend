@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
-import Link from 'next/link';
 import InputMask from "react-input-mask";
 import { StyledLabel } from 'components/Input/styles';
+import api from 'services/api'
 
 import {
   Container,
@@ -74,7 +74,6 @@ const OngCadastro = () => {
     }
 
   function handleChange(ev){
-    console.log("entro")
     setValues({
       ...values,
       [ev.target.name]: ev.target.value
@@ -84,9 +83,34 @@ const OngCadastro = () => {
     }
   }
 
+  async function handleSubmit(e){
+    e.preventDefault()
+    console.log(values);
+
+    const data = {
+      cod_CNPJ: values.cnpj.replace(/\D/g,''),
+      nom_ONG: values.nomeONG,
+      des_endereco: values.endereco,
+      nro_cep: values.CEP.replace(/\D/g,''),
+      des_email: values.emailONG,
+      seq_contato: 1,
+      nom_pessoa: values.nomecontato,
+      nro_ddd: values.DDD.replace(/\D/g,''),
+      nro_telefone: values.telefone.replace(/\D/g,''),
+      des_senha: values.senha
+    }
+    try{
+     const response = await api.post("ongs", data)
+    }
+     catch(err){
+       console.log(err)
+     }
+  }
+
   return (
     <Container>
-      <TabsC>
+      {console.log(values)}
+      <TabsC Handle={handleSubmit}>
         <div label="inicial" key={0}>
           <Input name="nomeONG" label="Nome da ONG" type="text" width="29vw" value={values.nomeONG} onChange={handleChange} />
           <div style={{paddingBottom: '3.5vh'}}>
@@ -97,8 +121,8 @@ const OngCadastro = () => {
           <Input name="senha" label="Senha" type="password" width="29vw" value={values.senha} onChange={handleChange} />
         </div>
         <div label="Contato" key={1}>
-          <Input name="nomecontato" label="Nome" type="email" width="29vw" value={values.nomecontato} onChange={handleChange} />
-          <Input name="emailcontato" label="Email" type="password" width="29vw" value={values.emailcontato} onChange={handleChange} />
+          <Input name="nomecontato" label="Nome" type="text" width="29vw" value={values.nomecontato} onChange={handleChange} />
+          <Input name="emailcontato" label="Email" type="email" width="29vw" value={values.emailcontato} onChange={handleChange} />
           <Row>
             <div style={{paddingBottom: '3.5vh'}}>
               <StyledLabel>DDD</StyledLabel>

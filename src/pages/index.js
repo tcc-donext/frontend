@@ -10,9 +10,44 @@ import {
 } from 'styles/pages/index';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import api from 'services/api';
+import { useRouter } from 'next/router';
+
+import { useAuth } from './../contexts/auth';
 
 const Home = () => {
+  const [nome, setNome] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [ddd, setDDD] = useState();
+  const [telefone, setTelefone] = useState();
+  const router = useRouter();
+  const { signIn } = useAuth();
   const [currentPage, setCurrentPage] = useState(0);
+
+  async function Submit(e){
+    e.preventDefault()
+    console.log('chamou');
+
+    const data = {
+      nom_doador: nome,
+      des_email: email,
+      nro_ddd: ddd,
+      nro_telefone: telefone,
+      des_senha: password
+    }
+    try {
+      const response = await api.post("doador",data);
+      console.log(response);
+      const success = await signIn(email, password);
+                if (success) router.push('/home');
+                else{
+                  router.push('/usuarioCadastro');
+                }
+      } catch (error) {
+        alert('Não foi possivel realizar o cadastro!');
+      }
+  }
 
   return (
     <PageScroller
@@ -50,23 +85,63 @@ const Home = () => {
             conecta quem precisa de doação com quem quer doar!
           </p>
           <SignupForm className="signupForm">
-            <Input label="Nome *" width="22vw" />
-            <Input label="Email *" type="email" width="22vw" />
+            <form onSubmit={Submit}>
+            <Input 
+            label="Nome *" 
+            width="22vw" 
+            type="text"
+            value={nome}
+            onChange={event => {
+              setNome(event.target.value);
+            }}
+            />
+            <Input 
+            label="Email *" 
+            type="email" 
+            width="22vw"
+            value={email}
+            onChange={event => {
+              setEmail(event.target.value);
+            }} 
+            />
             <span>
-              <Input label="Senha *" type="password" width="22vw" />
+              <Input label="Senha *" 
+              type="password" 
+              width="22vw" 
+              value={password}
+              onChange={event => {
+                setPassword(event.target.value);
+              }}
+              />
+              <Input 
+              label="DDD *" 
+              type="text" 
+              width="4vw" 
+              type="text"
+              value={ddd}
+              onChange={event => {
+                setDDD(event.target.value);
+              }} 
+              />
               <Input
                 label="Telefone *"
-                type="tel"
+                type="text"
                 width="22vw"
-                pattern="[0-9]{11}"
+                pattern="[0-9]{9}"
+                type="text"
+                value={telefone}
+                onChange={event => {
+                  setTelefone(event.target.value);
+              }}
               />
             </span>
 
-            <Button height="6vh" width="12vw" fontSize="1.5em">
+            <Button type="submit" height="6vh" width="12vw" fontSize="1.5em">
               Cadastre-se
             </Button>
+            </form>
             <p>
-              É uma ong? <a href="">Cadastre-se aqui</a>
+              É uma ong? <a href="./ongCadastro">Cadastre-se aqui</a>
             </p>
           </SignupForm>
         </WelcomeContainer>

@@ -26,6 +26,7 @@ const Registrar = () => {
   
   async function Submit(e){
     e.preventDefault()
+    console.log('chamou');
 
     const data = {
       nom_doador: nome,
@@ -34,13 +35,23 @@ const Registrar = () => {
       nro_telefone: telefone,
       des_senha: password
     }
-
-    const response = await api.post("doador",data)
+    try {
+    const response = await api.post("doador",data);
+    console.log(response);
+    const success = await signIn(email, password);
+              if (success) router.push('/home');
+              else{
+                router.push('/usuarioCadastro');
+              }
+    } catch (error) {
+      alert('Não foi possivel realizar o cadastro!');
+    }
+    
   }
 
   return (
     <Container>
-      <form onSubmit="Submit()">
+      <form onSubmit={Submit}>
         <Input 
         label="Nome *" 
         type="text" 
@@ -62,7 +73,7 @@ const Registrar = () => {
         <Input 
         label="Senha *" 
         type="password" 
-        width="14vw"
+        width="22vw"
         value={password}
         onChange={event => {
           setPassword(event.target.value);
@@ -86,8 +97,9 @@ const Registrar = () => {
           setTelefone(event.target.value);
         }}
         />
+        
         <div className="buttonsContainer">
-          <Button width="100%" height="8vh" fontSize="1.8em">
+          <Button type="submit" width="100%" height="8vh" fontSize="1.8em">
             REGISTRAR
           </Button>
         </div>
