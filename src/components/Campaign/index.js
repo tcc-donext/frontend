@@ -20,9 +20,8 @@ const Campaign = ({ campaign }) => {
 
   useEffect(async () => {
     const ongFetch = await api.get(`/ongs/${campaign.id_ong}`);
-    console.log(ongFetch.data[0][0]);
 
-    setOng(ongFetch.data[0][0]);
+    setOng(ongFetch.data[0]);
   }, []);
 
   return (
@@ -34,13 +33,17 @@ const Campaign = ({ campaign }) => {
       )}
       <ContentSection>
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
-        <Link href={ong ? `/ong/${ong['id_ong']}` : ''}>
+        <Link href={ong ? `/ong/${ong.id_ong}` : ''}>
           <OngSection>
-            {ong?.foto ? <OngImage src={ong.foto} /> : <OngNoImage />}
+            {ong?.profile_pic ? (
+              <OngImage src={ong.profile_pic} />
+            ) : (
+              <OngNoImage />
+            )}
             {ong && (
               <OngData>
-                <p>{ong['nom_ONG']}</p>
-                <span>{`${ong['des_endereco']} - CEP: ${ong['nro_cep']}`}</span>
+                <p>{ong.nom_ONG}</p>
+                <span>{`${ong.des_endereco}`}</span>
               </OngData>
             )}
           </OngSection>
