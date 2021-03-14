@@ -14,11 +14,11 @@ const PerfilOng = () => {
   const [ongData, setOngData] = useState(null);
   const [ongContatoData, setOngContatoData] = useState(null);
   const [values, setValues] = useState({
-    nomeONG: '',
-    emailONG: '',
-    telefone: '',
-    endereco: '',
-    CEP: ''
+    nom_ONG: '',
+    des_endereco: '',
+    nro_cep: '',
+    des_email: '',
+    nro_telefone: ''
   });
 
   const { signed, user } = useAuth();
@@ -29,7 +29,7 @@ const PerfilOng = () => {
       const response = await api.get(`/ongs/${id}`);
 
       setOngData(response.data[0]);
-      setOngContatoData(response.data[1]);
+      setOngContatoData(response.data[0].contato);
     } catch (err) {
       console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
     }
@@ -42,20 +42,40 @@ const PerfilOng = () => {
     });
   }
 
-  async function handleSubmit(ev) {
-    ev.preventDefault();
-
+  async function salvarPerfil(id) {
     const data = {
-      nom_ONG: values.nomeONG,
-      des_endereco: values.endereco,
-      nro_cep: values.CEP,
-      des_email: values.emailONG,
-      nro_telefone: values.telefone
+      nom_ONG: values.nom_ONG,
+      des_endereco: values.des_endereco,
+      nro_cep: values.nro_cep,
+      des_email: values.des_email,
+      nro_telefone: values.nro_telefone
     };
 
-    const response = await api.put('ongs', data);
+    try {
+      const ong = await api.get(`/ongs/${id}`);
+      if (data.nom_ONG == '') data.nom_ONG = ong.data[0].nom_ONG;
 
-    console.log(response);
+      if (data.des_endereco == '') data.des_endereco = ong.data[0].des_endereco;
+
+      if (data.nro_cep == '') {
+        data.nro_cep = ong.data[0].nro_cep;
+      } else {
+        data.nro_cep = parseInt(data.nro_cep);
+      }
+
+      if (data.des_email == '') data.des_email = ong.data[0].contato.des_email;
+
+      if (data.nro_telefone == '') {
+        data.nro_telefone = ong.data[0].contato.nro_telefone;
+      } else {
+        data.nro_telefone = parseInt(data.nro_telefone);
+      }
+
+      const response = await api.put(`/profile/${id}`, data);
+      console.log(response);
+    } catch (err) {
+      console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
+    }
   }
 
   useEffect(() => {
@@ -79,38 +99,53 @@ const PerfilOng = () => {
       {ongData && ongContatoData ? (
         <form>
           <Input
+            name="nom_ONG"
             label="Nome da Ong"
             type="text"
             width="13vw"
-            placeholder={ongData[0].nom_ONG}
+            onChange={handleChange}
+            placeholder={ongData.nom_ONG}
           />
           <Input label="Senha" type="password" width="13vw" value="*****" />
           <Input
+            name="des_email"
             label="Email"
             type="Email"
             width="30vw"
-            placeholder={ongContatoData[0].des_email}
+            onChange={handleChange}
+            placeholder={ongContatoData.des_email}
           />
           <Input
+            name="nro_cep"
             label="CEP"
             type="numeric"
             width="13vw"
-            placeholder={ongData[0].nro_cep}
+            onChange={handleChange}
+            placeholder={ongData.nro_cep}
           />
           <Input
+            name="nro_telefone"
             label="Telefone"
             type="text"
             width="13vw"
-            placeholder={ongContatoData[0].nro_telefone}
+            onChange={handleChange}
+            placeholder={ongContatoData.nro_telefone}
           />
           <Input
+            name="des_endereco"
             label="Endereço"
             type="text"
             width="30vw"
-            placeholder={ongData[0].des_endereco}
+            onChange={handleChange}
+            placeholder={ongData.des_endereco}
           />
           <div className="buttonsContainer">
-            <Button width="100%" height="8vh" fontSize="1.8em">
+            <Button
+              width="100%"
+              height="8vh"
+              fontSize="1.8em"
+              onClick={() => salvarPerfil(ongData.id_ong)}
+            >
               Salvar
             </Button>
           </div>
