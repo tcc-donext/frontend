@@ -5,7 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import FormPageLayout from 'components/layouts/FormPageLayout';
-import { Container, Image, ImageCentral } from 'styles/pages/perfilOng.js';
+import {
+  Container,
+  Image,
+  ImageCentral,
+  ImagePerfil
+} from 'styles/pages/perfilOng.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
@@ -97,88 +102,93 @@ const PerfilOng = () => {
   return (
     <Container>
       {ongData && ongContatoData ? (
-        <form>
-          <Input
-            name="nom_ONG"
-            label="Nome da Ong"
-            type="text"
-            width="13vw"
-            onChange={handleChange}
-            placeholder={ongData.nom_ONG}
-          />
-          <Input label="Senha" type="password" width="13vw" value="*****" />
-          <Input
-            name="des_email"
-            label="Email"
-            type="Email"
-            width="30vw"
-            onChange={handleChange}
-            placeholder={ongContatoData.des_email}
-          />
-          <Input
-            name="nro_cep"
-            label="CEP"
-            type="numeric"
-            width="13vw"
-            onChange={handleChange}
-            placeholder={ongData.nro_cep}
-          />
-          <Input
-            name="nro_telefone"
-            label="Telefone"
-            type="text"
-            width="13vw"
-            onChange={handleChange}
-            placeholder={ongContatoData.nro_telefone}
-          />
-          <Input
-            name="des_endereco"
-            label="Endereço"
-            type="text"
-            width="30vw"
-            onChange={handleChange}
-            placeholder={ongData.des_endereco}
-          />
-          <div className="buttonsContainer">
-            <Button
-              width="100%"
-              height="8vh"
-              fontSize="1.8em"
-              onClick={() => salvarPerfil(ongData.id_ong)}
-            >
-              Salvar
-            </Button>
+        <div>
+          <form>
+            <Input
+              name="nom_ONG"
+              label="Nome da Ong"
+              type="text"
+              width="13vw"
+              onChange={handleChange}
+              placeholder={ongData.nom_ONG}
+            />
+            <Input label="Senha" type="password" width="13vw" value="*****" />
+            <Input
+              name="des_email"
+              label="Email"
+              type="Email"
+              width="30vw"
+              onChange={handleChange}
+              placeholder={ongContatoData.des_email}
+            />
+            <Input
+              name="nro_cep"
+              label="CEP"
+              type="numeric"
+              width="13vw"
+              onChange={handleChange}
+              placeholder={ongData.nro_cep}
+            />
+            <Input
+              name="nro_telefone"
+              label="Telefone"
+              type="text"
+              width="13vw"
+              onChange={handleChange}
+              placeholder={ongContatoData.nro_telefone}
+            />
+            <Input
+              name="des_endereco"
+              label="Endereço"
+              type="text"
+              width="30vw"
+              onChange={handleChange}
+              placeholder={ongData.des_endereco}
+            />
+            <div className="buttonsContainer">
+              <Button
+                width="100%"
+                height="8vh"
+                fontSize="1.8em"
+                onClick={() => salvarPerfil(ongData.id_ong)}
+              >
+                Salvar
+              </Button>
+            </div>
+          </form>
+          <div>
+            <div className="buttonsImage">
+              <Input
+                className="profileImage"
+                type="image"
+                src={user.image}
+                alt="Imagem para alterar foto de perfil"
+              ></Input>
+              <h3>Clique para alterar a foto</h3>
+            </div>
+            <span className="Desconectar">
+              <Button
+                className="botaoDesconectar"
+                onClick={() => router.back()}
+              >
+                <Image
+                  className="logoutIco"
+                  src="/images/logout.png"
+                  alt="Icone Logout"
+                ></Image>
+                Desconectar
+              </Button>
+            </span>
           </div>
-        </form>
-      ) : null}
-      <div>
-        <div className="buttonsImage">
-          <Button class="botaoFoto">
-            <Image
-              className="logoutIco"
-              src="/images/plus.png"
-              alt="Imagem para alterar foto de perfil"
-            ></Image>
-          </Button>
-          <h3>Clique para alterar a foto</h3>
+
+          <div>
+            <ImageCentral
+              src="/images/ong_settings.png"
+              alt="Desenho decorativo para a página"
+            />
+          </div>
         </div>
-        <span className="Desconectar">
-          <Button className="botaoDesconectar" onClick={() => router.back()}>
-            <Image
-              className="logoutIco"
-              src="/images/logout.png"
-              alt="Icone Logout"
-            ></Image>
-            Desconectar
-          </Button>
-        </span>
-      </div>
-      <div>
-        <ImageCentral
-          src="/images/ong_settings.png"
-          alt="Desenho decorativo para a página"
-        />
-      </div>
+      ) : null}
     </Container>
   );
 };

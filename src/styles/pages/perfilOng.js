@@ -83,6 +83,16 @@ export const Container = styled.div`
     margin-top: 5vw;
   }
 
+  .profileImage {
+    border-top: 10vh;
+    height: 42vh;
+    width: 42vh;
+    border: none;
+    margin-top: 6vh;
+    border-radius: 22vh;
+    padding: 0;
+  }
+
   p {
     margin-top: 3.3vh;
     font-size: 1.35em;
@@ -103,6 +113,10 @@ export const ImageCentral = styled.img`
   bottom: 23%;
   z-index: -1;
   max-height: 100vh;
+`;
+
+export const ImagePerfil = styled.img`
+  max-height: 10vh;
 `;
 
 export const Image = styled.img`
