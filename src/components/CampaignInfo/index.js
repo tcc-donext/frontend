@@ -117,7 +117,7 @@ const CampaignInfo = props => {
           id_ong: user.id,
           des_titulo: values.nome,
           des_geral: values.Descricao,
-          cod_categoria: values.categoria,
+          cod_categoria: 1,
           dat_inicio: values.dataInicio,
           dat_fim: values.dataFim,
           vlr_objetivo: values.objetivo,
