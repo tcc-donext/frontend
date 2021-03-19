@@ -12,6 +12,7 @@ export const OngSection = styled.div`
   width: 100%;
   height: auto;
   justify-content: center;
+  align-items: flex-end;
 
   div {
     display: inline-flex;
@@ -21,7 +22,8 @@ export const OngSection = styled.div`
 
 export const OngImageContainer = styled.div`
   align-items: center;
-  padding-right: 3vw;
+  justify-content: center;
+  padding-right: 5vw;
 
   h1 {
     padding-top: 2.25vh;
@@ -32,8 +34,9 @@ export const OngImageContainer = styled.div`
 
   img {
     border-radius: 50%;
+    object-fit: cover;
     width: 11vw;
-    height: auto;
+    height: 19.5vh;
   }
 `;
 

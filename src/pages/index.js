@@ -21,13 +21,13 @@ const Home = () => {
   const [password, setPassword] = useState();
   const [ddd, setDDD] = useState();
   const [telefone, setTelefone] = useState();
+
   const router = useRouter();
   const { signIn } = useAuth();
   const [currentPage, setCurrentPage] = useState(0);
 
-  async function Submit(e){
-    e.preventDefault()
-    console.log('chamou');
+  async function Submit(e) {
+    e.preventDefault();
 
     const data = {
       nom_doador: nome,
@@ -35,18 +35,20 @@ const Home = () => {
       nro_ddd: ddd,
       nro_telefone: telefone,
       des_senha: password
-    }
+    };
+
     try {
-      const response = await api.post("doador",data);
+      const response = await api.post('doador', data);
       console.log(response);
+
       const success = await signIn(email, password);
-                if (success) router.push('/home');
-                else{
-                  router.push('/usuarioCadastro');
-                }
-      } catch (error) {
-        alert('Não foi possivel realizar o cadastro!');
+      if (success) window.location.href = '/home';
+      else {
+        window.location.href = '/usuarioCadastro';
       }
+    } catch (error) {
+      alert('Não foi possivel realizar o cadastro!');
+    }
   }
 
   return (
@@ -86,59 +88,60 @@ const Home = () => {
           </p>
           <SignupForm className="signupForm">
             <form onSubmit={Submit}>
-            <Input 
-            label="Nome *" 
-            width="22vw" 
-            type="text"
-            value={nome}
-            onChange={event => {
-              setNome(event.target.value);
-            }}
-            />
-            <Input 
-            label="Email *" 
-            type="email" 
-            width="22vw"
-            value={email}
-            onChange={event => {
-              setEmail(event.target.value);
-            }} 
-            />
-            <span>
-              <Input label="Senha *" 
-              type="password" 
-              width="22vw" 
-              value={password}
-              onChange={event => {
-                setPassword(event.target.value);
-              }}
-              />
-              <Input 
-              label="DDD *" 
-              type="text" 
-              width="4vw" 
-              type="text"
-              value={ddd}
-              onChange={event => {
-                setDDD(event.target.value);
-              }} 
+              <Input
+                label="Nome *"
+                width="22vw"
+                type="text"
+                value={nome}
+                onChange={event => {
+                  setNome(event.target.value);
+                }}
               />
               <Input
-                label="Telefone *"
-                type="text"
+                label="Email *"
+                type="email"
                 width="22vw"
-                pattern="[0-9]{9}"
-                type="text"
-                value={telefone}
+                value={email}
                 onChange={event => {
-                  setTelefone(event.target.value);
-              }}
+                  setEmail(event.target.value);
+                }}
               />
-            </span>
+              <span>
+                <Input
+                  label="Senha *"
+                  type="password"
+                  width="22vw"
+                  value={password}
+                  onChange={event => {
+                    setPassword(event.target.value);
+                  }}
+                />
+                <Input
+                  label="DDD *"
+                  type="text"
+                  width="4vw"
+                  type="text"
+                  value={ddd}
+                  onChange={event => {
+                    setDDD(event.target.value);
+                  }}
+                />
+                <Input
+                  label="Telefone *"
+                  type="text"
+                  width="22vw"
+                  pattern="[0-9]{9}"
+                  type="text"
+                  value={telefone}
+                  onChange={event => {
+                    setTelefone(event.target.value);
+                  }}
+                />
+              </span>
 
-            <Button type="submit" height="6vh" width="12vw" fontSize="1.5em">
-              Cadastre-se
-            </Button>
+              <Button type="submit" height="6vh" width="12vw" fontSize="1.5em">
+                Cadastre-se
+              </Button>
             </form>
             <p>
               É uma ong? <a href="./ongCadastro">Cadastre-se aqui</a>

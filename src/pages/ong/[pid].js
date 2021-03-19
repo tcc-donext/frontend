@@ -17,37 +17,6 @@ import api from 'services/api';
 
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
-const campaignsData = [
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  },
-  {
-    imageURL: 'https://picsum.photos/300',
-    title: 'Tobias! ASMA',
-    total_value: 150,
-    target_value: 300,
-    donors: 7
-  }
-];
-
 const ongPage = () => {
   const router = useRouter();
   const { pid } = router.query;
@@ -57,16 +26,16 @@ const ongPage = () => {
 
   useEffect(async () => {
     if (!pid) return;
-    const ongFetch = (await api.get(`/ongs/${pid}`)).data;
+    const ongFetch = (await api.get(`/ongs/${pid}`)).data[0];
 
-    if (!ongFetch[0].length) router.push('/home');
+    if (!ongFetch) router.push('/home');
 
     setOng(ongFetch);
   }, [pid]);
 
   useEffect(async () => {
     if (!ong) return;
-    const campFetch = (await api.get(`/profile/${ong[0][0].id_ong}`)).data;
+    const campFetch = (await api.get(`/profile/${ong.id_ong}`)).data;
 
     setOngCampaigns(campFetch);
   }, [ong]);
@@ -77,14 +46,14 @@ const ongPage = () => {
         <>
           <OngSection>
             <OngImageContainer>
-              <img src={'https://picsum.photos/300'} />
-              <h1>{ong[0][0].nom_ONG}</h1>
+              <img src={ong.profile_pic} />
+              <h1>{ong.nom_ONG}</h1>
             </OngImageContainer>
             <OngInfoContainer>
               <Input
                 label="Endereço"
                 labelProps={{ fontSize: '1.8em' }}
-                value={`${ong[0][0].des_endereco} - CEP: ${ong[0][0].nro_cep}`}
+                value={`${ong.des_endereco} - CEP: ${ong.nro_cep}`}
                 width="30vw"
                 fontSize="1.5em"
                 disabled
@@ -92,7 +61,7 @@ const ongPage = () => {
               <Input
                 label="Email"
                 labelProps={{ fontSize: '1.8em' }}
-                value={ong[1][0].des_email}
+                value={ong.contato.des_email}
                 width="30vw"
                 fontSize="1.5em"
                 disabled
@@ -100,7 +69,7 @@ const ongPage = () => {
             </OngInfoContainer>
           </OngSection>
           <CampaignSubtitle>
-            Campanhas ativas! <span>({campaignsData.length}/10)</span>
+            Campanhas ativas! <span>({ongCampaigns.length}/10)</span>
           </CampaignSubtitle>
           <CampaignContainer>
             <Table>
