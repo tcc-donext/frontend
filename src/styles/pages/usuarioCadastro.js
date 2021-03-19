@@ -23,12 +23,11 @@ export const Container = styled.div`
       padding-bottom: 3.5vh;
     }
     .input:nth-child(3) {
-       
+        float:left;
         margin-right: 2vh;
       }
     .input:nth-child(4) {
-      float:left;
-      margin-right: 4vh;
+        float:left;
       padding-bottom: 6vh;
     }
   }

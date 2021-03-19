@@ -78,38 +78,19 @@ const CampaignInfo = props => {
     return <MaskedInput mask={currencyMask} {...inputProps} />
   }
 
-  const SubmitData = async (values,type) =>{
-    if(type==1){
-      try{
-        const response = await api.post("campanhas", values)
-        console.log(response)
-
-      }catch(err){
-        console.log(err)
-      }
-  }else{
-    try{
-      const response = await api.put(`campanhas/${props.campaign.seq_campanha}`, values)
-      console.log(response)
-
-    }catch(err){
-      console.log(err)
-    }
-  }
-  }
+  
 
 
 
   return (
-    
     <Formik
       initialValues={{
         nome: props.campaign ? props.campaign.des_titulo : null,
         Descricao: props.campaign ? props.campaign.des_geral : null,
         categoria:  props.campaign ? props.campaign.cod_categoria : null, 
         objetivo: props.campaign ? props.campaign.vlr_objetivo  : null,
-        dataInicio:  props.campaign ? moment(props.campaign.dat_inicio).format('MM/DD/YYYY')  : null,
-        dataFim:  props.campaign ? moment(props.campaign.dat_fim).format('MM/DD/YYYY')  : null, 
+        dataInicio:  '',
+        dataFim:  '',
       }}
       onSubmit={ async (values) => {
 
@@ -117,29 +98,29 @@ const CampaignInfo = props => {
           id_ong: user.id,
           des_titulo: values.nome,
           des_geral: values.Descricao,
-          cod_categoria: 1,
+          cod_categoria: values.categoria,
           dat_inicio: values.dataInicio,
           dat_fim: values.dataFim,
           vlr_objetivo: values.objetivo,
         }
-        if (!selectedFile){
-          props.campaign ? SubmitData(data,2): SubmitData(data,1)
-        } 
-        const reader = new FileReader();
+        const formData = new FormData()
+        Object.keys(data).forEach((key) => {
+          formData.append(key, data[key])
+        })
+        if(selectedFile){
+          formData.append('image',selectedFile)
+        }
 
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = () => {
-          data.img_campanha = reader.result
-          props.campaign ? SubmitData(data,2): SubmitData(data,1)
-        };
-        reader.onerror = () => {
-            console.error('AHHHHHHHH!!');
-            setErrMsg('something went wrong!');
-        };
+        try{
+          const response = await api.post("campanhas", formData)
+          console.log(response)
+
+        }catch(err){
+          console.log(err)
+        }
 
       }}
       render={({ values, errors, touched, handleChange, handleSubmit }) => (
-        
         <Form style={{ height: '99%' }} onSubmit={handleSubmit} >
           <Container>
             <FormLayout>
