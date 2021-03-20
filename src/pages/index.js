@@ -156,12 +156,13 @@ const Home = () => {
             src="images/whatis.svg"
             alt="Imagem ilustrativa para a seção de 'O que é?'"
           />
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed gravida
-            magna nec dui vulputate, id interdum lorem eleifend. Donec ac
-            vestibulum odio. Sed mi massa, varius eu neque et, porttitor semper
-            nisl. Maecenas faucibus leo metus, vitae laoreet ante dapibus vel.
-            Mauris tincidunt tincidunt diam, et cursus justo volutpat a.
+          <p text-align="center">
+            Donext é um sistema que visa tornar mais fácil a conexão entre
+            instituições de caridade e doadores. Na plataforma a interação pode
+            ser feita de maneira mais direcionada e fácil, onde as pessoas podem
+            encontrar aquilo que buscam ajudar de maneira intuitiva. Além disso,
+            as ONGs podem criar campanhas onde estabelecem metas diretas sobre
+            situações e condições que necessitem de apoio externo.
           </p>
         </SectionsContainer>
       </section>
@@ -170,13 +171,13 @@ const Home = () => {
           <h1>Motivação</h1>
           <div className="sideby right">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a
-              ante nisi. In ullamcorper iaculis nisi, in ullamcorper dui gravida
-              ut. Pellentesque quis quam sed nisi molestie tempus. Nulla blandit
-              diam libero, non viverra risus semper eget. Etiam dignissim varius
-              velit, at tristique orci tincidunt sed. Curabitur luctus sit amet
-              purus ut ultricies. Donec ac feugiat arcu, at congue urna. Duis
-              fermentum laoreet nulla vel dapibus.
+              No Brasil existem muitas instituições com causas beneficentes que
+              necessitam de apoio financeiro para arcar com os processos
+              internos. Vemos muitas pessoas divulgando seus trabalhar nas redes
+              sociais, principalmente. Com isso, o sistema Donext tem como
+              Motivação unir em um só lugar essas instituições de forma
+              intuitiva ao usuário, facilitando a navegação e a busca pelo que
+              se precisa achar.
             </p>
             <img
               src="images/motivation.svg"
@@ -194,13 +195,11 @@ const Home = () => {
               alt="Imagem ilustrativa para a seção de 'O que é?'"
             />
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a
-              ante nisi. In ullamcorper iaculis nisi, in ullamcorper dui gravida
-              ut. Pellentesque quis quam sed nisi molestie tempus. Nulla blandit
-              diam libero, non viverra risus semper eget. Etiam dignissim varius
-              velit, at tristique orci tincidunt sed. Curabitur luctus sit amet
-              purus ut ultricies. Donec ac feugiat arcu, at congue urna. Duis
-              fermentum laoreet nulla vel dapibus.
+              Alunos do Centro Federal de Educação Tecnológica de Minas Gerais,
+              desenvolvedores que buscam tornar as demandas vistas no mundo
+              atual em sistemas funcionais com tecnologias novas. Grupo que
+              busca crescer em conjunto enquanto produz programas que trazem
+              soluções lógicas a problemas cotidianos.
             </p>
           </div>
         </SectionsContainer>
