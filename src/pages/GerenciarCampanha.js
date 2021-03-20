@@ -1,14 +1,13 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import Modal from 'react-modal';
 import CampaignInfo from 'components/CampaignInfo/index';
-import {
-  Container,
-  ImgContainer,
-  Card,
-  ImgContainerCenter,
+import { Container, 
+  ImgContainer, 
+  Card, 
+  ImgContainerCenter, 
   TextContainer,
   CardContainer,
   CampaignSubtitle,
@@ -17,10 +16,10 @@ import {
   Campaign,
   AddCampaing,
   AddCampaingContainer,
-  ImgContainerCenterColumn
-} from 'styles/pages/GerenciarCampanha';
+  ImgContainerCenterColumn} from 'styles/pages/GerenciarCampanha'
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import { useAuth } from 'contexts/auth';
+import { useAuth } from 'contexts/auth'
+import api from 'services/api'
 
 
 const ModalStyles = {
@@ -36,9 +35,13 @@ const ModalStyles = {
 };
 
 const GerenciarCampanha = () => {
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen,setIsOpen] = useState(false);
+  const [modalCampanha,setmodalCampanha] = useState(false);
+  const [currentCampaign,setcurrentCampaign] = useState(null);
+  const [loadedAuth, setLoadedAuth] = useState(false);
+  const [campaignsData, setCampaingsData] = useState([])
   const { signed, user } = useAuth();
-  const router = useRouter();
+  const router = useRouter()
 
   
 
@@ -53,17 +56,27 @@ const GerenciarCampanha = () => {
   }
 
   useEffect(() => {
-    if (!signed) {
-      router.push('/');
+    if (loadedAuth) {
+      if (!signed) {
+        router.push('/');
+      } else {
+        infCampaigns(user.id);
+      }
     }
-  }, []);
+  }, [loadedAuth]);
 
-  function closeModal() {
-    setIsOpen(false);
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
+
+  function closeModal(){
+    setIsOpen(false)
   }
 
-  function OpenModal() {
-    setIsOpen(true);
+  function OpenModal(){
+    setIsOpen(true)
   }
 
   const OpenCampanha = (key) =>{
@@ -78,35 +91,46 @@ const GerenciarCampanha = () => {
   return (
     <Container>
       <ImgContainer size="3vw">
-        <img src="/images/options.png" alt="opções do perfil" />
+        <img 
+        src="/images/options.png"
+        alt="opções do perfil"
+        />
       </ImgContainer>
       <CardContainer>
         <Card>
           <ImgContainer size="1vw">
-            <img src="/images/infoicon.png" alt="opções do perfil" />
+            <img 
+            src="/images/infoicon.png"
+            alt="opções do perfil"
+            />
           </ImgContainer>
           <ImgContainerCenter>
-            <img src="/images/payment.png" alt="opções do perfil" />
+          <img 
+          src="/images/payment.png"
+          alt="opções do perfil"
+          />
           </ImgContainerCenter>
           <TextContainer>
-            <p>
-              <b>R$ 100,00</b>
-            </p>
-            <p>doações livres</p>
+          <p><b>R$ 100,00</b></p>
+          <p>doações livres</p>
           </TextContainer>
         </Card>
         <Card>
           <ImgContainer size="1vw">
-            <img src="/images/infoicon.png" alt="opções do perfil" />
+            <img 
+            src="/images/infoicon.png"
+            alt="opções do perfil"
+            />
           </ImgContainer>
           <ImgContainerCenter>
-            <img src="/images/heart.png" alt="opções do perfil" />
+          <img 
+          src="/images/heart.png"
+          alt="opções do perfil"
+          />
           </ImgContainerCenter>
           <TextContainer>
-            <p>
-              <b>R$ 2000,00</b>
-            </p>
-            <p>doações por campanhas</p>
+          <p><b>R$ 2000,00</b></p>
+          <p>doações por campanhas</p>
           </TextContainer>
         </Card>
       </CardContainer>
@@ -125,10 +149,8 @@ const GerenciarCampanha = () => {
             </tr>
           </thead>
           <tbody>
-            <OverlayScrollbarsComponent
-              style={{ maxHeight: '22vh' }}
-              options={{ scrollbars: { visibility: 'hidden' } }}
-            >
+            <OverlayScrollbarsComponent style={{ maxHeight: '22vh'}}
+            options={{ scrollbars: { visibility: 'hidden' } }}>
               {campaignsData.map((campaign, i) => (
                 <div key={i}>
                   {i !== 0 && <tr className="spacer"></tr>}
@@ -152,14 +174,17 @@ const GerenciarCampanha = () => {
       <AddCampaingContainer>
         <AddCampaing onClick={OpenModal}>
           <ImgContainerCenterColumn>
-            <img src="/images/plus.png" alt="opções do perfil" />
-          </ImgContainerCenterColumn>
+            <img 
+            src="/images/plus.png"
+            alt="opções do perfil"
+            />
+          </ImgContainerCenterColumn>        
         </AddCampaing>
       </AddCampaingContainer>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={ModalStyles}
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      style={ModalStyles}
       >
         <CampaignInfo campaign={null}/>
       </Modal>
@@ -172,8 +197,9 @@ const GerenciarCampanha = () => {
         <CampaignInfo campaign={campaignsData[currentCampaign]} />
       </Modal>
     </Container>
-  );
-};
+
+  )
+}
 GerenciarCampanha.layout = FormPageLayout;
 GerenciarCampanha.getLayoutConfig = {
   header: {
