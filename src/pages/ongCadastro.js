@@ -3,6 +3,7 @@ import FormPageLayout from 'components/layouts/FormPageLayout';
 import InputMask from "react-input-mask";
 import { StyledLabel } from 'components/Input/styles';
 import api from 'services/api'
+import { useRouter } from 'next/router';
 
 import {
   Container,
@@ -36,6 +37,7 @@ const OngCadastro = () => {
     UF: '',
     municipio: ''
   })
+  const router = useRouter();
   const [ufs,setufs] = useState([])
   const [selectedUF,setselectedUF] = useState([])
   const [municipios,setmunicipios] = useState([])
@@ -101,6 +103,7 @@ const OngCadastro = () => {
     }
     try{
      const response = await api.post("ongs", data)
+     router.push('/perfilOng')
     }
      catch(err){
        console.log(err)
