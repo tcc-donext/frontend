@@ -13,7 +13,7 @@ const Footer = ({ back }) => {
   const router = useRouter();
   return (
     <Container>
-      {back && <Button onClick={() => router.back()}>Voltar</Button>}
+      {back && <Button onClick={() => router.push('/home')}>Voltar</Button>}
     </Container>
   );
 };

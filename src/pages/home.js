@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PageLayout from 'components/layouts/PageLayout';
 import { useAuth } from 'contexts/auth';
 import api from 'services/api';
+import { useRouter } from 'next/router';
 
 import {
   Container,
@@ -16,8 +17,10 @@ import {
 
 import Input from 'components/Input';
 import Campaign from 'components/Campaign';
+import { Router } from 'next/router';
 
 const Home = () => {
+  const router = useRouter();
   const [campaigns, setCampaigns] = useState();
   const [stringFilter, setStringFilter] = useState('');
   const [filters, setFilters] = useState({
@@ -55,6 +58,11 @@ const Home = () => {
             <ProfilePicture
               src={!!user.image ? user.image : '/images/user_placeholder.png'}
               alt={`Foto de perfil de ${user.name}`}
+              onClick={() =>
+                user.isOng
+                  ? router.push('/perfilOng')
+                  : router.push('/perfilUsuario')
+              }
             />
           ) : (
             <ProfilePicture
