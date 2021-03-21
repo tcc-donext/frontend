@@ -132,7 +132,7 @@ const OngCadastro = () => {
           <Row>
             <div style={{paddingBottom: '3.5vh'}}>
               <StyledLabel>DDD</StyledLabel>
-              <InputMask mask="+99" name="DDD" type="text" value={values.DDD} onChange={handleChange} style={getInputStyle("6vw")} />
+              <InputMask mask="99" name="DDD" type="text" value={values.DDD} onChange={handleChange} style={getInputStyle("6vw")} />
             </div>
             <div style={{paddingBottom: '3.5vh', marginLeft: '2vw'}}>
               <StyledLabel>Telefone</StyledLabel>
