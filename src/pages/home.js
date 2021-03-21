@@ -58,6 +58,11 @@ const Home = () => {
             <ProfilePicture
               src={!!user.image ? user.image : '/images/user_placeholder.png'}
               alt={`Foto de perfil de ${user.name}`}
+              onClick={() =>
+                user.isOng
+                  ? router.push('/perfilOng')
+                  : router.push('/perfilUsuario')
+              }
             />
           ) : (
             <ProfilePicture
