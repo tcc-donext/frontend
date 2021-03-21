@@ -8,8 +8,8 @@ const ModalStyles = {
   content: {
     position: 'absolute',
     top: '7vh',
-    left: '35vw',
-    right: '35vw',
+    left: '35.9vw',
+    right: '35.9vw',
     bottom: '7vh',
     backgroundColor: '#f6f6f6',
     zIndex: '5'
