@@ -122,3 +122,13 @@ export const Campaign = styled.tr`
     height: 10vh;
   }
 `;
+
+export const FormContainer = styled.div`
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+`;
+
+export const InputContainer = styled.div`
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+`;

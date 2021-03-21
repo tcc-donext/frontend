@@ -9,19 +9,37 @@ import {
   CampaignSubtitle,
   CampaignContainer,
   Table,
-  Campaign
+  Campaign,
+  InputContainer,
+  FormContainer
 } from 'styles/pages/ong';
 import Button from 'components/Button';
 import Input from 'components/Input';
 import { useRouter } from 'next/router';
 import api from 'services/api';
 
+import Modal from 'react-modal';
+
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+
+const ModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '20vh',
+    left: '35.9vw',
+    right: '35.9vw',
+    bottom: '20vh',
+    backgroundColor: '#f6f6f6',
+    zIndex: '5'
+  }
+};
 
 const ongPage = () => {
   const router = useRouter();
   const { pid } = router.query;
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [vlrDoacao, setVlrDoacao] = useState(0);
   const [ong, setOng] = useState();
   const [ongCampaigns, setOngCampaigns] = useState();
 
@@ -40,6 +58,13 @@ const ongPage = () => {
 
     setOngCampaigns(campFetch);
   }, [ong]);
+
+  const doar = async evt => {
+    evt.preventDefault();
+    setModalOpen(false);
+
+    console.log(vlrDoacao);
+  };
 
   return (
     <Container>
@@ -105,9 +130,52 @@ const ongPage = () => {
               </tbody>
             </Table>
           </CampaignContainer>
-          <Button inverted height="8vh" width="15vw" fontSize="1.5em">
+          <Button
+            inverted
+            height="8vh"
+            width="15vw"
+            fontSize="1.5em"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
             Doe para esta ONG!
           </Button>
+          <Modal
+            isOpen={modalOpen}
+            onRequestClose={() => {
+              setModalOpen(false);
+            }}
+            style={ModalStyles}
+          >
+            <h1 style={{ marginBottom: 10 }}>Doar para a {ong.nom_ONG}</h1>
+            <form>
+              <Input name="agencia" label="Agência*" type="text" width="17vw" />
+              <InputContainer>
+                <Input name="conta" label="Conta*" type="text" width="17vw" />
+              </InputContainer>
+              <Input
+                name="valor"
+                label="Valor a doar*"
+                type="numeric"
+                width="17vw"
+                value={vlrDoacao}
+                onChange={e => {
+                  setVlrDoacao(e.target.value);
+                }}
+              />
+              <FormContainer>
+                <Button
+                  width="50%"
+                  height="6vh"
+                  fontSize="1.8em"
+                  onClick={e => doar(e)}
+                >
+                  Doar
+                </Button>
+              </FormContainer>
+            </form>
+          </Modal>
         </>
       )}
     </Container>
