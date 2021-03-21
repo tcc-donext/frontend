@@ -11,6 +11,7 @@ import {
   Table,
   Campaign
 } from 'styles/pages/ong';
+import Button from 'components/Button';
 import Input from 'components/Input';
 import { useRouter } from 'next/router';
 import api from 'services/api';
@@ -104,6 +105,9 @@ const ongPage = () => {
               </tbody>
             </Table>
           </CampaignContainer>
+          <Button inverted height="8vh" width="15vw" fontSize="1.5em">
+            Doe para esta ONG!
+          </Button>
         </>
       )}
     </Container>

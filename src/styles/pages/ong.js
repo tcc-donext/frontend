@@ -5,6 +5,11 @@ export const Container = styled.div`
   flex-direction: column;
   flex: 1;
   margin-top: 0.65vh;
+
+  button {
+    align-self: center;
+    margin-top: 2vh;
+  }
 `;
 
 export const OngSection = styled.div`
