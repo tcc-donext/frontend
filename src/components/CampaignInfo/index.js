@@ -12,7 +12,7 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import MaskedInput from 'react-text-mask'
 import createNumberMask from 'text-mask-addons/dist/createNumberMask'
@@ -53,6 +53,17 @@ const CampaignInfo = props => {
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('/images/ebebeb.jpg');
   const [selectedFile, setSelectedFile] = useState();
+
+  const [categorias,setCategorias] = useState([])
+
+  useEffect(() => {
+    async function getCategorias(){
+    let response = await api.get('/categorias')
+    setCategorias(response.data)
+    }
+    getCategorias()
+  }, []);
+
 
   const handleFileInputChange = e => {
     const file = e.target.files[0];
@@ -117,7 +128,7 @@ const CampaignInfo = props => {
           id_ong: user.id,
           des_titulo: values.nome,
           des_geral: values.Descricao,
-          cod_categoria: 1,
+          cod_categoria: values.categoria,
           dat_inicio: values.dataInicio,
           dat_fim: values.dataFim,
           vlr_objetivo: values.objetivo,
@@ -171,9 +182,9 @@ const CampaignInfo = props => {
                   value={values.categoria}
                   id="categoria"
                 >
-                  <option value="categoria1">categoria1</option>
-                  <option value="categoria2">categoria2</option>
-                  <option value="categoria3">categoria3</option>
+                  { categorias.map((categoria,index) =>{
+              return <option key={index} value={categoria.cod_categoria}>{categoria.nom_categoria}</option>
+                  })}
                 </SelectArea>
               </InputField>
               <InputField>
