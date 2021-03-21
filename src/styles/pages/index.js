@@ -66,6 +66,17 @@ export const SignupForm = styled.div`
   padding: 1.5% 2%;
   background-color: #fafafa;
   border-radius: 2%;
+  
+
+  .Telefone{
+    padding-bottom: 0vh;
+    margin-bottom: 0vh;
+  }
+
+  .DDD {
+    float:left;
+    margin-right: 4vh;
+  }
 
   .input {
     padding-bottom: 2vh;
@@ -80,6 +91,9 @@ export const SignupForm = styled.div`
       color: #656478;
     }
   }
+      
+
+  
 `;
 
 export const SectionsContainer = styled.div`

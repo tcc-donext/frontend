@@ -90,7 +90,7 @@ const PerfilUsuario = () => {
           src="/images/avatar.png"
           alt="Desenho decorativo para a página"
         />
-        <h1>Nome da Pessoa Completo Silva</h1>
+        <h1>{nome}</h1>
         <h2>{doacoesCampanha}</h2>
         <h3>Doado para campanhas</h3>
         <h2>{doacoesInstituicao}</h2>
