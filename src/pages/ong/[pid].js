@@ -46,7 +46,7 @@ const ongPage = () => {
         <>
           <OngSection>
             <OngImageContainer>
-              <img src={ong.profile_pic} />
+              <img src={ong.link_foto_perfil} />
               <h1>{ong.nom_ONG}</h1>
             </OngImageContainer>
             <OngInfoContainer>
