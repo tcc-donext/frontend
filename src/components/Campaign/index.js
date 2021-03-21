@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from 'services/api';
+import { useAuth } from 'contexts/auth';
+
+import Modal from 'react-modal';
 
 import {
   CampaignContainer,
@@ -15,8 +18,51 @@ import {
   ProgressBar
 } from './styles';
 
+import Button from 'components/Button';
+import Input from 'components/Input';
+
+const ModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '8vh',
+    left: '35vw',
+    right: '35vw',
+    bottom: '8vh',
+    backgroundColor: '#f6f6f6',
+    zIndex: '5'
+  }
+};
+
 const Campaign = ({ campaign }) => {
   const [ong, setOng] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalCampanha, setmodalCampanha] = useState(false);
+  const [datDoacao, setDatDoacao] = useState(null);
+  const [vlrDoacao, setVlrDoacao] = useState('');
+  const [doador, setDoador] = useState('');
+  const [loadedAuth, setLoadedAuth] = useState(false);
+  const { signed, user } = useAuth();
+
+  useEffect(() => {
+    if (loadedAuth) {
+      if (signed) {
+        setDatDoacao(
+          new Date().getFullYear() +
+            '-' +
+            new Date().getMonth() +
+            '-' +
+            new Date().getDate()
+        );
+        setDoador(user.id);
+      }
+    }
+  }, [loadedAuth]);
+
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
 
   useEffect(async () => {
     const ongFetch = await api.get(`/ongs/${campaign.id_ong}`);
@@ -24,12 +70,54 @@ const Campaign = ({ campaign }) => {
     setOng(ongFetch.data[0]);
   }, []);
 
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function OpenModal() {
+    setIsOpen(true);
+  }
+
+  const OpenCampanha = () => {
+    setmodalCampanha(true);
+  };
+
+  const CloseCampanha = () => {
+    setmodalCampanha(false);
+  };
+
+  function handleChange(ev) {
+    if (ev.target.name == 'valor') {
+      setVlrDoacao(parseInt(ev.target.value));
+
+      console.log(vlrDoacao);
+    }
+  }
+
+  async function doar() {
+    let data = {
+      id_ong: campaign.id_ong,
+      seq_campanha: campaign.seq_campanha,
+      Dat_doacao: datDoacao,
+      vlr_doacao: vlrDoacao,
+      id_doador: doador
+    };
+
+    try {
+      const response = await api.post(`/doacaoCampanha`, data);
+
+      console.log(response);
+    } catch (err) {
+      console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
+    }
+  }
+
   return (
     <CampaignContainer>
       {!!campaign.fotos[0] ? (
-        <CampaignImage src={campaign.fotos[0]} />
+        <CampaignImage src={campaign.fotos[0]} onClick={() => OpenCampanha()} />
       ) : (
-        <CampaignNoImage />
+        <CampaignNoImage onClick={() => OpenCampanha()} />
       )}
       <ContentSection>
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
@@ -61,6 +149,60 @@ const Campaign = ({ campaign }) => {
           )}
         />
       </ContentSection>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={ModalStyles}
+      />
+
+      <Modal
+        isOpen={modalCampanha}
+        onRequestClose={CloseCampanha}
+        style={ModalStyles}
+      >
+        <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
+        <h2>{campaign.des_geral}</h2>
+        <p
+          className="valueLabel"
+          style={{ color: '#2f2e41', fontWeight: 'bold', paddingBottom: 5 }}
+        >{`${campaign.vlr_arrecadado} / ${campaign.vlr_objetivo}`}</p>
+        <ProgressBar
+          goal={parseFloat(
+            campaign.vlr_objetivo.split(' ')[1].replace('.', '')
+          )}
+          current={parseFloat(
+            campaign.vlr_arrecadado.split(' ')[1].replace('.', '')
+          )}
+        />
+        <form>
+          <Input name="agencia" label="Agência*" type="text" width="13vw" />
+          <Input name="conta" label="Conta*" type="text" width="13vw" />
+          <Input
+            name="valor"
+            label="Valor a doar*"
+            type="numeric"
+            width="13vw"
+            onChange={handleChange}
+          />
+          <Input
+            name="forma_pagamento"
+            label="Forma de Pagamento*"
+            type="text"
+            width="13vw"
+            onChange={handleChange}
+          />
+          <div className="buttonsContainer">
+            <Button
+              width="100%"
+              height="8vh"
+              fontSize="1.8em"
+              onClick={() => doar()}
+            >
+              Doar
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </CampaignContainer>
   );
 };

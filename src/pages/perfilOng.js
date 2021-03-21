@@ -161,7 +161,7 @@ const PerfilOng = () => {
               <Input
                 className="profileImage"
                 type="image"
-                src={user.image}
+                src={user.image ? user.image : '/images/cadastro_usuario.png'}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
               <h3>Clique para alterar a foto</h3>
