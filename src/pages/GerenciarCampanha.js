@@ -46,9 +46,9 @@ const GerenciarCampanha = () => {
 
   const infCampaigns = async id => {
     try {
-      const response = await api.get('/campanhas');
-      console.log(response.data);
-      setCampaingsData(response.data);
+      const response = await api.get(`/profile/${id}`);
+      console.log(response.data)
+      setCampaingsData(response.data)
     } catch (err) {
       console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
     }
@@ -90,7 +90,10 @@ const GerenciarCampanha = () => {
   return (
     <Container>
       <ImgContainer size="3vw">
-        <img src="/images/options.png" alt="opções do perfil" />
+        <img src="/images/options.png" 
+        alt="opções do perfil"
+        onClick={ () =>{ router.push('/perfilOng')}} 
+        />
       </ImgContainer>
       <CardContainer>
         <Card>
