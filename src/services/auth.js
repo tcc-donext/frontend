@@ -21,9 +21,15 @@ const refresh = async () => {
     const response = await api.post('/token');
 
     useTokenHeader(response.data.accessToken);
+    console.log(`Novo token de acesso gerado.`);
+
+    return true;
   } catch (err) {
-    console.warn(`Não foi possível gerar novo token. ${err}`);
-    return null;
+    console.warn(`Não foi possível gerar novo token. Acesso expirado. ${err}`);
+    localStorage.removeItem('userData');
+    localStorage.removeItem('userToken');
+
+    return false;
   }
 };
 
@@ -32,11 +38,12 @@ export const logout = async () => {
 
   try {
     // invalidate refresh token
-    const response = await api.post('/logout');
+    await api.post('/logout');
 
-    if (response.status == 200) return true;
+    return true;
   } catch (err) {
     console.err(err);
+
     return false;
   }
 };
@@ -45,5 +52,5 @@ const useTokenHeader = token => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   localStorage.setItem('userToken', token);
 
-  setTimeout(refresh, 900000);
+  setTimeout(refresh, 895000);
 };

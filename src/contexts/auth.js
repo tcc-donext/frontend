@@ -38,8 +38,6 @@ export const AuthProvider = ({ children }) => {
   async function signOut() {
     const res = await logout();
 
-    if (!res) return false;
-
     setUser(null);
     localStorage.removeItem('userData');
     localStorage.removeItem('userToken');
