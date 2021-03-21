@@ -72,3 +72,7 @@ export const CampaignsContainer = styled.div`
   background-color: #fff;
   padding: 20px 60px;
 `;
+
+export const GereneciarCampanhaContainer = styled.div`
+  margin-left: 9vw;
+`;

@@ -12,10 +12,12 @@ import {
   Main,
   FilterButtonsContainer,
   FilterButton,
-  CampaignsContainer
+  CampaignsContainer,
+  GereneciarCampanhaContainer
 } from 'styles/pages/home';
 
 import Input from 'components/Input';
+import Button from 'components/Button';
 import Campaign from 'components/Campaign';
 import { Router } from 'next/router';
 
@@ -71,6 +73,16 @@ const Home = () => {
             />
           )}
           <p>Bem vindo(a), {signed ? user.name : 'visitante'}</p>
+          {signed && user.isOng ? (
+            <GereneciarCampanhaContainer>
+              <Button
+                width="13vw"
+                onClick={() => router.push('/GerenciarCampanha')}
+              >
+                Gerenciar Campanhas
+              </Button>
+            </GereneciarCampanhaContainer>
+          ) : null}
         </span>
         <Logo src="/images/logo.png" alt="Logo do DoNext" />
       </Header>
