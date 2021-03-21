@@ -4,6 +4,7 @@ import InputMask from "react-input-mask";
 import { StyledLabel } from 'components/Input/styles';
 import api from 'services/api'
 import { useRouter } from 'next/router';
+import { useAuth } from './../contexts/auth';
 
 import {
   Container,
@@ -41,6 +42,7 @@ const OngCadastro = () => {
   const [ufs,setufs] = useState([])
   const [selectedUF,setselectedUF] = useState([])
   const [municipios,setmunicipios] = useState([])
+  const { signIn } = useAuth();
 
   useEffect(() => {
     async function getUFs(){
@@ -103,6 +105,7 @@ const OngCadastro = () => {
     }
     try{
      const response = await api.post("ongs", data)
+     const success = await signIn(values.emailONG, values.senha);
      router.push('/perfilOng')
     }
      catch(err){
