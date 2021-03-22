@@ -63,7 +63,15 @@ const ongPage = () => {
     evt.preventDefault();
     setModalOpen(false);
 
-    console.log(vlrDoacao);
+    try {
+      await api.post('/doacaoDireta', {
+        id_ong: pid,
+        dat_doacao: new Date(),
+        vlr_doacao: vlrDoacao
+      });
+    } catch (err) {
+      console.warn(err);
+    }
   };
 
   return (

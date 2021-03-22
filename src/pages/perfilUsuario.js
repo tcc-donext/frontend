@@ -1,12 +1,13 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
-import Link from 'next/link';
 import api from '../services/api';
 import { useEffect, useState } from 'react';
 import { useAuth } from './../contexts/auth';
 
-import { Container, Image, Divider } from 'styles/pages/perfilUsuario.js';
+import { Container, Image } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
+
+import { useRouter } from 'next/router';
 
 const PerfilUsuario = () => {
   const [idDoador, setIdDoador] = useState();
@@ -17,7 +18,8 @@ const PerfilUsuario = () => {
   const [doacoesCampanha, setDoacoesCampanha] = useState();
   const [doacoesInstituicao, setDoacoesInstituicao] = useState();
   const [loadedAuth, setLoadedAuth] = useState(false);
-  const { signed, user } = useAuth();
+  const { signed, user, signOut } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (signed != null) {
@@ -118,7 +120,7 @@ const PerfilUsuario = () => {
           className="botaoDesconectar"
           onClick={async event => {
             event.preventDefault();
-            const success = await logout();
+            const success = await signOut();
             if (success) router.push('/home');
           }}
         >

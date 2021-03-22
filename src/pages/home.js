@@ -19,7 +19,6 @@ import {
 import Input from 'components/Input';
 import Button from 'components/Button';
 import Campaign from 'components/Campaign';
-import { Router } from 'next/router';
 
 const Home = () => {
   const router = useRouter();
