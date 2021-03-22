@@ -3,6 +3,7 @@ import FormPageLayout from 'components/layouts/FormPageLayout';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Modal from 'react-modal';
+import moment from 'moment'
 import CampaignInfo from 'components/CampaignInfo/index';
 import {
   Container,
@@ -136,7 +137,7 @@ const GerenciarCampanha = () => {
                 <tr>
                   <th>Título</th>
                   <th>Arrecadação</th>
-                  <th>Doadores</th>
+                  <th>Data de Expiração</th>
                 </tr>
               </thead>
               <tbody>
@@ -161,7 +162,7 @@ const GerenciarCampanha = () => {
                             campaign.vlr_objetivo.length - 1
                           )}
                         </td>
-                        <td>7</td>
+                        <td>{moment(campaign.dat_fim).format('DD/MM/YYYY')}</td>
                       </Campaign>
                     </div>
                   ))}
