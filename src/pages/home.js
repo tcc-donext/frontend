@@ -82,6 +82,13 @@ const Home = () => {
               </Button>
             </GereneciarCampanhaContainer>
           ) : null}
+          {!signed ? (
+            <GereneciarCampanhaContainer>
+              <Button width="13vw" onClick={() => router.push('/login')}>
+                Logar
+              </Button>
+            </GereneciarCampanhaContainer>
+          ) : null}
         </span>
         <Logo src="/images/logo.png" alt="Logo do DoNext" />
       </Header>
