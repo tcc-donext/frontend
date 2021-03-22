@@ -27,7 +27,7 @@ const PerfilOng = () => {
     nro_telefone: ''
   });
 
-  const { signed, user } = useAuth();
+  const { signed, user, signOut } = useAuth();
   const router = useRouter();
 
   const infOng = async id => {
@@ -181,7 +181,7 @@ const PerfilOng = () => {
               <Input
                 className="profileImage"
                 type="image"
-                src={user.image ? user.image : '/images/avatar.png'}
+                src={signed && user.image ? user.image : '/images/avatar.png'}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
               <FileInputContainer>
@@ -197,7 +197,11 @@ const PerfilOng = () => {
             <span className="Desconectar">
               <Button
                 className="botaoDesconectar"
-                onClick={() => router.back()}
+                onClick={async event => {
+                  event.preventDefault();
+                  const success = await signOut();
+                  if (success) router.push('/home');
+                }}
               >
                 <Image
                   className="logoutIco"
