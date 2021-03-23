@@ -7,10 +7,10 @@ import Modal from 'react-modal';
 const ModalStyles = {
   content: {
     position: 'absolute',
-    top: '7vh',
+    top: '6vh',
     left: '35.9vw',
     right: '35.9vw',
-    bottom: '7vh',
+    bottom: '6vh',
     backgroundColor: '#f6f6f6',
     zIndex: '5'
   }
@@ -178,26 +178,53 @@ const Campaign = ({ campaign }) => {
           />
         </FormContainer>
         <form>
-          <Input name="agencia" label="Agência*" type="text" width="17vw" />
-          <InputContainer>
-            <Input name="conta" label="Conta*" type="text" width="17vw" />
-          </InputContainer>
+          <Input
+            name="formaPagamento"
+            label="Forma de pagamento"
+            type="text"
+            width="15vw"
+            placeholder="CARTÃO"
+            disabled="disabled"
+            style={{ float: 'left' }}
+          />
+          <Input
+            name="pais"
+            label="País"
+            type="text"
+            width="6vw"
+            placeholder="BRASIL"
+            disabled="disabled"
+            style={{ marginBottom: '2vh', marginLeft: '66%' }}
+          />
+          <Input
+            name="nroCartao"
+            label="Número do cartão*"
+            type="text"
+            width="23vw"
+            style={{ marginBottom: '2vh' }}
+          />
+          <Input
+            name="cvv"
+            label="CVV*"
+            type="text"
+            width="7vw"
+            style={{ float: 'left' }}
+          />
+          <Input
+            name="dataVencimento"
+            label="Data de vencimento*"
+            type="date"
+            width="14vw"
+            style={{ marginBottom: '2vh', marginLeft: '9vw' }}
+          />
           <Input
             name="valor"
             label="Valor a doar*"
             type="numeric"
             width="17vw"
             onChange={handleChange}
+            style={{ marginBottom: '2vh' }}
           />
-          <InputContainer>
-            <Input
-              name="forma_pagamento"
-              label="Forma de Pagamento*"
-              type="text"
-              width="17vw"
-              onChange={handleChange}
-            />
-          </InputContainer>
           <FormContainer>
             <Button
               width="50%"
