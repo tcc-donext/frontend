@@ -134,6 +134,7 @@ const GerenciarCampanha = () => {
     <Container>
       <ImgContainer size="3vw">
         <img
+          style={{ cursor: 'pointer' }}
           src="/images/options.png"
           alt="opções do perfil"
           onClick={() => {

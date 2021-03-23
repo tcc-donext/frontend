@@ -57,6 +57,7 @@ const Home = () => {
         <span>
           {signed ? (
             <ProfilePicture
+              style={{ cursor: 'pointer' }}
               src={!!user.image ? user.image : '/images/user_placeholder.png'}
               alt={`Foto de perfil de ${user.name}`}
               onClick={() =>
@@ -67,6 +68,7 @@ const Home = () => {
             />
           ) : (
             <ProfilePicture
+              style={{ cursor: 'pointer' }}
               src="/images/user_placeholder.png"
               alt="Foto de perfil padrão"
             />
