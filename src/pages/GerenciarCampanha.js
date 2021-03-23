@@ -3,7 +3,7 @@ import FormPageLayout from 'components/layouts/FormPageLayout';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Modal from 'react-modal';
-import moment from 'moment'
+import moment from 'moment';
 import CampaignInfo from 'components/CampaignInfo/index';
 import {
   Container,
@@ -42,14 +42,54 @@ const GerenciarCampanha = () => {
   const [currentCampaign, setcurrentCampaign] = useState(null);
   const [loadedAuth, setLoadedAuth] = useState(false);
   const [campaignsData, setCampaingsData] = useState([]);
+  const [valorTotalDoacaoCampanha, setValorTotalDoacaoCampanha] = useState(
+    null
+  );
+  const [valorTotalDoacaoDireta, setValorTotalDoacaoDireta] = useState(null);
   const { signed, user } = useAuth();
   const router = useRouter();
 
   const infCampaigns = async id => {
     try {
       const response = await api.get(`/profile/${id}`);
-      console.log(response.data)
-      setCampaingsData(response.data)
+      setCampaingsData(response.data);
+    } catch (err) {
+      console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
+    }
+  };
+
+  const searchDoacoesDiretas = async id => {
+    try {
+      const response = await api.get(`/doacaoDireta/${id}`);
+      let doacoes = response.data.doacao_direta;
+
+      let dinheiro = 0;
+      for (let i = 0; i <= doacoes.length; i++) {
+        let valor = Number(doacoes[i].vlr_doacao.replace(/[^0-9-]+/g, ''));
+        valor = valor / 100;
+        dinheiro = dinheiro + valor;
+        console.log(dinheiro);
+        setValorTotalDoacaoDireta(dinheiro);
+      }
+    } catch (err) {
+      console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
+    }
+  };
+
+  const searchDoacoesCampanha = async id => {
+    try {
+      const response = await api.get(`/doacaoCampanha/${id}`);
+      let doacoes = response.data.doacao_campanha;
+      console.log(doacoes);
+
+      let dinheiro = 0;
+      for (let i = 0; i <= doacoes.length; i++) {
+        let valor = Number(doacoes[i].vlr_doacao.replace(/[^0-9-]+/g, ''));
+        //console.log(valor);
+        valor = valor / 100;
+        dinheiro = dinheiro + valor;
+        setValorTotalDoacaoCampanha(dinheiro);
+      }
     } catch (err) {
       console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
     }
@@ -61,6 +101,8 @@ const GerenciarCampanha = () => {
         router.push('/');
       } else {
         infCampaigns(user.id);
+        searchDoacoesDiretas(user.id);
+        searchDoacoesCampanha(user.id);
       }
     }
   }, [loadedAuth]);
@@ -91,9 +133,12 @@ const GerenciarCampanha = () => {
   return (
     <Container>
       <ImgContainer size="3vw">
-        <img src="/images/options.png" 
-        alt="opções do perfil"
-        onClick={ () =>{ router.push('/perfilOng')}} 
+        <img
+          src="/images/options.png"
+          alt="opções do perfil"
+          onClick={() => {
+            router.push('/perfilOng');
+          }}
         />
       </ImgContainer>
       <CardContainer>
@@ -104,12 +149,26 @@ const GerenciarCampanha = () => {
           <ImgContainerCenter>
             <img src="/images/payment.png" alt="opções do perfil" />
           </ImgContainerCenter>
-          <TextContainer>
-            <p>
-              <b>R$ 100,00</b>
-            </p>
-            <p>doações livres</p>
-          </TextContainer>
+          {valorTotalDoacaoDireta ? (
+            <TextContainer>
+              <p>
+                <b>
+                  {valorTotalDoacaoDireta.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  })}
+                </b>
+              </p>
+              <p>doações livres</p>
+            </TextContainer>
+          ) : (
+            <TextContainer>
+              <p>
+                <b>Sem doação ainda :(</b>
+              </p>
+              <p>doações livres</p>
+            </TextContainer>
+          )}
         </Card>
         <Card>
           <ImgContainer size="1vw">
@@ -118,12 +177,26 @@ const GerenciarCampanha = () => {
           <ImgContainerCenter>
             <img src="/images/heart.png" alt="opções do perfil" />
           </ImgContainerCenter>
-          <TextContainer>
-            <p>
-              <b>R$ 2000,00</b>
-            </p>
-            <p>doações por campanhas</p>
-          </TextContainer>
+          {valorTotalDoacaoCampanha ? (
+            <TextContainer>
+              <p>
+                <b>
+                  {valorTotalDoacaoCampanha.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                  })}
+                </b>
+              </p>
+              <p>doações por campanhas</p>
+            </TextContainer>
+          ) : (
+            <TextContainer>
+              <p>
+                <b>Sem doação ainda :(</b>
+              </p>
+              <p>doações livres</p>
+            </TextContainer>
+          )}
         </Card>
       </CardContainer>
       {campaignsData ? (
