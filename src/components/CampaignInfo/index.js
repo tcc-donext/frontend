@@ -113,16 +113,17 @@ const CampaignInfo = props => {
     }
   };
 
-  const deleteCampaign = async () =>{
-    try{
-      const response = await api.delete(`campanhas/${props.campaign.seq_campanha}`);
+  const deleteCampaign = async () => {
+    try {
+      const response = await api.delete(
+        `campanhas/${props.campaign.seq_campanha}`
+      );
       router.reload();
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
-  
   return (
     <Formik
       initialValues={{
@@ -267,16 +268,28 @@ const CampaignInfo = props => {
               </InputField>
               <InputField>
                 <RowCenter>
-                  <Row style= {{width: '100%', display: 'flex', justifyContent: 'center'}}>
-                  <Button type="submit" width="50%" height="8vh">
-                  {props.campaign ? 'Atualizar' : 'Publicar'}
-                  </Button>
-                  {props.campaign ?
-                  <Button   height="8vh" onClick={deleteCampaign}>
-                    Deletar
-                  </Button>
-                  : null
-                  }
+                  <Row
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Button type="submit" width="50%" height="8vh">
+                      {props.campaign ? 'Atualizar' : 'Publicar'}
+                    </Button>
+                    {props.campaign ? (
+                      <Button
+                        height="8vh"
+                        onClick={deleteCampaign}
+                        style={{
+                          marginLeft: '3vw',
+                          backgroundColor: 'LightCoral'
+                        }}
+                      >
+                        Deletar
+                      </Button>
+                    ) : null}
                   </Row>
                 </RowCenter>
               </InputField>
