@@ -12,12 +12,13 @@ import {
   Main,
   FilterButtonsContainer,
   FilterButton,
-  CampaignsContainer
+  CampaignsContainer,
+  GereneciarCampanhaContainer
 } from 'styles/pages/home';
 
 import Input from 'components/Input';
+import Button from 'components/Button';
 import Campaign from 'components/Campaign';
-import { Router } from 'next/router';
 
 const Home = () => {
   const router = useRouter();
@@ -56,6 +57,7 @@ const Home = () => {
         <span>
           {signed ? (
             <ProfilePicture
+              style={{ cursor: 'pointer' }}
               src={!!user.image ? user.image : '/images/user_placeholder.png'}
               alt={`Foto de perfil de ${user.name}`}
               onClick={() =>
@@ -66,11 +68,29 @@ const Home = () => {
             />
           ) : (
             <ProfilePicture
+              style={{ cursor: 'pointer' }}
               src="/images/user_placeholder.png"
               alt="Foto de perfil padrão"
             />
           )}
           <p>Bem vindo(a), {signed ? user.name : 'visitante'}</p>
+          {signed && user.isOng ? (
+            <GereneciarCampanhaContainer>
+              <Button
+                width="13vw"
+                onClick={() => router.push('/GerenciarCampanha')}
+              >
+                Gerenciar Campanhas
+              </Button>
+            </GereneciarCampanhaContainer>
+          ) : null}
+          {!signed ? (
+            <GereneciarCampanhaContainer>
+              <Button width="13vw" onClick={() => router.push('/login')}>
+                Logar
+              </Button>
+            </GereneciarCampanhaContainer>
+          ) : null}
         </span>
         <Logo src="/images/logo.png" alt="Logo do DoNext" />
       </Header>

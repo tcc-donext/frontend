@@ -1,51 +1,70 @@
 import FormPageLayout from 'components/layouts/FormPageLayout';
-import Link from 'next/link';
 import api from '../services/api';
 import { useEffect, useState } from 'react';
+import { useAuth } from './../contexts/auth';
 
-import { Container, Image, Divider } from 'styles/pages/perfilUsuario.js';
+import { Container, Image } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import { useRouter } from 'next/router';
+
 const PerfilUsuario = () => {
-  const [id, setId] = useState(1);
+  const [idDoador, setIdDoador] = useState();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [ddd, setDDD] = useState('');
   const [doacoesCampanha, setDoacoesCampanha] = useState();
   const [doacoesInstituicao, setDoacoesInstituicao] = useState();
+  const [loadedAuth, setLoadedAuth] = useState(false);
+  const { signed, user, signOut } = useAuth();
+  const router = useRouter();
 
-  useEffect(async () => {
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
+
+  useEffect(() => {
+    if (loadedAuth) {
+      if (!signed) {
+        router.push('/');
+      } else {
+        infDoador(user.id);
+        setIdDoador(user.id);
+      }
+    }
+  }, [loadedAuth]);
+
+  const infDoador = async id => {
     await api.get(`/doador/${id}`).then(response => {
       const data = response.data[0];
       setNome(data['nom_doador']);
       setEmail(data['des_email']);
       setTelefone(data['nro_telefone']);
       setDDD(data['nro_ddd']);
-      console.log(data);
     });
     await api.get(`/contribuicao/${id}`).then(response => {
       const data = response.data[0];
       setDoacoesCampanha(data['doacoesCampanhas']);
       setDoacoesInstituicao(data['doacoesInstituicoes']);
-      console.log(data);
     });
-  }, []);
+  };
 
   const saveUdpatedName = async e => {
     e.preventDefault();
     let data = {};
-    await api.get(`/doador/${id}`).then(response => {
+    await api.get(`/doador/${idDoador}`).then(response => {
       data = response.data[0];
     });
     data['nom_doador'] = nome;
-    const result = await api.put(`/doador/${id}`, data);
-    console.log(result);
-    // Resultado do upadate
+    const result = await api.put(`/doador/${idDoador}`, data);
+    // Resultado do update
     // Botar uma mensagem estilizada (Status: 200 -> Deu certo / Status: 400 -> Deu pau)
     if (result.status == '200') alert('Alterado!');
-    else if (result.status == '400') alert(result.data.error);
+    else if (result.status == '400') alert('Não foi possível alterar o nome!');
   };
 
   return (
@@ -101,7 +120,7 @@ const PerfilUsuario = () => {
           className="botaoDesconectar"
           onClick={async event => {
             event.preventDefault();
-            const success = await logout();
+            const success = await signOut();
             if (success) router.push('/home');
           }}
         >

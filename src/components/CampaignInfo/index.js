@@ -12,16 +12,14 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
-import MaskedInput from 'react-text-mask'
-import createNumberMask from 'text-mask-addons/dist/createNumberMask'
-import moment from 'moment'
-import { useAuth } from 'contexts/auth'
-import api from 'services/api'
-
-
-
+import MaskedInput from 'react-text-mask';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
+import moment from 'moment';
+import { useAuth } from 'contexts/auth';
+import api from 'services/api';
+import { useRouter } from 'next/router';
 
 const defaultMaskOptions = {
   prefix: 'R$',
@@ -30,11 +28,11 @@ const defaultMaskOptions = {
   thousandsSeparatorSymbol: '.',
   allowDecimal: true,
   decimalSymbol: ',',
-  decimalLimit: 2, 
-  integerLimit: 10, 
+  decimalLimit: 2,
+  integerLimit: 10,
   allowNegative: false,
-  allowLeadingZeroes: false,
-}
+  allowLeadingZeroes: false
+};
 const curruncyStyle = {
   backgroundColor: '#ebebeb',
   color: '#403e4d',
@@ -42,17 +40,31 @@ const curruncyStyle = {
   border: 'none',
   fontSize: '1.25em',
   width: '32vw'
-}
+};
 
 const CampaignInfo = props => {
-  const [startDate, setStartDate] = useState(props.campaign ? new Date(props.campaign.dat_inicio) : null);
-  const [endDate, setEndDate] = useState(props.campaign ? new Date(props.campaign.dat_fim)  : null);
+  const [startDate, setStartDate] = useState(
+    props.campaign ? new Date(props.campaign.dat_inicio) : null
+  );
+  const [endDate, setEndDate] = useState(
+    props.campaign ? new Date(props.campaign.dat_fim) : null
+  );
   const { user } = useAuth();
-  
+  const router = useRouter();
 
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState('/images/ebebeb.jpg');
   const [selectedFile, setSelectedFile] = useState();
+
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    async function getCategorias() {
+      let response = await api.get('/categorias');
+      setCategorias(response.data);
+    }
+    getCategorias();
+  }, []);
 
   const handleFileInputChange = e => {
     const file = e.target.files[0];
@@ -72,75 +84,87 @@ const CampaignInfo = props => {
   const CurrencyInput = ({ maskOptions, ...inputProps }) => {
     const currencyMask = createNumberMask({
       ...defaultMaskOptions,
-      ...maskOptions,
-    })
-  
-    return <MaskedInput mask={currencyMask} {...inputProps} />
-  }
+      ...maskOptions
+    });
 
-  const SubmitData = async (values,type) =>{
-    if(type==1){
-      try{
-        const response = await api.post("campanhas", values)
-        console.log(response)
+    return <MaskedInput mask={currencyMask} {...inputProps} />;
+  };
 
-      }catch(err){
-        console.log(err)
+  const SubmitData = async (values, type) => {
+    if (type == 1) {
+      try {
+        const response = await api.post('campanhas', values);
+        console.log(response);
+        router.reload();
+      } catch (err) {
+        console.log(err);
       }
-  }else{
-    try{
-      const response = await api.put(`campanhas/${props.campaign.seq_campanha}`, values)
-      console.log(response)
-
-    }catch(err){
-      console.log(err)
+    } else {
+      try {
+        const response = await api.put(
+          `campanhas/${props.campaign.seq_campanha}`,
+          values
+        );
+        console.log(response);
+        router.reload();
+      } catch (err) {
+        console.log(err);
+      }
     }
-  }
-  }
+  };
 
-
+  const deleteCampaign = async () => {
+    try {
+      const response = await api.delete(
+        `campanhas/${props.campaign.seq_campanha}`
+      );
+      router.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    
     <Formik
       initialValues={{
         nome: props.campaign ? props.campaign.des_titulo : null,
         Descricao: props.campaign ? props.campaign.des_geral : null,
-        categoria:  props.campaign ? props.campaign.cod_categoria : null, 
-        objetivo: props.campaign ? props.campaign.vlr_objetivo  : null,
-        dataInicio:  props.campaign ? moment(props.campaign.dat_inicio).format('MM/DD/YYYY')  : null,
-        dataFim:  props.campaign ? moment(props.campaign.dat_fim).format('MM/DD/YYYY')  : null, 
+        categoria: props.campaign ? props.campaign.cod_categoria : null,
+        objetivo: props.campaign ? props.campaign.vlr_objetivo : null,
+        dataInicio: props.campaign
+          ? moment(props.campaign.dat_inicio).format('MM/DD/YYYY')
+          : null,
+        dataFim: props.campaign
+          ? moment(props.campaign.dat_fim).format('MM/DD/YYYY')
+          : null
       }}
-      onSubmit={ async (values) => {
-
+      onSubmit={async values => {
         const data = {
           id_ong: user.id,
           des_titulo: values.nome,
           des_geral: values.Descricao,
-          cod_categoria: 1,
+          cod_categoria: values.categoria,
           dat_inicio: values.dataInicio,
           dat_fim: values.dataFim,
-          vlr_objetivo: values.objetivo,
+          vlr_objetivo: values.objetivo
+        };
+        if (!selectedFile) {
+          props.campaign ? SubmitData(data, 2) : SubmitData(data, 1);
         }
-        if (!selectedFile){
-          props.campaign ? SubmitData(data,2): SubmitData(data,1)
-        } 
         const reader = new FileReader();
 
         reader.readAsDataURL(selectedFile);
         reader.onloadend = () => {
-          data.img_campanha = reader.result
-          props.campaign ? SubmitData(data,2): SubmitData(data,1)
+          data.img_campanha = reader.result;
+          props.campaign ? SubmitData(data, 2) : SubmitData(data, 1);
         };
         reader.onerror = () => {
-            console.error('AHHHHHHHH!!');
-            setErrMsg('something went wrong!');
+          console.error('AHHHHHHHH!!');
+          setErrMsg('something went wrong!');
         };
-
       }}
       render={({ values, errors, touched, handleChange, handleSubmit }) => (
-        
-        <Form style={{ height: '99%' }} onSubmit={handleSubmit} >
+        <Form style={{ height: '99%' }} onSubmit={handleSubmit}>
           <Container>
             <FormLayout>
               <InputField>
@@ -165,25 +189,32 @@ const CampaignInfo = props => {
               </InputField>
               <InputField>
                 <label>Categoria</label>
-                <SelectArea 
-                  type="select" name="categoria"
+                <SelectArea
+                  type="select"
+                  name="categoria"
                   onChange={handleChange}
                   value={values.categoria}
                   id="categoria"
                 >
-                  <option value="categoria1">categoria1</option>
-                  <option value="categoria2">categoria2</option>
-                  <option value="categoria3">categoria3</option>
+                  {categorias.map((categoria, index) => {
+                    return (
+                      <option key={index} value={categoria.cod_categoria}>
+                        {categoria.nom_categoria}
+                      </option>
+                    );
+                  })}
                 </SelectArea>
               </InputField>
               <InputField>
                 <label>Objetivo</label>
-                <CurrencyInput 
-                placeholder="R$0.00" type="text" style={curruncyStyle}
-                name="objetivo"
-                onChange={handleChange}
-                value={values.objetivo}
-                id="objetivo"
+                <CurrencyInput
+                  placeholder="R$0.00"
+                  type="text"
+                  style={curruncyStyle}
+                  name="objetivo"
+                  onChange={handleChange}
+                  value={values.objetivo}
+                  id="objetivo"
                 />
                 {console.log(values)}
               </InputField>
@@ -196,8 +227,8 @@ const CampaignInfo = props => {
                     dateFormat="dd/MM/yyyy"
                     selected={startDate}
                     onChange={date => {
-                      var selectedDateStr = moment(date).format('MM/DD/YYYY')
-                      setStartDate(date)
+                      var selectedDateStr = moment(date).format('MM/DD/YYYY');
+                      setStartDate(date);
                       values.dataInicio = selectedDateStr;
                     }}
                     placeholderText="ínicio"
@@ -207,9 +238,9 @@ const CampaignInfo = props => {
                     dateFormat="dd/MM/yyyy"
                     selected={endDate}
                     onChange={date => {
-                      var selectedDateStr = moment(date).format('MM/DD/YYYY')
-                      console.log(date)
-                      setEndDate(date)
+                      var selectedDateStr = moment(date).format('MM/DD/YYYY');
+                      console.log(date);
+                      setEndDate(date);
                       values.dataFim = selectedDateStr;
                     }}
                     placeholderText="fim"
@@ -237,9 +268,29 @@ const CampaignInfo = props => {
               </InputField>
               <InputField>
                 <RowCenter>
-                  <Button type="submit" width="50%" height="8vh">
-                    Publicar
-                  </Button>
+                  <Row
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    <Button type="submit" width="50%" height="8vh">
+                      {props.campaign ? 'Atualizar' : 'Publicar'}
+                    </Button>
+                    {props.campaign ? (
+                      <Button
+                        height="8vh"
+                        onClick={deleteCampaign}
+                        style={{
+                          marginLeft: '3vw',
+                          backgroundColor: 'LightCoral'
+                        }}
+                      >
+                        Deletar
+                      </Button>
+                    ) : null}
+                  </Row>
                 </RowCenter>
               </InputField>
             </FormLayout>

@@ -5,6 +5,11 @@ export const Container = styled.div`
   flex-direction: column;
   flex: 1;
   margin-top: 0.65vh;
+
+  button {
+    align-self: center;
+    margin-top: 2vh;
+  }
 `;
 
 export const OngSection = styled.div`
@@ -116,4 +121,14 @@ export const Campaign = styled.tr`
     border-radius: 50%;
     height: 10vh;
   }
+`;
+
+export const FormContainer = styled.div`
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+`;
+
+export const InputContainer = styled.div`
+  margin-top: 1vh;
+  margin-bottom: 1vh;
 `;

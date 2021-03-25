@@ -116,27 +116,31 @@ const Home = () => {
                     setPassword(event.target.value);
                   }}
                 />
-                <Input
-                  label="DDD *"
-                  type="text"
-                  width="4vw"
-                  type="text"
-                  value={ddd}
-                  onChange={event => {
-                    setDDD(event.target.value);
-                  }}
-                />
-                <Input
-                  label="Telefone *"
-                  type="text"
-                  width="22vw"
-                  pattern="[0-9]{9}"
-                  type="text"
-                  value={telefone}
-                  onChange={event => {
-                    setTelefone(event.target.value);
-                  }}
-                />
+                <div style={{ float: 'left' }}>
+                  <Input
+                    label="DDD *"
+                    type="text"
+                    width="8vw"
+                    type="text"
+                    value={ddd}
+                    onChange={event => {
+                      setDDD(event.target.value);
+                    }}
+                  />
+                </div>
+                <div style={{ paddingBottom: '3.5vh', marginLeft: '10vw' }}>
+                  <Input
+                    label="Telefone *"
+                    type="text"
+                    width="12vw"
+                    pattern="[0-9]{9}"
+                    type="text"
+                    value={telefone}
+                    onChange={event => {
+                      setTelefone(event.target.value);
+                    }}
+                  />
+                </div>
               </span>
 
               <Button type="submit" height="6vh" width="12vw" fontSize="1.5em">

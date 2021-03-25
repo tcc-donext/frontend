@@ -84,10 +84,8 @@ export const Container = styled.div`
   }
 
   .profileImage {
-    border-top: 10vh;
     height: 42vh;
     width: 42vh;
-    border: none;
     margin-top: 6vh;
     border-radius: 22vh;
     padding: 0;
@@ -121,4 +119,25 @@ export const ImagePerfil = styled.img`
 
 export const Image = styled.img`
   max-height: 100vh;
+`;
+
+export const FileInputContainer = styled.label`
+  overflow: hidden;
+  position: relative;
+  [type='file'] {
+    cursor: inherit;
+    display: block;
+    font-size: 999px;
+    filter: alpha(opacity=0);
+    height: 8vh;
+    width: 10vw;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+  }
+  [type='file'] {
+    cursor: pointer;
+  }
 `;

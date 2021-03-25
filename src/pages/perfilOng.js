@@ -9,7 +9,8 @@ import {
   Container,
   Image,
   ImageCentral,
-  ImagePerfil
+  ImagePerfil,
+  FileInputContainer
 } from 'styles/pages/perfilOng.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
@@ -26,7 +27,7 @@ const PerfilOng = () => {
     nro_telefone: ''
   });
 
-  const { signed, user } = useAuth();
+  const { signed, user, signOut } = useAuth();
   const router = useRouter();
 
   const infOng = async id => {
@@ -99,6 +100,25 @@ const PerfilOng = () => {
     }
   }, [loadedAuth]);
 
+  const [fileInputState, setFileInputState] = useState('');
+  const [previewSource, setPreviewSource] = useState('/images/ebebeb.jpg');
+  const [selectedFile, setSelectedFile] = useState();
+
+  const handleFileInputChange = e => {
+    const file = e.target.files[0];
+    previewFile(file);
+    setSelectedFile(file);
+    setFileInputState(e.target.value);
+  };
+
+  const previewFile = file => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
   return (
     <Container>
       {ongData && ongContatoData ? (
@@ -161,15 +181,27 @@ const PerfilOng = () => {
               <Input
                 className="profileImage"
                 type="image"
-                src={user.image ? user.image : '/images/cadastro_usuario.png'}
+                src={signed && user.image ? user.image : '/images/avatar.png'}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
-              <h3>Clique para alterar a foto</h3>
+              <FileInputContainer>
+                Clique para alterar a foto
+                <input
+                  type="file"
+                  name="image"
+                  onChange={handleFileInputChange}
+                  value={fileInputState}
+                />
+              </FileInputContainer>
             </div>
             <span className="Desconectar">
               <Button
                 className="botaoDesconectar"
-                onClick={() => router.back()}
+                onClick={async event => {
+                  event.preventDefault();
+                  const success = await signOut();
+                  if (success) router.push('/home');
+                }}
               >
                 <Image
                   className="logoutIco"

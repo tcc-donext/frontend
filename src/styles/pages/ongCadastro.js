@@ -19,7 +19,7 @@ export const Image = styled.img`
 `;
 
 export const Tabs = styled.div`
-display:flex
+display:flex;
 flex-direction: column;
 padding-top: 8vh;
 padding-left: 6vw;
