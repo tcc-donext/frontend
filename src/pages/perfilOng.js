@@ -65,6 +65,7 @@ const PerfilOng = () => {
         isOng: true
       }
       setLocalStorageData(data)
+      router.reload()
      
     } catch (err) {
       console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
