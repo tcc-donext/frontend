@@ -129,7 +129,7 @@ const CampaignInfo = props => {
       initialValues={{
         nome: props.campaign ? props.campaign.des_titulo : null,
         Descricao: props.campaign ? props.campaign.des_geral : null,
-        categoria: props.campaign ? props.campaign.cod_categoria : null,
+        categoria: props.campaign ? props.campaign.cod_categoria : 1,
         objetivo: props.campaign ? props.campaign.vlr_objetivo : null,
         dataInicio: props.campaign
           ? moment(props.campaign.dat_inicio).format('MM/DD/YYYY')
