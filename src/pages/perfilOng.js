@@ -29,6 +29,9 @@ const PerfilOng = () => {
 
   const { signed, user, signOut } = useAuth();
   const router = useRouter();
+  const [fileInputState, setFileInputState] = useState('');
+  const [previewSource, setPreviewSource] = useState(signed && user.image ? user.image : '/images/avatar.png');
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const infOng = async id => {
     try {
@@ -48,10 +51,21 @@ const PerfilOng = () => {
     });
   }
 
-  const SubmitData = async (data,id) =>{
+  const setLocalStorageData = async (data) =>{
+    localStorage.setItem('userData', JSON.stringify(data));
+  }
+
+  const SubmitData = async (info) =>{
     try{
-      const response = await api.put(`/ongs`, data);
-      console.log(response);
+      const response = await api.put(`/ongs`, info);
+      let data = {
+        id: response.data.id_ong,
+        name: response.data.nom_ONG,
+        image: response.data.link_foto_perfil,
+        isOng: true
+      }
+      setLocalStorageData(data)
+     
     } catch (err) {
       console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
     }
@@ -86,17 +100,19 @@ const PerfilOng = () => {
       } else {
         data.nro_telefone = parseInt(data.nro_telefone);
       }
-
-      if (!selectedFile) {
+       
+      if (selectedFile == null) {
         data.img_ong = ""
-        SubmitData(data,id);
+        SubmitData(data);
+        return;
       }
+
       const reader = new FileReader();
 
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         data.img_ong = reader.result;
-        SubmitData(data,id) 
+        SubmitData(data) 
       };
       reader.onerror = () => {
         console.error('AHHHHHHHH!!');
@@ -120,13 +136,13 @@ const PerfilOng = () => {
         router.push('/');
       } else {
         infOng(user.id);
+        if(user.image != ""){
+          setPreviewSource(user.image)
+        }
       }
     }
   }, [loadedAuth]);
 
-  const [fileInputState, setFileInputState] = useState('');
-  const [previewSource, setPreviewSource] = useState('/images/avatar.png');
-  const [selectedFile, setSelectedFile] = useState();
 
   const handleFileInputChange = e => {
     const file = e.target.files[0];
@@ -208,7 +224,7 @@ const PerfilOng = () => {
               <Input
                 className="profileImage"
                 type="image"
-                src={signed && user.image ? user.image : previewSource}
+                src={previewSource}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
               <FileInputContainer>
