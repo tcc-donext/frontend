@@ -48,6 +48,16 @@ const PerfilOng = () => {
     });
   }
 
+  const SubmitData = async (data,id) =>{
+    try{
+      const response = await api.put(`/ongs`, data);
+      console.log(response);
+    } catch (err) {
+      console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
+    }
+  }
+  
+
   async function salvarPerfil(id) {
     const data = {
       nom_ONG: values.nom_ONG,
@@ -77,12 +87,26 @@ const PerfilOng = () => {
         data.nro_telefone = parseInt(data.nro_telefone);
       }
 
-      const response = await api.put(`/profile/${id}`, data);
-      console.log(response);
-    } catch (err) {
-      console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
-    }
+      if (!selectedFile) {
+        data.img_ong = ""
+        SubmitData(data,id);
+      }
+      const reader = new FileReader();
+
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        data.img_ong = reader.result;
+        SubmitData(data,id) 
+      };
+      reader.onerror = () => {
+        console.error('AHHHHHHHH!!');
+        setErrMsg('something went wrong!');
+      };
+    
+  }catch(err){
+    console.log(err)
   }
+}
 
   useEffect(() => {
     if (signed != null) {
@@ -101,7 +125,7 @@ const PerfilOng = () => {
   }, [loadedAuth]);
 
   const [fileInputState, setFileInputState] = useState('');
-  const [previewSource, setPreviewSource] = useState('/images/ebebeb.jpg');
+  const [previewSource, setPreviewSource] = useState('/images/avatar.png');
   const [selectedFile, setSelectedFile] = useState();
 
   const handleFileInputChange = e => {
@@ -170,7 +194,10 @@ const PerfilOng = () => {
                 width="100%"
                 height="8vh"
                 fontSize="1.8em"
-                onClick={() => salvarPerfil(ongData.id_ong)}
+                onClick={(e) => {
+                  e.preventDefault() 
+                  salvarPerfil(ongData.id_ong)
+                }}
               >
                 Salvar
               </Button>
@@ -181,7 +208,7 @@ const PerfilOng = () => {
               <Input
                 className="profileImage"
                 type="image"
-                src={signed && user.image ? user.image : '/images/avatar.png'}
+                src={signed && user.image ? user.image : previewSource}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
               <FileInputContainer>
