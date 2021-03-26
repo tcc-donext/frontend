@@ -109,8 +109,12 @@ const Campaign = ({ campaign }) => {
       id_doador: doador
     };
 
-    let objetivo = parseFloat(campaign.vlr_objetivo.split(' ')[1]);
-    let arrecadado = parseFloat(campaign.vlr_arrecadado.split(' ')[1]);
+    let objetivo = parseFloat(
+      campaign.vlr_objetivo.split(' ')[1].replace(/[.]/g, '')
+    );
+    let arrecadado = parseFloat(
+      campaign.vlr_arrecadado.split(' ')[1].replace(/[.]/g, '')
+    );
 
     if (vlrDoacao <= 0) {
       toast.error('O valor a doar está incorreto! 🤷‍♂️');
@@ -182,14 +186,29 @@ const Campaign = ({ campaign }) => {
       >
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
         <h2>{campaign.des_geral}</h2>
-        <p>
-          Fim:{' '}
-          {new Date(campaign.dat_fim).getDate() +
-            '/' +
-            (new Date(campaign.dat_fim).getMonth() + 1) +
-            '/' +
-            new Date(campaign.dat_fim).getFullYear()}
-        </p>
+        {new Date() > new Date(campaign.dat_fim) ? (
+          <p
+            style={{
+              color: 'red'
+            }}
+          >
+            {'A campanha foi finalizada dia '}
+            {new Date(campaign.dat_fim).getDate() +
+              '/' +
+              (new Date(campaign.dat_fim).getMonth() + 1) +
+              '/' +
+              new Date(campaign.dat_fim).getFullYear()}
+          </p>
+        ) : (
+          <p>
+            Fim:{' '}
+            {new Date(campaign.dat_fim).getDate() +
+              '/' +
+              (new Date(campaign.dat_fim).getMonth() + 1) +
+              '/' +
+              new Date(campaign.dat_fim).getFullYear()}
+          </p>
+        )}
         <FormContainer>
           <p
             className="valueLabel"
