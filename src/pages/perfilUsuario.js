@@ -7,6 +7,9 @@ import { Container, Image } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 import { useRouter } from 'next/router';
 
 const PerfilUsuario = () => {
@@ -53,6 +56,10 @@ const PerfilUsuario = () => {
     });
   };
 
+  const setLocalStorageData = async data => {
+    localStorage.setItem('userData', JSON.stringify(data));
+  };
+
   const saveUdpatedName = async e => {
     e.preventDefault();
     let data = {};
@@ -60,11 +67,20 @@ const PerfilUsuario = () => {
       data = response.data[0];
     });
     data['nom_doador'] = nome;
+    let dadosLocais = {
+      id: idDoador,
+      name: nome,
+      image: null,
+      isOng: false
+    };
     const result = await api.put(`/doador/${idDoador}`, data);
     // Resultado do update
     // Botar uma mensagem estilizada (Status: 200 -> Deu certo / Status: 400 -> Deu pau)
-    if (result.status == '200') alert('Alterado!');
-    else if (result.status == '400') alert('Não foi possível alterar o nome!');
+    if (result.status == '200') {
+      setLocalStorageData(dadosLocais);
+      router.reload();
+    } else if (result.status == '400')
+      toast.warn('Não foi possível atualizar o perfil! 🤷‍♀️');
   };
 
   return (
@@ -132,6 +148,17 @@ const PerfilUsuario = () => {
           Desconectar
         </Button>
       </span>
+      <ToastContainer
+        position="top-center"
+        autoClose={2800}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
