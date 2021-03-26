@@ -2,6 +2,8 @@ import { useState } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import { Container, Image, Divider } from 'styles/pages/login';
 import Button from 'components/Button';
@@ -44,8 +46,8 @@ const Login = () => {
               event.preventDefault();
               const success = await signIn(email, password);
               if (success) router.push('/home');
-              else{
-                router.push('/usuarioCadastro');
+              else {
+                toast.error('Email ou Senha incorretos! 🤔');
               }
             }}
           >
@@ -71,6 +73,17 @@ const Login = () => {
           alt="Desenho decorativo para a página"
         />
       </aside>
+      <ToastContainer
+        position="top-center"
+        autoClose={2800}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
