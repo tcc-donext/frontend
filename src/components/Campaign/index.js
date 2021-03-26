@@ -20,6 +20,19 @@ const ModalStyles = {
   }
 };
 
+const ModalStylesForOng = {
+  content: {
+    position: 'absolute',
+    top: '20vh',
+    left: '34.9vw',
+    right: '34.9vw',
+    bottom: '20vh',
+    backgroundColor: '#f6f6f6',
+    padding: '20px',
+    zIndex: '5'
+  }
+};
+
 import {
   CampaignContainer,
   CampaignImage,
@@ -99,36 +112,44 @@ const Campaign = ({ campaign }) => {
 
   const doar = async e => {
     e.preventDefault();
-    let data = {
-      id_ong: campaign.id_ong,
-      seq_campanha: campaign.seq_campanha,
-      Dat_doacao: datDoacao,
-      vlr_doacao: vlrDoacao
-    };
+    setIsOpen(false);
 
-    let objetivo = parseFloat(
-      campaign.vlr_objetivo.split(' ')[1].replace(/[.]/g, '')
-    );
-    let arrecadado = parseFloat(
-      campaign.vlr_arrecadado.split(' ')[1].replace(/[.]/g, '')
-    );
-
-    if (vlrDoacao <= 0) {
-      toast.error('O valor a doar está incorreto! 🤷‍♂️');
-    } else if (objetivo <= arrecadado) {
-      toast.warn('A meta dessa campanha já foi alcançada! 😁');
-    } else if (new Date() > new Date(campaign.dat_fim)) {
-      toast.warn('Essa campanha já expirou! 🤞');
+    if (signed && user.isOng) {
+      toast.error('Operação não permitida.');
     } else {
-      try {
-        const response = await api.post(`/doacaoCampanha`, data);
+      let data = {
+        id_ong: campaign.id_ong,
+        seq_campanha: campaign.seq_campanha,
+        Dat_doacao: datDoacao,
+        vlr_doacao: vlrDoacao
+      };
 
-        console.log(response);
-        router.reload();
-      } catch (err) {
-        console.warn(
-          `Não foi possível atualizar as informações da Ong. ${err}`
-        );
+      let objetivo = parseFloat(
+        campaign.vlr_objetivo.split(' ')[1].replace(/[.]/g, '')
+      );
+      let arrecadado = parseFloat(
+        campaign.vlr_arrecadado.split(' ')[1].replace(/[.]/g, '')
+      );
+
+      if (vlrDoacao <= 0) {
+        toast.error('O valor a doar está incorreto! 🤷‍♂️');
+      } else if (objetivo <= arrecadado) {
+        toast.warn('A meta dessa campanha já foi alcançada! 😁');
+      } else if (new Date() > new Date(campaign.dat_fim)) {
+        toast.warn('Essa campanha já expirou! 🤞');
+      } else {
+        try {
+          const response = await api.post(`/doacaoCampanha`, data);
+
+          console.log(response);
+          toast.success('Obrigado!', 'Sucess');
+          router.reload();
+        } catch (err) {
+          console.warn(
+            `Não foi possível atualizar as informações da Ong. ${err}`
+          );
+          toast.error('Erro ao doar para campanha');
+        }
       }
     }
   };
@@ -176,105 +197,153 @@ const Campaign = ({ campaign }) => {
         style={ModalStyles}
       />
 
-      <Modal
-        isOpen={modalCampanha}
-        onRequestClose={CloseCampanha}
-        style={ModalStyles}
-      >
-        <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
-        <h2>{campaign.des_geral}</h2>
-        {new Date() > new Date(campaign.dat_fim) ? (
-          <p
-            style={{
-              color: 'red'
-            }}
-          >
-            {'A campanha foi finalizada dia '}
-            {new Date(campaign.dat_fim).getDate() +
-              '/' +
-              (new Date(campaign.dat_fim).getMonth() + 1) +
-              '/' +
-              new Date(campaign.dat_fim).getFullYear()}
-          </p>
-        ) : (
-          <p>
-            Fim:{' '}
-            {new Date(campaign.dat_fim).getDate() +
-              '/' +
-              (new Date(campaign.dat_fim).getMonth() + 1) +
-              '/' +
-              new Date(campaign.dat_fim).getFullYear()}
-          </p>
-        )}
-        <FormContainer>
-          <p
-            className="valueLabel"
-            style={{ color: '#2f2e41', fontWeight: 'bold', paddingBottom: 5 }}
-          >{`${campaign.vlr_arrecadado} / ${campaign.vlr_objetivo}`}</p>
-          <ProgressBar
-            goal={parseFloat(
-              campaign.vlr_objetivo.split(' ')[1].replace('.', '')
-            )}
-            current={parseFloat(
-              campaign.vlr_arrecadado.split(' ')[1].replace('.', '')
-            )}
-          />
-        </FormContainer>
-        <form>
-          <Input
-            name="formaPagamento"
-            label="Forma de pagamento"
-            type="text"
-            width="15vw"
-            placeholder="CARTÃO"
-            disabled="disabled"
-            style={{ float: 'left' }}
-          />
-          <Input
-            name="pais"
-            label="País"
-            type="text"
-            width="6vw"
-            placeholder="BRASIL"
-            disabled="disabled"
-            style={{ marginBottom: '2vh', marginLeft: '66%' }}
-          />
-          <Input
-            name="nroCartao"
-            label="Número do cartão*"
-            type="text"
-            width="23vw"
-            style={{ marginBottom: '2vh' }}
-          />
-          <Input
-            name="cvv"
-            label="CVV*"
-            type="text"
-            width="7vw"
-            style={{ float: 'left' }}
-          />
-          <Input
-            name="dataVencimento"
-            label="Data de vencimento*"
-            type="date"
-            width="14vw"
-            style={{ marginBottom: '2vh', marginLeft: '9vw' }}
-          />
-          <Input
-            name="valor"
-            label="Valor a doar*"
-            type="numeric"
-            width="17vw"
-            onChange={handleChange}
-            style={{ marginBottom: '2vh' }}
-          />
+      {!signed || (signed && user.isOng) ? (
+        <Modal
+          isOpen={modalCampanha}
+          onRequestClose={CloseCampanha}
+          style={ModalStylesForOng}
+        >
+          {!!campaign.fotos[0] ? (
+            <CampaignImage
+              src={campaign.fotos[0]}
+              onClick={() => OpenCampanha()}
+            />
+          ) : (
+            <CampaignNoImage onClick={() => OpenCampanha()} />
+          )}
+          <CampaignTitle style={{ marginTop: '10px' }}>
+            {campaign.des_titulo}
+          </CampaignTitle>
+          <h2 style={{ marginTop: '10px', marginBottom: '10px' }}>
+            {campaign.des_geral}
+          </h2>
+          {new Date() > new Date(campaign.dat_fim) ? (
+            <p
+              style={{
+                color: 'red'
+              }}
+            >
+              {'A campanha foi finalizada dia '}
+              {new Date(campaign.dat_fim).getDate() +
+                '/' +
+                (new Date(campaign.dat_fim).getMonth() + 1) +
+                '/' +
+                new Date(campaign.dat_fim).getFullYear()}
+            </p>
+          ) : (
+            <p>
+              Fim:{' '}
+              {new Date(campaign.dat_fim).getDate() +
+                '/' +
+                (new Date(campaign.dat_fim).getMonth() + 1) +
+                '/' +
+                new Date(campaign.dat_fim).getFullYear()}
+            </p>
+          )}{' '}
+        </Modal>
+      ) : (
+        <Modal
+          isOpen={modalCampanha}
+          onRequestClose={CloseCampanha}
+          style={ModalStyles}
+        >
+          <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
+          <h2 style={{ marginBottom: '10px', marginTop: '10px' }}>
+            {campaign.des_geral}
+          </h2>
+          {new Date() > new Date(campaign.dat_fim) ? (
+            <p
+              style={{
+                color: 'red'
+              }}
+            >
+              {'A campanha foi finalizada dia '}
+              {new Date(campaign.dat_fim).getDate() +
+                '/' +
+                (new Date(campaign.dat_fim).getMonth() + 1) +
+                '/' +
+                new Date(campaign.dat_fim).getFullYear()}
+            </p>
+          ) : (
+            <p>
+              Fim:{' '}
+              {new Date(campaign.dat_fim).getDate() +
+                '/' +
+                (new Date(campaign.dat_fim).getMonth() + 1) +
+                '/' +
+                new Date(campaign.dat_fim).getFullYear()}
+            </p>
+          )}
           <FormContainer>
-            <Button width="50%" height="6vh" fontSize="1.8em" onClick={doar}>
-              Doar
-            </Button>
+            <p
+              className="valueLabel"
+              style={{ color: '#2f2e41', fontWeight: 'bold', paddingBottom: 5 }}
+            >{`${campaign.vlr_arrecadado} / ${campaign.vlr_objetivo}`}</p>
+            <ProgressBar
+              goal={parseFloat(
+                campaign.vlr_objetivo.split(' ')[1].replace('.', '')
+              )}
+              current={parseFloat(
+                campaign.vlr_arrecadado.split(' ')[1].replace('.', '')
+              )}
+            />
           </FormContainer>
-        </form>
-      </Modal>
+          <form>
+            <Input
+              name="formaPagamento"
+              label="Forma de pagamento"
+              type="text"
+              width="15vw"
+              placeholder="CARTÃO"
+              disabled="disabled"
+              style={{ float: 'left' }}
+            />
+            <Input
+              name="pais"
+              label="País"
+              type="text"
+              width="6vw"
+              placeholder="BRASIL"
+              disabled="disabled"
+              style={{ marginBottom: '2vh', marginLeft: '66%' }}
+            />
+            <Input
+              name="nroCartao"
+              label="Número do cartão*"
+              type="text"
+              width="23vw"
+              style={{ marginBottom: '2vh' }}
+            />
+            <Input
+              name="cvv"
+              label="CVV*"
+              type="text"
+              width="7vw"
+              style={{ float: 'left' }}
+            />
+            <Input
+              name="dataVencimento"
+              label="Data de vencimento*"
+              type="date"
+              width="14vw"
+              style={{ marginBottom: '2vh', marginLeft: '9vw' }}
+            />
+            <Input
+              name="valor"
+              label="Valor a doar*"
+              type="numeric"
+              width="17vw"
+              onChange={handleChange}
+              style={{ marginBottom: '2vh' }}
+            />
+            <FormContainer>
+              <Button width="50%" height="6vh" fontSize="1.8em" onClick={doar}>
+                Doar
+              </Button>
+            </FormContainer>
+          </form>
+        </Modal>
+      )}
       <ToastContainer
         position="top-center"
         autoClose={2200}

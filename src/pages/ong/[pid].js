@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 import {
   Container,
   OngSection,
@@ -69,6 +72,8 @@ const ongPage = () => {
         dat_doacao: new Date(),
         vlr_doacao: vlrDoacao
       });
+
+      toast.success('Você doou para ' + ong.nom_ONG, 'Success');
     } catch (err) {
       console.warn(err);
     }
@@ -221,6 +226,18 @@ const ongPage = () => {
           </Modal>
         </>
       )}
+
+      <ToastContainer
+        position="top-center"
+        autoClose={2200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
