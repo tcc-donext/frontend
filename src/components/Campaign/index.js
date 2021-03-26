@@ -45,7 +45,6 @@ const Campaign = ({ campaign }) => {
   const [modalCampanha, setmodalCampanha] = useState(false);
   const [datDoacao, setDatDoacao] = useState(null);
   const [vlrDoacao, setVlrDoacao] = useState('');
-  const [doador, setDoador] = useState('');
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user } = useAuth();
   const router = useRouter();
@@ -60,7 +59,6 @@ const Campaign = ({ campaign }) => {
             '-' +
             new Date().getDate()
         );
-        setDoador(user.id);
       }
     }
   }, [loadedAuth]);
@@ -105,8 +103,7 @@ const Campaign = ({ campaign }) => {
       id_ong: campaign.id_ong,
       seq_campanha: campaign.seq_campanha,
       Dat_doacao: datDoacao,
-      vlr_doacao: vlrDoacao,
-      id_doador: doador
+      vlr_doacao: vlrDoacao
     };
 
     let objetivo = parseFloat(
