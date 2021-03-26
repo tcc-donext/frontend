@@ -11,10 +11,10 @@ import Modal from 'react-modal';
 const ModalStyles = {
   content: {
     position: 'absolute',
-    top: '6vh',
+    top: '5vh',
     left: '35.9vw',
     right: '35.9vw',
-    bottom: '6vh',
+    bottom: '5vh',
     backgroundColor: '#f6f6f6',
     zIndex: '5'
   }
@@ -240,6 +240,12 @@ const Campaign = ({ campaign }) => {
                 new Date(campaign.dat_fim).getFullYear()}
             </p>
           )}{' '}
+          <p style={{ float: 'right', marginTop: '2vh' }}>
+            Deseja doar?{' '}
+            <Link href="/login">
+              <a>Faça login como doador</a>
+            </Link>
+          </p>
         </Modal>
       ) : (
         <Modal

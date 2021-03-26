@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
+import Link from 'next/link';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -154,6 +155,12 @@ const ongPage = () => {
           >
             Doe para esta ONG!
           </Button>
+          <p>
+            Deseja doar?{' '}
+            <Link href="/login">
+              <a>Faça login como doador</a>
+            </Link>
+          </p>
           <Modal
             isOpen={modalOpen}
             onRequestClose={() => {
