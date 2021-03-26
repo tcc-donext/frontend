@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
+import { useAuth } from './../../contexts/auth';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
@@ -46,6 +47,8 @@ const ongPage = () => {
   const [vlrDoacao, setVlrDoacao] = useState(0);
   const [ong, setOng] = useState();
   const [ongCampaigns, setOngCampaigns] = useState();
+  const [loadedAuth, setLoadedAuth] = useState(false);
+  const { signed, user } = useAuth();
 
   useEffect(async () => {
     if (!pid) return;
@@ -79,6 +82,12 @@ const ongPage = () => {
       console.warn(err);
     }
   };
+
+  useEffect(() => {
+    if (signed != null) {
+      setLoadedAuth(true);
+    }
+  }, [signed]);
 
   return (
     <Container>
@@ -144,23 +153,26 @@ const ongPage = () => {
               </tbody>
             </Table>
           </CampaignContainer>
-          <Button
-            inverted
-            height="8vh"
-            width="15vw"
-            fontSize="1.5em"
-            onClick={() => {
-              setModalOpen(true);
-            }}
-          >
-            Doe para esta ONG!
-          </Button>
-          <p>
-            Deseja doar?{' '}
-            <Link href="/login">
-              <a>Faça login como doador</a>
-            </Link>
-          </p>
+          {!signed || (signed && user.isOng) ? (
+            <p>
+              Deseja doar?{' '}
+              <Link href="/login">
+                <a>Faça login como doador</a>
+              </Link>
+            </p>
+          ) : (
+            <Button
+              inverted
+              height="8vh"
+              width="15vw"
+              fontSize="1.5em"
+              onClick={() => {
+                setModalOpen(true);
+              }}
+            >
+              Doe para esta ONG!
+            </Button>
+          )}
           <Modal
             isOpen={modalOpen}
             onRequestClose={() => {
