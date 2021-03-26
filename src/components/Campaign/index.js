@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import api from 'services/api';
 import { useAuth } from 'contexts/auth';
+import { useRouter } from 'next/router';
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import Modal from 'react-modal';
 const ModalStyles = {
@@ -33,6 +37,7 @@ import {
 
 import Button from 'components/Button';
 import Input from 'components/Input';
+import { Router } from 'next/router';
 
 const Campaign = ({ campaign }) => {
   const [ong, setOng] = useState(null);
@@ -40,9 +45,9 @@ const Campaign = ({ campaign }) => {
   const [modalCampanha, setmodalCampanha] = useState(false);
   const [datDoacao, setDatDoacao] = useState(null);
   const [vlrDoacao, setVlrDoacao] = useState('');
-  const [doador, setDoador] = useState('');
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (loadedAuth) {
@@ -54,7 +59,6 @@ const Campaign = ({ campaign }) => {
             '-' +
             new Date().getDate()
         );
-        setDoador(user.id);
       }
     }
   }, [loadedAuth]);
@@ -93,23 +97,41 @@ const Campaign = ({ campaign }) => {
     }
   }
 
-  async function doar() {
+  const doar = async e => {
+    e.preventDefault();
     let data = {
       id_ong: campaign.id_ong,
       seq_campanha: campaign.seq_campanha,
       Dat_doacao: datDoacao,
-      vlr_doacao: vlrDoacao,
-      id_doador: doador
+      vlr_doacao: vlrDoacao
     };
 
-    try {
-      const response = await api.post(`/doacaoCampanha`, data);
+    let objetivo = parseFloat(
+      campaign.vlr_objetivo.split(' ')[1].replace(/[.]/g, '')
+    );
+    let arrecadado = parseFloat(
+      campaign.vlr_arrecadado.split(' ')[1].replace(/[.]/g, '')
+    );
 
-      console.log(response);
-    } catch (err) {
-      console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
+    if (vlrDoacao <= 0) {
+      toast.error('O valor a doar está incorreto! 🤷‍♂️');
+    } else if (objetivo <= arrecadado) {
+      toast.warn('A meta dessa campanha já foi alcançada! 😁');
+    } else if (new Date() > new Date(campaign.dat_fim)) {
+      toast.warn('Essa campanha já expirou! 🤞');
+    } else {
+      try {
+        const response = await api.post(`/doacaoCampanha`, data);
+
+        console.log(response);
+        router.reload();
+      } catch (err) {
+        console.warn(
+          `Não foi possível atualizar as informações da Ong. ${err}`
+        );
+      }
     }
-  }
+  };
 
   return (
     <CampaignContainer>
@@ -161,6 +183,29 @@ const Campaign = ({ campaign }) => {
       >
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
         <h2>{campaign.des_geral}</h2>
+        {new Date() > new Date(campaign.dat_fim) ? (
+          <p
+            style={{
+              color: 'red'
+            }}
+          >
+            {'A campanha foi finalizada dia '}
+            {new Date(campaign.dat_fim).getDate() +
+              '/' +
+              (new Date(campaign.dat_fim).getMonth() + 1) +
+              '/' +
+              new Date(campaign.dat_fim).getFullYear()}
+          </p>
+        ) : (
+          <p>
+            Fim:{' '}
+            {new Date(campaign.dat_fim).getDate() +
+              '/' +
+              (new Date(campaign.dat_fim).getMonth() + 1) +
+              '/' +
+              new Date(campaign.dat_fim).getFullYear()}
+          </p>
+        )}
         <FormContainer>
           <p
             className="valueLabel"
@@ -224,17 +269,23 @@ const Campaign = ({ campaign }) => {
             style={{ marginBottom: '2vh' }}
           />
           <FormContainer>
-            <Button
-              width="50%"
-              height="6vh"
-              fontSize="1.8em"
-              onClick={() => doar()}
-            >
+            <Button width="50%" height="6vh" fontSize="1.8em" onClick={doar}>
               Doar
             </Button>
           </FormContainer>
         </form>
       </Modal>
+      <ToastContainer
+        position="top-center"
+        autoClose={2200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </CampaignContainer>
   );
 };
