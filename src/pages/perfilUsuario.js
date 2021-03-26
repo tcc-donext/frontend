@@ -25,6 +25,13 @@ const PerfilUsuario = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (localStorage.getItem('alterado') == 'true') {
+      toast.success('Alterado! 😁');
+    }
+    localStorage.setItem('alterado', false);
+  }, []);
+
+  useEffect(() => {
     if (signed != null) {
       setLoadedAuth(true);
     }
@@ -58,6 +65,7 @@ const PerfilUsuario = () => {
 
   const setLocalStorageData = async data => {
     localStorage.setItem('userData', JSON.stringify(data));
+    localStorage.setItem('alterado', true);
   };
 
   const saveUdpatedName = async e => {
