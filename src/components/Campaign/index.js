@@ -124,8 +124,8 @@ const Campaign = ({ campaign }) => {
         <CampaignTitle>{campaign.des_titulo}</CampaignTitle>
         <Link href={ong ? `/ong/${ong.id_ong}` : ''}>
           <OngSection>
-            {ong?.profile_pic ? (
-              <OngImage src={ong.profile_pic} />
+            {ong?.link_foto_perfil ? (
+              <OngImage src={ong.link_foto_perfil} />
             ) : (
               <OngNoImage />
             )}
