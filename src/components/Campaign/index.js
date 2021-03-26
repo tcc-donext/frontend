@@ -89,9 +89,7 @@ const Campaign = ({ campaign }) => {
 
   function handleChange(ev) {
     if (ev.target.name == 'valor') {
-      setVlrDoacao(parseInt(ev.target.value));
-
-      console.log(vlrDoacao);
+      setVlrDoacao(ev.target.value);
     }
   }
 
