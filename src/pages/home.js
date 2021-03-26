@@ -156,7 +156,9 @@ const Home = () => {
                 filters.pessoas;
 
               if (
-                (campaign.des_titulo.toLowerCase().includes(stringFilter) ||
+                (campaign.des_titulo
+                  .toLowerCase()
+                  .includes(stringFilter.toLocaleLowerCase()) ||
                   campaign.des_geral.toLowerCase().includes(stringFilter)) &&
                 (!hasFilters ||
                   (filters.animal && campaign.cod_categoria === 1) ||
