@@ -222,12 +222,19 @@ const PerfilOng = () => {
           </form>
           <div>
             <div className="buttonsImage">
-              <Input
+            {user && user.image ? (
+                <Input
                 className="profileImage"
                 type="image"
                 src={previewSource}
                 alt="Imagem para alterar foto de perfil"
               ></Input>
+            ) : (<Input
+                className="profileImage"
+                type="image"
+                src="/images/avatar.png"
+                alt="Imagem para alterar foto de perfil"
+              ></Input>)}
               <FileInputContainer>
                 Clique para alterar a foto
                 <input

@@ -55,6 +55,7 @@ const Home = () => {
     <PageScroller
       pageOnChange={setCurrentPage}
       customPageNumber={currentPage}
+      animationTimer={700}
       renderAllPagesOnFirstRender
     >
       <section className="welcome">
