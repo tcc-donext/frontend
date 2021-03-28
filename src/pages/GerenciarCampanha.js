@@ -71,7 +71,7 @@ const GerenciarCampanha = () => {
         setValorTotalDoacaoDireta(dinheiro);
       }
     } catch (err) {
-      console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
+      console.warn('Não foi possível recuperar as informações da Ong.');
     }
   };
 
@@ -88,7 +88,7 @@ const GerenciarCampanha = () => {
         setValorTotalDoacaoCampanha(dinheiro);
       }
     } catch (err) {
-      console.warn(`Não foi possível recuperar as informações da Ong. ${err}`);
+      console.warn('Não foi possível recuperar as informações da Ong.');
     }
   };
 

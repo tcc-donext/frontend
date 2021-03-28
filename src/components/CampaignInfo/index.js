@@ -58,12 +58,21 @@ const CampaignInfo = props => {
 
   const [categorias, setCategorias] = useState([]);
 
+  const [arrecadado, setArrecadado] = useState(0);
+
   useEffect(() => {
     async function getCategorias() {
       let response = await api.get('/categorias');
       setCategorias(response.data);
     }
     getCategorias();
+
+    if (props.campaign) {
+      let aux = props.campaign.vlr_arrecadado.split(' ')[1];
+      aux = aux.replace(/[.]/g, '');
+      aux = aux.replace(/[,]/g, '.');
+      setArrecadado(parseFloat(aux));
+    }
   }, []);
 
   const handleFileInputChange = e => {
@@ -206,15 +215,29 @@ const CampaignInfo = props => {
               </InputField>
               <InputField>
                 <label>Objetivo</label>
-                <CurrencyInput
-                  placeholder="R$0.00"
-                  type="text"
-                  style={curruncyStyle}
-                  name="objetivo"
-                  onChange={handleChange}
-                  value={values.objetivo}
-                  id="objetivo"
-                />
+                {arrecadado > 0 ? (
+                  <CurrencyInput
+                    placeholder="R$0.00"
+                    disabled
+                    type="text"
+                    style={curruncyStyle}
+                    name="objetivo"
+                    onChange={handleChange}
+                    value={values.objetivo}
+                    id="objetivo"
+                  />
+                ) : (
+                  <CurrencyInput
+                    placeholder="R$0.00"
+                    type="text"
+                    style={curruncyStyle}
+                    name="objetivo"
+                    onChange={handleChange}
+                    value={values.objetivo}
+                    id="objetivo"
+                  />
+                )}
+
                 {console.log(values)}
               </InputField>
             </FormLayout>
