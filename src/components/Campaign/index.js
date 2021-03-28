@@ -55,7 +55,7 @@ import { Router } from 'next/router';
 const Campaign = ({ campaign }) => {
   const [ong, setOng] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [modalCampanha, setmodalCampanha] = useState(false);
+  const [modalCampanha, setModalCampanha] = useState(false);
   const [datDoacao, setDatDoacao] = useState(null);
   const [vlrDoacao, setVlrDoacao] = useState('');
   const [loadedAuth, setLoadedAuth] = useState(false);
@@ -97,11 +97,11 @@ const Campaign = ({ campaign }) => {
   }
 
   const OpenCampanha = () => {
-    setmodalCampanha(true);
+    setModalCampanha(true);
   };
 
   const CloseCampanha = () => {
-    setmodalCampanha(false);
+    setModalCampanha(false);
   };
 
   function handleChange(ev) {

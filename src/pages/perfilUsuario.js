@@ -3,7 +3,7 @@ import api from '../services/api';
 import { useEffect, useState } from 'react';
 import { useAuth } from './../contexts/auth';
 
-import { Container, Image } from 'styles/pages/perfilUsuario.js';
+import { Container, Image, DelImage } from 'styles/pages/perfilUsuario.js';
 import Button from 'components/Button';
 import Input from 'components/Input';
 
@@ -11,6 +11,19 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { useRouter } from 'next/router';
+
+import Modal from 'react-modal';
+const ModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '5vh',
+    left: '35.9vw',
+    right: '35.9vw',
+    bottom: '5vh',
+    backgroundColor: '#f6f6f6',
+    zIndex: '5'
+  }
+};
 
 const PerfilUsuario = () => {
   const [idDoador, setIdDoador] = useState();
@@ -22,6 +35,7 @@ const PerfilUsuario = () => {
   const [doacoesInstituicao, setDoacoesInstituicao] = useState();
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user, signOut } = useAuth();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,6 +61,14 @@ const PerfilUsuario = () => {
       }
     }
   }, [loadedAuth]);
+
+  function closeModal() {
+    setModalIsOpen(false);
+  }
+
+  function OpenModal() {
+    setModalIsOpen(true);
+  }
 
   const infDoador = async id => {
     await api.get(`/doador/${id}`).then(response => {
@@ -91,6 +113,11 @@ const PerfilUsuario = () => {
       toast.warn('Não foi possível atualizar o perfil! 🤷‍♀️');
   };
 
+  const handleDeleteAccount = async e => {
+    e.preventDefault();
+    setModalIsOpen(true);
+  };
+
   return (
     <Container>
       <form>
@@ -119,12 +146,24 @@ const PerfilUsuario = () => {
         />
         <div className="buttonsContainer">
           <Button
-            width="100%"
+            width="65%"
             height="8vh"
             fontSize="1.8em"
             onClick={saveUdpatedName}
           >
             Salvar
+          </Button>
+          <Button
+            className="deleteButton"
+            width="8%"
+            height="6vh"
+            fontSize="1.8em"
+            onClick={handleDeleteAccount}
+          >
+            <DelImage
+              src="/images/trash.svg"
+              className="deleteImage"
+            ></DelImage>
           </Button>
         </div>
       </form>
@@ -166,6 +205,11 @@ const PerfilUsuario = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+      />
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={ModalStyles}
       />
     </Container>
   );

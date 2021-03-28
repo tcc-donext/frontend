@@ -10,59 +10,55 @@ export const Container = styled.div`
     left: 25%;
     top: 25%;
     bottom: 16vh;
-    text-align:center;
-    
+    text-align: center;
+
     @media (max-width: 850px) {
       display: none;
     }
-
-
   }
-  h1{
+  h1 {
     margin-top: 0.5vh;
     font-size: 1.5em;
     font-weight: 500;
     text-align: center;
     color: #31303b;
     margin-bottom: 5vh;
-    }
-    h2{
-        margin-top: 2vh;
-        font-size: 2em;
-        font-weight: 400;
-        text-align: center;
-        color: #31303b;
-    }
-    h3{
-        font-size: 1.15em;
-        font-weight: 300;
-        text-align: center;
-        color: #5c5a6f;
-    }
+  }
+  h2 {
+    margin-top: 2vh;
+    font-size: 2em;
+    font-weight: 400;
+    text-align: center;
+    color: #31303b;
+  }
+  h3 {
+    font-size: 1.15em;
+    font-weight: 300;
+    text-align: center;
+    color: #5c5a6f;
+  }
 
-    .Desconectar{
-        display: flex;
-        align-items: flex-end;
-        justify-content: flex-end;  
-    }
+  .Desconectar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
 
-    .botaoDesconectar{
-        text-align: center;
-        width: 25vh; 
-    }
+  .botaoDesconectar {
+    text-align: center;
+    width: 25vh;
+  }
 
-    .logoutIco{
-        max-width: 3vh;
-        opacity: 0.5;
-        margin-right: 5vh;
-        
-    }
+  .logoutIco {
+    max-width: 3vh;
+    opacity: 0.5;
+    margin-right: 5vh;
+  }
 
   form {
     display: inline;
     position: absolute;
     right: 20%;
-    bottom: 
     padding-left: 6vw;
     padding-top: 4vh;
 
@@ -70,15 +66,33 @@ export const Container = styled.div`
       padding-bottom: 2vh;
     }
     .input:nth-child(3) {
-        margin-right: 2vh;
-      }
+      margin-right: 2vh;
+    }
     .input:nth-child(4) {
       padding-bottom: 6vh;
     }
   }
 
   .buttonsContainer {
-    width: 18.75vw;
+    width: 29vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .deleteButton {
+    background-color: white;
+    /* border: 0.1vh solid #e37fd6; */
+  }
+
+  .deleteImage {
+    filter: invert(85%) sepia(26%) saturate(5776%) hue-rotate(247deg)
+      brightness(96%) contrast(83%);
+  }
+
+  .deleteButton:hover .deleteImage {
+    filter: invert(22%) sepia(69%) saturate(6095%) hue-rotate(339deg)
+      brightness(91%) contrast(104%);
   }
 
   p {
@@ -91,10 +105,13 @@ export const Container = styled.div`
     a {
       color: #656478;
     }
-
   }
 `;
 
 export const Image = styled.img`
   max-height: 25vh;
+`;
+
+export const DelImage = styled.img`
+  max-height: 5vh;
 `;
