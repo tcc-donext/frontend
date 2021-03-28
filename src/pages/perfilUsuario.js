@@ -16,12 +16,12 @@ import Modal from 'react-modal';
 const ModalStyles = {
   content: {
     position: 'absolute',
-    top: '5vh',
+    top: '21vh',
     left: '35.9vw',
     right: '35.9vw',
-    bottom: '5vh',
+    bottom: '21vh',
     backgroundColor: '#f6f6f6',
-    zIndex: '5'
+    zIndex: '3'
   }
 };
 

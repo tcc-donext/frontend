@@ -91,6 +91,21 @@ export const Container = styled.div`
     padding: 0;
   }
 
+  .deleteButton {
+    background-color: white;
+    /* border: 0.1vh solid #e37fd6; */
+  }
+
+  .deleteImage {
+    filter: invert(85%) sepia(26%) saturate(5776%) hue-rotate(247deg)
+      brightness(96%) contrast(83%);
+  }
+
+  .deleteButton:hover .deleteImage {
+    filter: invert(22%) sepia(69%) saturate(6095%) hue-rotate(339deg)
+      brightness(91%) contrast(104%);
+  }
+
   p {
     margin-top: 3.3vh;
     font-size: 1.35em;
