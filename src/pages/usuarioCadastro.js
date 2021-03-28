@@ -6,7 +6,8 @@ import { useAuth } from './../contexts/auth';
 
 import FormPageLayout from 'components/layouts/FormPageLayout';
 import Link from 'next/link';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import { Container, Image, Divider } from 'styles/pages/usuarioCadastro';
 import Button from 'components/Button';
@@ -44,7 +45,7 @@ const Registrar = () => {
                 router.push('/usuarioCadastro');
               }
     } catch (error) {
-      alert('Não foi possivel realizar o cadastro!');
+      toast.error('Não foi possível realizar o cadastro!');
     }
     
   }
@@ -110,6 +111,17 @@ const Registrar = () => {
           alt="Desenho decorativo para a página"
         />
       </aside>
+      <ToastContainer
+        position="top-center"
+        autoClose={2800}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
