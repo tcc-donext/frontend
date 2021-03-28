@@ -63,6 +63,16 @@ const Campaign = ({ campaign }) => {
   const router = useRouter();
 
   useEffect(() => {
+    if (localStorage.getItem('alterado') == 'true') {
+      toast.success(
+        "Você doou para '" + localStorage.getItem('nomeCampanhaDoada') + "'"
+      );
+    }
+    localStorage.setItem('alterado', false);
+    localStorage.setItem('nomeCampanhaDoada', null);
+  }, []);
+
+  useEffect(() => {
     if (loadedAuth) {
       if (signed) {
         setDatDoacao(
@@ -141,13 +151,13 @@ const Campaign = ({ campaign }) => {
         try {
           const response = await api.post(`/doacaoCampanha`, data);
 
-          console.log(response);
-          toast.success('Obrigado!', 'Sucess');
+          if (response.status == 200) {
+            localStorage.setItem('alterado', true);
+            localStorage.setItem('nomeCampanhaDoada', campaign.des_titulo);
+          }
           router.reload();
         } catch (err) {
-          console.warn(
-            `Não foi possível atualizar as informações da Ong. ${err}`
-          );
+          console.warn(`Não foi possível doaar para campanha. ${err}`);
           toast.error('Erro ao doar para campanha');
         }
       }

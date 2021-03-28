@@ -90,7 +90,7 @@ const PerfilUsuario = () => {
     localStorage.setItem('alterado', true);
   };
 
-  const saveUdpatedName = async e => {
+  const saveUpdatedName = async e => {
     e.preventDefault();
     let data = {};
     await api.get(`/doador/${idDoador}`).then(response => {
@@ -149,7 +149,7 @@ const PerfilUsuario = () => {
             width="65%"
             height="8vh"
             fontSize="1.8em"
-            onClick={saveUdpatedName}
+            onClick={saveUpdatedName}
           >
             Salvar
           </Button>
