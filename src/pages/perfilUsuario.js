@@ -210,7 +210,27 @@ const PerfilUsuario = () => {
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={ModalStyles}
-      />
+      >
+        <h2 style={{ color: 'red', paddingBottom: '1.5vh' }}>
+          Deseja realmente excluir a sua conta?
+        </h2>
+        <h3>Para isso, precisamos que confirme seu Email e Senha:</h3>
+        <div>
+          <form>
+            <div style={{ paddingBottom: '3.5vh', paddingTop: '3.5vh' }}>
+              <Input name="email" label="Email" type="text" width="20vw" />
+            </div>
+            <div style={{ paddingBottom: '3.5vh' }}>
+              <Input name="senha" label="Senha" type="password" width="20vw" />
+            </div>
+            <div className="buttonsContainer">
+              <Button width="30%" height="6vh" fontSize="1.5em">
+                Deletar
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </Container>
   );
 };

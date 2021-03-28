@@ -4,7 +4,21 @@ import { useAuth, ong } from './../contexts/auth';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import Modal from 'react-modal';
+const ModalStyles = {
+  content: {
+    position: 'absolute',
+    top: '21vh',
+    left: '35.9vw',
+    right: '35.9vw',
+    bottom: '21vh',
+    backgroundColor: '#f6f6f6',
+    zIndex: '3'
+  }
+};
+
 import FormPageLayout from 'components/layouts/FormPageLayout';
+import { DelImage } from 'styles/pages/perfilUsuario.js';
 import {
   Container,
   Image,
@@ -19,6 +33,7 @@ const PerfilOng = () => {
   const [loadedAuth, setLoadedAuth] = useState(false);
   const [ongData, setOngData] = useState(null);
   const [ongContatoData, setOngContatoData] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [values, setValues] = useState({
     nom_ONG: '',
     des_endereco: '',
@@ -30,7 +45,9 @@ const PerfilOng = () => {
   const { signed, user, signOut } = useAuth();
   const router = useRouter();
   const [fileInputState, setFileInputState] = useState('');
-  const [previewSource, setPreviewSource] = useState(signed && user.image ? user.image : '/images/avatar.png');
+  const [previewSource, setPreviewSource] = useState(
+    signed && user.image ? user.image : '/images/avatar.png'
+  );
   const [selectedFile, setSelectedFile] = useState(null);
 
   const infOng = async id => {
@@ -51,27 +68,25 @@ const PerfilOng = () => {
     });
   }
 
-  const setLocalStorageData = async (data) =>{
+  const setLocalStorageData = async data => {
     localStorage.setItem('userData', JSON.stringify(data));
-  }
+  };
 
-  const SubmitData = async (info) =>{
-    try{
+  const SubmitData = async info => {
+    try {
       const response = await api.put(`/ongs`, info);
       let data = {
         id: response.data.id_ong,
         name: response.data.nom_ONG,
         image: response.data.link_foto_perfil,
         isOng: true
-      }
-      setLocalStorageData(data)
-      router.reload()
-     
+      };
+      setLocalStorageData(data);
+      router.reload();
     } catch (err) {
       console.warn(`Não foi possível atualizar as informações da Ong. ${err}`);
     }
-  }
-  
+  };
 
   async function salvarPerfil(id) {
     const data = {
@@ -101,9 +116,9 @@ const PerfilOng = () => {
       } else {
         data.nro_telefone = parseInt(data.nro_telefone);
       }
-       
+
       if (selectedFile == null) {
-        data.img_ong = ""
+        data.img_ong = '';
         SubmitData(data);
         return;
       }
@@ -113,17 +128,16 @@ const PerfilOng = () => {
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         data.img_ong = reader.result;
-        SubmitData(data) 
+        SubmitData(data);
       };
       reader.onerror = () => {
         console.error('AHHHHHHHH!!');
         setErrMsg('something went wrong!');
       };
-    
-  }catch(err){
-    console.log(err)
+    } catch (err) {
+      console.log(err);
+    }
   }
-}
 
   useEffect(() => {
     if (signed != null) {
@@ -137,13 +151,12 @@ const PerfilOng = () => {
         router.push('/');
       } else {
         infOng(user.id);
-        if(user.image != ""){
-          setPreviewSource(user.image)
+        if (user.image != '') {
+          setPreviewSource(user.image);
         }
       }
     }
   }, [loadedAuth]);
-
 
   const handleFileInputChange = e => {
     const file = e.target.files[0];
@@ -158,6 +171,19 @@ const PerfilOng = () => {
     reader.onloadend = () => {
       setPreviewSource(reader.result);
     };
+  };
+
+  function closeModal() {
+    setModalIsOpen(false);
+  }
+
+  function OpenModal() {
+    setModalIsOpen(true);
+  }
+
+  const handleDeleteAccount = async e => {
+    e.preventDefault();
+    setModalIsOpen(true);
   };
 
   return (
@@ -211,9 +237,9 @@ const PerfilOng = () => {
                 width="100%"
                 height="8vh"
                 fontSize="1.8em"
-                onClick={(e) => {
-                  e.preventDefault() 
-                  salvarPerfil(ongData.id_ong)
+                onClick={e => {
+                  e.preventDefault();
+                  salvarPerfil(ongData.id_ong);
                 }}
               >
                 Salvar
@@ -222,19 +248,21 @@ const PerfilOng = () => {
           </form>
           <div>
             <div className="buttonsImage">
-            {user && user.image ? (
+              {user && user.image ? (
                 <Input
-                className="profileImage"
-                type="image"
-                src={previewSource}
-                alt="Imagem para alterar foto de perfil"
-              ></Input>
-            ) : (<Input
-                className="profileImage"
-                type="image"
-                src="/images/avatar.png"
-                alt="Imagem para alterar foto de perfil"
-              ></Input>)}
+                  className="profileImage"
+                  type="image"
+                  src={previewSource}
+                  alt="Imagem para alterar foto de perfil"
+                ></Input>
+              ) : (
+                <Input
+                  className="profileImage"
+                  type="image"
+                  src="/images/avatar.png"
+                  alt="Imagem para alterar foto de perfil"
+                ></Input>
+              )}
               <FileInputContainer>
                 Clique para alterar a foto
                 <input
@@ -261,6 +289,20 @@ const PerfilOng = () => {
                 ></Image>
                 Desconectar
               </Button>
+              <span style={{ margin: '12vh 0 0 3vw' }}>
+                <Button
+                  className="deleteButton"
+                  width="5.1vh"
+                  height="5.1vh"
+                  fontSize="1.5em"
+                  onClick={handleDeleteAccount}
+                >
+                  <DelImage
+                    src="/images/trash.svg"
+                    className="deleteImage"
+                  ></DelImage>
+                </Button>
+              </span>
             </span>
           </div>
 
@@ -272,6 +314,31 @@ const PerfilOng = () => {
           </div>
         </div>
       ) : null}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={closeModal}
+        style={ModalStyles}
+      >
+        <h2 style={{ color: 'red', paddingBottom: '1.5vh' }}>
+          Deseja realmente excluir a sua conta?
+        </h2>
+        <h3>Para isso, precisamos que confirme seu Email e Senha:</h3>
+        <div>
+          <form>
+            <div style={{ paddingBottom: '3.5vh', paddingTop: '3.5vh' }}>
+              <Input name="email" label="Email" type="text" width="20vw" />
+            </div>
+            <div style={{ paddingBottom: '3.5vh' }}>
+              <Input name="senha" label="Senha" type="password" width="20vw" />
+            </div>
+            <div className="buttonsContainer">
+              <Button width="30%" height="6vh" fontSize="1.5em">
+                Deletar
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </Container>
   );
 };
