@@ -105,7 +105,6 @@ const CampaignInfo = props => {
           `campanhas/${props.campaign.seq_campanha}`,
           values
         );
-        console.log(response);
         router.reload();
       } catch (err) {
         console.log(err);
@@ -239,7 +238,6 @@ const CampaignInfo = props => {
                     selected={endDate}
                     onChange={date => {
                       var selectedDateStr = moment(date).format('MM/DD/YYYY');
-                      console.log(date);
                       setEndDate(date);
                       values.dataFim = selectedDateStr;
                     }}

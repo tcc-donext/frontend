@@ -68,7 +68,6 @@ const GerenciarCampanha = () => {
         let valor = Number(doacoes[i].vlr_doacao.replace(/[^0-9-]+/g, ''));
         valor = valor / 100;
         dinheiro = dinheiro + valor;
-        console.log(dinheiro);
         setValorTotalDoacaoDireta(dinheiro);
       }
     } catch (err) {
@@ -80,12 +79,10 @@ const GerenciarCampanha = () => {
     try {
       const response = await api.get(`/doacaoCampanha/${id}`);
       let doacoes = response.data.doacao_campanha;
-      console.log(doacoes);
 
       let dinheiro = 0;
       for (let i = 0; i <= doacoes.length; i++) {
         let valor = Number(doacoes[i].vlr_doacao.replace(/[^0-9-]+/g, ''));
-        //console.log(valor);
         valor = valor / 100;
         dinheiro = dinheiro + valor;
         setValorTotalDoacaoCampanha(dinheiro);
