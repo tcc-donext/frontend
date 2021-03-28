@@ -263,7 +263,7 @@ const PerfilOng = () => {
                   alt="Imagem para alterar foto de perfil"
                 ></Input>
               )}
-              <FileInputContainer>
+              <FileInputContainer style={{ marginLeft: '5vw' }}>
                 Clique para alterar a foto
                 <input
                   type="file"
