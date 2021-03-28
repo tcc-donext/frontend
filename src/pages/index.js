@@ -12,6 +12,8 @@ import Input from 'components/Input';
 import Button from 'components/Button';
 import api from 'services/api';
 import { useRouter } from 'next/router';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import { useAuth } from './../contexts/auth';
 
@@ -47,7 +49,7 @@ const Home = () => {
         window.location.href = '/usuarioCadastro';
       }
     } catch (error) {
-      alert('Não foi possivel realizar o cadastro!');
+      toast.error('Não foi possível realizar o cadastro!');
     }
   }
 
@@ -152,6 +154,17 @@ const Home = () => {
               É uma ong? <a href="./ongCadastro">Cadastre-se aqui</a>
             </p>
           </SignupForm>
+          <ToastContainer
+            position="top-center"
+            autoClose={2800}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+             />
         </WelcomeContainer>
       </section>
       <section className="what">
