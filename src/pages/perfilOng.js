@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from 'services/api';
 import { useAuth, ong } from './../contexts/auth';
-import Link from 'next/link';
+import { login } from 'services/auth';
 import { useRouter } from 'next/router';
 
 import Modal from 'react-modal';
@@ -34,6 +34,10 @@ const PerfilOng = () => {
   const [ongData, setOngData] = useState(null);
   const [ongContatoData, setOngContatoData] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [valuesDel, setValuesDel] = useState({
+    email: '',
+    senha: ''
+  });
   const [values, setValues] = useState({
     nom_ONG: '',
     des_endereco: '',
@@ -66,6 +70,14 @@ const PerfilOng = () => {
       ...values,
       [ev.target.name]: ev.target.value
     });
+  }
+
+  function handleChangeDel(ev) {
+    setValuesDel({
+      ...valuesDel,
+      [ev.target.name]: ev.target.value
+    });
+    console.log(valuesDel);
   }
 
   const setLocalStorageData = async data => {
@@ -326,13 +338,41 @@ const PerfilOng = () => {
         <div>
           <form>
             <div style={{ paddingBottom: '3.5vh', paddingTop: '3.5vh' }}>
-              <Input name="email" label="Email" type="text" width="20vw" />
+              <Input
+                name="email"
+                label="Email"
+                type="text"
+                width="20vw"
+                onChange={handleChangeDel}
+              />
             </div>
             <div style={{ paddingBottom: '3.5vh' }}>
-              <Input name="senha" label="Senha" type="password" width="20vw" />
+              <Input
+                name="senha"
+                label="Senha"
+                type="password"
+                width="20vw"
+                onChange={handleChangeDel}
+              />
             </div>
             <div className="buttonsContainer">
-              <Button width="30%" height="6vh" fontSize="1.5em">
+              <Button
+                width="30%"
+                height="6vh"
+                fontSize="1.5em"
+                onClick={async event => {
+                  event.preventDefault();
+                  let success = false;
+                  /*const success = await api.post('/login', {
+                    des_email: valuesDel.email,
+                    des_senha: valuesDel.password
+                  });*/
+                  if (success) alert('Deletado');
+                  else {
+                    alert('Email ou Senha incorretos! 🤔');
+                  }
+                }}
+              >
                 Deletar
               </Button>
             </div>

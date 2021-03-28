@@ -36,6 +36,10 @@ const PerfilUsuario = () => {
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user, signOut } = useAuth();
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [valuesDel, setValuesDel] = useState({
+    email: '',
+    senha: ''
+  });
   const router = useRouter();
 
   useEffect(() => {
@@ -117,6 +121,14 @@ const PerfilUsuario = () => {
     e.preventDefault();
     setModalIsOpen(true);
   };
+
+  function handleChangeDel(ev) {
+    setValuesDel({
+      ...valuesDel,
+      [ev.target.name]: ev.target.value
+    });
+    console.log(valuesDel);
+  }
 
   return (
     <Container>
@@ -218,13 +230,41 @@ const PerfilUsuario = () => {
         <div>
           <form>
             <div style={{ paddingBottom: '3.5vh', paddingTop: '3.5vh' }}>
-              <Input name="email" label="Email" type="text" width="20vw" />
+              <Input
+                name="email"
+                label="Email"
+                type="text"
+                width="20vw"
+                onChange={handleChangeDel}
+              />
             </div>
             <div style={{ paddingBottom: '3.5vh' }}>
-              <Input name="senha" label="Senha" type="password" width="20vw" />
+              <Input
+                name="senha"
+                label="Senha"
+                type="password"
+                width="20vw"
+                onChange={handleChangeDel}
+              />
             </div>
             <div className="buttonsContainer">
-              <Button width="30%" height="6vh" fontSize="1.5em">
+              <Button
+                width="30%"
+                height="6vh"
+                fontSize="1.5em"
+                onClick={async event => {
+                  event.preventDefault();
+                  let success = false;
+                  /*const success = await api.post('/login', {
+                    des_email: valuesDel.email,
+                    des_senha: valuesDel.password
+                  });*/
+                  if (success) alert('Deletado');
+                  else {
+                    alert('Email ou Senha incorretos! 🤔');
+                  }
+                }}
+              >
                 Deletar
               </Button>
             </div>
