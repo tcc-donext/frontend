@@ -1,4 +1,5 @@
 import api from './api';
+let refreshInterceptor = null;
 
 export const login = async (email, password) => {
   try {
@@ -8,6 +9,15 @@ export const login = async (email, password) => {
     });
 
     useTokenHeader(response.data.accessToken);
+
+    refreshInterceptor = api.interceptors.response.use(
+      response => {
+        return response;
+      },
+      function (err) {
+        refresh();
+      }
+    );
 
     return response.data;
   } catch (err) {
@@ -21,7 +31,7 @@ const refresh = async () => {
     const response = await api.post('/token');
 
     useTokenHeader(response.data.accessToken);
-    console.log(`Novo token de acesso gerado.`);
+    console.log(`Novo token de acesso gerado: ${response.data.accessToken}`);
 
     return true;
   } catch (err) {
@@ -35,6 +45,7 @@ const refresh = async () => {
 
 export const logout = async () => {
   api.defaults.headers.common.Authorization = '';
+  if (refreshInterceptor) api.interceptors.request.eject(refreshInterceptor);
 
   try {
     // invalidate refresh token
