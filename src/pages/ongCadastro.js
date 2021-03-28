@@ -5,6 +5,8 @@ import { StyledLabel } from 'components/Input/styles';
 import api from 'services/api'
 import { useRouter } from 'next/router';
 import { useAuth } from './../contexts/auth';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import {
   Container,
@@ -106,10 +108,10 @@ const OngCadastro = () => {
     try{
      const response = await api.post("ongs", data)
      const success = await signIn(values.emailONG, values.senha);
-     router.push('/perfilOng')
+     router.push('/perfilOng');
     }
      catch(err){
-       console.log(err)
+       toast.error('Não foi possível realizar o cadastro!');
      }
   }
 
@@ -170,6 +172,17 @@ const OngCadastro = () => {
           alt="Desenho decorativo para a página"
         />
       </aside>
+      <ToastContainer
+        position="top-center"
+        autoClose={2800}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
