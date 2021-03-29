@@ -166,7 +166,9 @@ const Home = () => {
                   (filters.natureza && campaign.cod_categoria === 3) ||
                   (filters.educacao && campaign.cod_categoria === 4))
               ) {
-                return <Campaign key={i} campaign={campaign} />;
+                if (new Date() <= new Date(campaign.dat_fim)) {
+                  return <Campaign key={i} campaign={campaign} />;
+                }
               }
             })}
         </CampaignsContainer>

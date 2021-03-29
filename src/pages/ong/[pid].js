@@ -50,6 +50,18 @@ const ModalStyles = {
   }
 };
 
+const ModalStyleExpired = {
+  content: {
+    position: 'absolute',
+    top: '30vh',
+    left: '36vw',
+    right: '36vw',
+    bottom: '32vh',
+    backgroundColor: '#f6f6f6',
+    zIndex: '5'
+  }
+};
+
 const ongPage = () => {
   const router = useRouter();
   const { pid } = router.query;
@@ -196,7 +208,7 @@ const ongPage = () => {
             </OngInfoContainer>
           </OngSection>
           <CampaignSubtitle>
-            Campanhas ativas! <span>({ongCampaigns.length}/10)</span>
+            Campanhas criadas! <span>({ongCampaigns.length}/10)</span>
           </CampaignSubtitle>
           <CampaignContainer>
             <Table>
@@ -223,13 +235,26 @@ const ongPage = () => {
                         <td>
                           {campaign.vlr_arrecadado} / {campaign.vlr_objetivo}
                         </td>
-                        <td>
-                          {new Date(campaign.dat_fim).getDate() +
-                            '/' +
-                            (new Date(campaign.dat_fim).getMonth() + 1) +
-                            '/' +
-                            new Date(campaign.dat_fim).getFullYear()}
-                        </td>
+                        {campaign && new Date() > new Date(campaign.dat_fim)
+                          ? [
+                              <td style={{ color: '#c40000' }}>
+                                {' '}
+                                {new Date(campaign.dat_fim).getDate() +
+                                  '/' +
+                                  (new Date(campaign.dat_fim).getMonth() + 1) +
+                                  '/' +
+                                  new Date(campaign.dat_fim).getFullYear()}
+                              </td>
+                            ]
+                          : [
+                              <td>
+                                {new Date(campaign.dat_fim).getDate() +
+                                  '/' +
+                                  (new Date(campaign.dat_fim).getMonth() + 1) +
+                                  '/' +
+                                  new Date(campaign.dat_fim).getFullYear()}
+                              </td>
+                            ]}
                       </Campaign>
                     </div>
                   ))}
@@ -263,7 +288,11 @@ const ongPage = () => {
               setModalOpen(false);
               setCurrentCampaign(null);
             }}
-            style={ModalStyles}
+            style={
+              currentCampaign && new Date() > new Date(currentCampaign.dat_fim)
+                ? ModalStyleExpired
+                : ModalStyles
+            }
           >
             {currentCampaign
               ? [
@@ -325,67 +354,70 @@ const ongPage = () => {
                   </h1>
                 ]}
 
-            <form>
-              <Input
-                name="formaPagamento"
-                label="Forma de pagamento"
-                type="text"
-                width="15vw"
-                placeholder="CARTÃO"
-                disabled="disabled"
-                style={{ float: 'left' }}
-              />
-              <Input
-                name="pais"
-                label="País"
-                type="text"
-                width="6vw"
-                placeholder="BRASIL"
-                disabled="disabled"
-                style={{ marginBottom: '2vh', marginLeft: '66%' }}
-              />
-              <Input
-                name="nroCartao"
-                label="Número do cartão*"
-                type="text"
-                width="23vw"
-                style={{ marginBottom: '2vh' }}
-              />
-              <Input
-                name="cvv"
-                label="CVV*"
-                type="text"
-                width="7vw"
-                style={{ float: 'left' }}
-              />
-              <Input
-                name="dataVencimento"
-                label="Data de vencimento*"
-                type="date"
-                width="14vw"
-                style={{ marginBottom: '2vh', marginLeft: '9vw' }}
-              />
-              <Input
-                name="valor"
-                label="Valor a doar*"
-                type="numeric"
-                width="17vw"
-                value={vlrDoacao}
-                onChange={e => {
-                  setVlrDoacao(e.target.value);
-                }}
-              />
-              <FormContainer>
-                <Button
-                  width="50%"
-                  height="6vh"
-                  fontSize="1.8em"
-                  onClick={e => doar(e)}
-                >
-                  Doar
-                </Button>
-              </FormContainer>
-            </form>
+            {currentCampaign &&
+            new Date() > new Date(currentCampaign.dat_fim) ? null : (
+              <form>
+                <Input
+                  name="formaPagamento"
+                  label="Forma de pagamento"
+                  type="text"
+                  width="15vw"
+                  placeholder="CARTÃO"
+                  disabled="disabled"
+                  style={{ float: 'left' }}
+                />
+                <Input
+                  name="pais"
+                  label="País"
+                  type="text"
+                  width="6vw"
+                  placeholder="BRASIL"
+                  disabled="disabled"
+                  style={{ marginBottom: '2vh', marginLeft: '66%' }}
+                />
+                <Input
+                  name="nroCartao"
+                  label="Número do cartão*"
+                  type="text"
+                  width="23vw"
+                  style={{ marginBottom: '2vh' }}
+                />
+                <Input
+                  name="cvv"
+                  label="CVV*"
+                  type="text"
+                  width="7vw"
+                  style={{ float: 'left' }}
+                />
+                <Input
+                  name="dataVencimento"
+                  label="Data de vencimento*"
+                  type="date"
+                  width="14vw"
+                  style={{ marginBottom: '2vh', marginLeft: '9vw' }}
+                />
+                <Input
+                  name="valor"
+                  label="Valor a doar*"
+                  type="numeric"
+                  width="17vw"
+                  value={vlrDoacao}
+                  onChange={e => {
+                    setVlrDoacao(e.target.value);
+                  }}
+                />
+                <FormContainer>
+                  <Button
+                    width="50%"
+                    height="6vh"
+                    fontSize="1.8em"
+                    onClick={e => doar(e)}
+                  >
+                    Doar
+                  </Button>
+                </FormContainer>
+              </form>
+            )}
           </Modal>
         </>
       )}
