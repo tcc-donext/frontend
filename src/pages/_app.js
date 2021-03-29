@@ -1,6 +1,7 @@
 import GlobalStyle from 'styles/globals';
 import PageLayout from 'components/layouts/PageLayout';
 import { AuthProvider } from 'contexts/auth';
+import Head from 'next/head';
 
 import 'overlayscrollbars/css/OverlayScrollbars.css';
 
@@ -10,6 +11,10 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+      <Head>
+        <title>Donext</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
+      </Head>
       <AuthProvider>
         <Layout config={layoutConfig}>
           <Component {...pageProps} />
