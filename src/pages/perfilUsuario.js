@@ -12,19 +12,6 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 import { useRouter } from 'next/router';
 
-import Modal from 'react-modal';
-const ModalStyles = {
-  content: {
-    position: 'absolute',
-    top: '21vh',
-    left: '35.9vw',
-    right: '35.9vw',
-    bottom: '21vh',
-    backgroundColor: '#f6f6f6',
-    zIndex: '3'
-  }
-};
-
 const PerfilUsuario = () => {
   const [idDoador, setIdDoador] = useState();
   const [nome, setNome] = useState('');
@@ -35,11 +22,7 @@ const PerfilUsuario = () => {
   const [doacoesInstituicao, setDoacoesInstituicao] = useState();
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user, signOut } = useAuth();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [valuesDel, setValuesDel] = useState({
-    email: '',
-    senha: ''
-  });
+
   const router = useRouter();
 
   useEffect(() => {
@@ -65,14 +48,6 @@ const PerfilUsuario = () => {
       }
     }
   }, [loadedAuth]);
-
-  function closeModal() {
-    setModalIsOpen(false);
-  }
-
-  function OpenModal() {
-    setModalIsOpen(true);
-  }
 
   const infDoador = async id => {
     await api.get(`/doador/${id}`).then(response => {
@@ -117,19 +92,6 @@ const PerfilUsuario = () => {
       toast.warn('Não foi possível atualizar o perfil! 🤷‍♀️');
   };
 
-  const handleDeleteAccount = async e => {
-    e.preventDefault();
-    setModalIsOpen(true);
-  };
-
-  function handleChangeDel(ev) {
-    setValuesDel({
-      ...valuesDel,
-      [ev.target.name]: ev.target.value
-    });
-    console.log(valuesDel);
-  }
-
   return (
     <Container>
       <form>
@@ -164,18 +126,6 @@ const PerfilUsuario = () => {
             onClick={saveUpdatedName}
           >
             Salvar
-          </Button>
-          <Button
-            className="deleteButton"
-            width="8%"
-            height="6vh"
-            fontSize="1.8em"
-            onClick={handleDeleteAccount}
-          >
-            <DelImage
-              src="/images/trash.svg"
-              className="deleteImage"
-            ></DelImage>
           </Button>
         </div>
       </form>
@@ -218,59 +168,6 @@ const PerfilUsuario = () => {
         draggable
         pauseOnHover
       />
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={ModalStyles}
-      >
-        <h2 style={{ color: 'red', paddingBottom: '1.5vh' }}>
-          Deseja realmente excluir a sua conta?
-        </h2>
-        <h3>Para isso, precisamos que confirme seu Email e Senha:</h3>
-        <div>
-          <form>
-            <div style={{ paddingBottom: '3.5vh', paddingTop: '3.5vh' }}>
-              <Input
-                name="email"
-                label="Email"
-                type="text"
-                width="20vw"
-                onChange={handleChangeDel}
-              />
-            </div>
-            <div style={{ paddingBottom: '3.5vh' }}>
-              <Input
-                name="senha"
-                label="Senha"
-                type="password"
-                width="20vw"
-                onChange={handleChangeDel}
-              />
-            </div>
-            <div className="buttonsContainer">
-              <Button
-                width="30%"
-                height="6vh"
-                fontSize="1.5em"
-                onClick={async event => {
-                  event.preventDefault();
-                  let success = false;
-                  /*const success = await api.post('/login', {
-                    des_email: valuesDel.email,
-                    des_senha: valuesDel.password
-                  });*/
-                  if (success) alert('Deletado');
-                  else {
-                    alert('Email ou Senha incorretos! 🤔');
-                  }
-                }}
-              >
-                Deletar
-              </Button>
-            </div>
-          </form>
-        </div>
-      </Modal>
     </Container>
   );
 };
