@@ -7,6 +7,17 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import {
+  CampaignImage,
+  CampaignNoImage,
+  CampaignTitle,
+  OngImage,
+  OngNoImage,
+  ContentSection,
+  OngData,
+  ProgressBar
+} from '../../components/Campaign/styles';
+
+import {
   Container,
   OngSection,
   OngImageContainer,
@@ -201,7 +212,13 @@ const ongPage = () => {
                   {ongCampaigns.map((campaign, i) => (
                     <div key={i}>
                       {i !== 0 && <tr className="spacer"></tr>}
-                      <Campaign onClick={() => OpenCampanha(campaign)}>
+                      <Campaign
+                        onClick={() =>
+                          !signed || (signed && user.isOng)
+                            ? null
+                            : OpenCampanha(campaign)
+                        }
+                      >
                         <td>{campaign.des_titulo}</td>
                         <td>
                           {campaign.vlr_arrecadado} / {campaign.vlr_objetivo}
@@ -244,10 +261,70 @@ const ongPage = () => {
             isOpen={modalOpen}
             onRequestClose={() => {
               setModalOpen(false);
+              setCurrentCampaign(null);
             }}
             style={ModalStyles}
           >
-            <h1 style={{ marginBottom: 50 }}>Doar para a {ong.nom_ONG}</h1>
+            {currentCampaign
+              ? [
+                  <>
+                    <CampaignTitle>{currentCampaign.des_titulo}</CampaignTitle>
+                    <h2 style={{ marginBottom: '10px', marginTop: '10px' }}>
+                      {currentCampaign.des_geral}
+                    </h2>
+                    {new Date() > new Date(currentCampaign.dat_fim) ? (
+                      <p
+                        style={{
+                          color: 'red'
+                        }}
+                      >
+                        {'A campanha foi finalizada dia '}
+                        {new Date(currentCampaign.dat_fim).getDate() +
+                          '/' +
+                          (new Date(currentCampaign.dat_fim).getMonth() + 1) +
+                          '/' +
+                          new Date(currentCampaign.dat_fim).getFullYear()}
+                      </p>
+                    ) : (
+                      <p>
+                        Fim:{' '}
+                        {new Date(currentCampaign.dat_fim).getDate() +
+                          '/' +
+                          (new Date(currentCampaign.dat_fim).getMonth() + 1) +
+                          '/' +
+                          new Date(currentCampaign.dat_fim).getFullYear()}
+                      </p>
+                    )}
+                    <FormContainer>
+                      <p
+                        className="valueLabel"
+                        style={{
+                          color: '#2f2e41',
+                          fontWeight: 'bold',
+                          paddingBottom: 5
+                        }}
+                      >{`${currentCampaign.vlr_arrecadado} / ${currentCampaign.vlr_objetivo}`}</p>
+                      <ProgressBar
+                        goal={parseFloat(
+                          currentCampaign.vlr_objetivo
+                            .split(' ')[1]
+                            .replace('.', '')
+                        )}
+                        current={parseFloat(
+                          currentCampaign.vlr_arrecadado
+                            .split(' ')[1]
+                            .replace('.', '')
+                        )}
+                      />
+                    </FormContainer>
+                  </>
+                ]
+              : [
+                  <h1 style={{ marginBottom: 50 }}>
+                    Doar para a {ong.nom_ONG}
+                  </h1>
+                ]}
+
             <form>
               <Input
                 name="formaPagamento"
