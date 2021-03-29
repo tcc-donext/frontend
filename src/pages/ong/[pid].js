@@ -43,12 +43,23 @@ const ongPage = () => {
   const router = useRouter();
   const { pid } = router.query;
 
+  const [currentCampaign, setCurrentCampaign] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [vlrDoacao, setVlrDoacao] = useState(0);
   const [ong, setOng] = useState();
   const [ongCampaigns, setOngCampaigns] = useState();
   const [loadedAuth, setLoadedAuth] = useState(false);
   const { signed, user } = useAuth();
+
+  useEffect(() => {
+    if (localStorage.getItem('alterado') == 'true') {
+      toast.success(
+        "Você doou para '" + localStorage.getItem('nomeCampanhaDoada') + "'"
+      );
+    }
+    localStorage.setItem('alterado', false);
+    localStorage.setItem('nomeCampanhaDoada', null);
+  }, []);
 
   useEffect(async () => {
     if (!pid) return;
@@ -70,17 +81,73 @@ const ongPage = () => {
     evt.preventDefault();
     setModalOpen(false);
 
-    try {
-      await api.post('/doacaoDireta', {
-        id_ong: pid,
-        dat_doacao: new Date(),
-        vlr_doacao: vlrDoacao
-      });
+    if (currentCampaign) {
+      doarCampanha();
+    } else {
+      try {
+        await api.post('/doacaoDireta', {
+          id_ong: pid,
+          dat_doacao: new Date(),
+          vlr_doacao: vlrDoacao
+        });
 
-      toast.success('Você doou para ' + ong.nom_ONG, 'Success');
-    } catch (err) {
-      console.warn(err);
+        toast.success('Você doou para ' + ong.nom_ONG, 'Success');
+      } catch (err) {
+        console.warn(err);
+      }
     }
+  };
+
+  const doarCampanha = async () => {
+    setModalOpen(false);
+
+    if (signed && user.isOng) {
+      toast.error('Operação não permitida.');
+    } else {
+      let data = {
+        id_ong: currentCampaign.id_ong,
+        seq_campanha: currentCampaign.seq_campanha,
+        Dat_doacao: new Date(),
+        vlr_doacao: vlrDoacao
+      };
+
+      let objetivo = parseFloat(
+        currentCampaign.vlr_objetivo.split(' ')[1].replace(/[.]/g, '')
+      );
+      let arrecadado = parseFloat(
+        currentCampaign.vlr_arrecadado.split(' ')[1].replace(/[.]/g, '')
+      );
+
+      if (vlrDoacao <= 0) {
+        toast.error('O valor a doar está incorreto! 🤷‍♂️');
+      } else if (objetivo <= arrecadado) {
+        toast.warn('A meta dessa campanha já foi alcançada! 😁');
+      } else if (new Date() > new Date(currentCampaign.dat_fim)) {
+        toast.warn('Essa campanha já expirou! 🤞');
+      } else {
+        try {
+          const response = await api.post(`/doacaoCampanha`, data);
+
+          if (response.status == 200) {
+            localStorage.setItem('alterado', true);
+            localStorage.setItem(
+              'nomeCampanhaDoada',
+              currentCampaign.des_titulo
+            );
+          }
+          router.reload();
+        } catch (err) {
+          console.warn(`Não foi possível doaar para campanha. ${err}`);
+          toast.error('Erro ao doar para campanha');
+        }
+      }
+      setCurrentCampaign(null);
+    }
+  };
+
+  const OpenCampanha = key => {
+    setCurrentCampaign(key);
+    setModalOpen(true);
   };
 
   useEffect(() => {
@@ -134,7 +201,7 @@ const ongPage = () => {
                   {ongCampaigns.map((campaign, i) => (
                     <div key={i}>
                       {i !== 0 && <tr className="spacer"></tr>}
-                      <Campaign>
+                      <Campaign onClick={() => OpenCampanha(campaign)}>
                         <td>{campaign.des_titulo}</td>
                         <td>
                           {campaign.vlr_arrecadado} / {campaign.vlr_objetivo}
