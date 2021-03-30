@@ -180,7 +180,10 @@ const GerenciarCampanha = () => {
         />
       </ImgContainer>
       <CardContainer>
-        <Card onClick={() => showDirectDonation()}>
+        <Card
+          onClick={() => showDirectDonation()}
+          style={{ cursor: 'pointer' }}
+        >
           <ImgContainer size="1vw">
             <img src="/images/infoicon.png" alt="opções do perfil" />
           </ImgContainer>
@@ -208,7 +211,10 @@ const GerenciarCampanha = () => {
             </TextContainer>
           )}
         </Card>
-        <Card onClick={() => showCampaignDonation()}>
+        <Card
+          onClick={() => showCampaignDonation()}
+          style={{ cursor: 'pointer' }}
+        >
           <ImgContainer size="1vw">
             <img src="/images/infoicon.png" alt="opções do perfil" />
           </ImgContainer>
