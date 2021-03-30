@@ -24,6 +24,9 @@ import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useAuth } from 'contexts/auth';
 import api from 'services/api';
 
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
 const ModalStyles = {
   content: {
     position: 'absolute',
@@ -36,8 +39,25 @@ const ModalStyles = {
   }
 };
 
+const ModalDonationStyles = {
+  content: {
+    position: 'absolute',
+    top: '20vh',
+    left: '38vw',
+    right: '38vw',
+    bottom: '20vh',
+    backgroundColor: '#f6f6f6',
+    padding: '30px',
+    zIndex: '5'
+  }
+};
+
 const GerenciarCampanha = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalDonationIsOpen, setModalDonationOpen] = useState(false);
+  const [isDirect, setIsDirect] = useState(true);
+  const [directDonation, setDirectDonation] = useState([]);
+  const [campaignDonation, setCampaignDonation] = useState([]);
   const [modalCampanha, setmodalCampanha] = useState(false);
   const [currentCampaign, setcurrentCampaign] = useState(null);
   const [loadedAuth, setLoadedAuth] = useState(false);
@@ -62,6 +82,7 @@ const GerenciarCampanha = () => {
     try {
       const response = await api.get(`/doacaoDireta/${id}`);
       let doacoes = response.data.doacao_direta;
+      setDirectDonation(response.data.doacao_direta);
 
       let dinheiro = 0;
       for (let i = 0; i <= doacoes.length; i++) {
@@ -79,6 +100,7 @@ const GerenciarCampanha = () => {
     try {
       const response = await api.get(`/doacaoCampanha/${id}`);
       let doacoes = response.data.doacao_campanha;
+      setCampaignDonation(response.data.doacao_campanha);
 
       let dinheiro = 0;
       for (let i = 0; i <= doacoes.length; i++) {
@@ -127,6 +149,24 @@ const GerenciarCampanha = () => {
     setmodalCampanha(false);
   };
 
+  const showDirectDonation = () => {
+    if (directDonation.length == 0) {
+      toast.warn('Você ainda não tem doações livres!');
+    } else {
+      setIsDirect(true);
+      setModalDonationOpen(true);
+    }
+  };
+
+  const showCampaignDonation = () => {
+    if (campaignDonation.length == 0) {
+      toast.warn('Você ainda não tem doações para campanhas!');
+    } else {
+      setIsDirect(false);
+      setModalDonationOpen(true);
+    }
+  };
+
   return (
     <Container>
       <ImgContainer size="3vw">
@@ -140,7 +180,7 @@ const GerenciarCampanha = () => {
         />
       </ImgContainer>
       <CardContainer>
-        <Card>
+        <Card onClick={() => showDirectDonation()}>
           <ImgContainer size="1vw">
             <img src="/images/infoicon.png" alt="opções do perfil" />
           </ImgContainer>
@@ -168,7 +208,7 @@ const GerenciarCampanha = () => {
             </TextContainer>
           )}
         </Card>
-        <Card>
+        <Card onClick={() => showCampaignDonation()}>
           <ImgContainer size="1vw">
             <img src="/images/infoicon.png" alt="opções do perfil" />
           </ImgContainer>
@@ -265,6 +305,108 @@ const GerenciarCampanha = () => {
       >
         <CampaignInfo campaign={campaignsData[currentCampaign]} />
       </Modal>
+
+      <Modal
+        isOpen={modalDonationIsOpen}
+        onRequestClose={() => setModalDonationOpen(false)}
+        style={ModalDonationStyles}
+      >
+        {directDonation && isDirect ? (
+          <>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <h1 style={{ marginBottom: '10px' }}>Doações Livres!</h1>
+              <img
+                src="/images/payment.png"
+                alt="opções do perfil"
+                style={{ width: '1.5w', height: '2.7vw' }}
+              />
+            </div>
+
+            {directDonation.map((donation, i) => (
+              <div
+                style={{
+                  marginTop: '15px',
+                  backgroundColor: '#fefefe',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  fontSize: '17px'
+                }}
+              >
+                <p>
+                  <strong>Data da doação:</strong>{' '}
+                  {moment(donation.dat_doacao).format('DD/MM/YYYY')}
+                </p>
+                <p>
+                  <strong>Nome do doador: </strong> {donation.nom_doador}
+                </p>
+                <p>
+                  <strong>Valor da doação: </strong> {donation.vlr_doacao}
+                </p>
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <h1 style={{ marginBottom: '10px' }}>Doações para Campanhas!</h1>
+              <img
+                src="/images/heart.png"
+                alt="opções do perfil"
+                style={{ width: '1.5w', height: '2.7vw' }}
+              />
+            </div>
+            {campaignDonation.map((donation, i) => (
+              <div
+                style={{
+                  marginTop: '15px',
+                  backgroundColor: '#fefefe',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  fontSize: '17px'
+                }}
+              >
+                <p>
+                  <strong>Data da doação:</strong>{' '}
+                  {moment(donation.Dat_doacao).format('DD/MM/YYYY')}
+                </p>
+                <p>
+                  <strong>Campanha doada:</strong> {donation.des_titulo}
+                </p>
+                <p>
+                  <strong>Nome do doador: </strong> {donation.nom_doador}
+                </p>
+                <p>
+                  <strong>Valor da doação: </strong> {donation.vlr_doacao}
+                </p>
+              </div>
+            ))}
+          </>
+        )}
+      </Modal>
+
+      <ToastContainer
+        position="top-center"
+        autoClose={2200}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Container>
   );
 };
