@@ -392,7 +392,7 @@ const ongPage = () => {
                 <Input
                   name="dataVencimento"
                   label="Data de vencimento*"
-                  type="date"
+                  type="month"
                   width="14vw"
                   style={{ marginBottom: '2vh', marginLeft: '9vw' }}
                 />
